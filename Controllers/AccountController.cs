@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QienUrenMachien.Controllers
 {
@@ -24,6 +25,7 @@ namespace QienUrenMachien.Controllers
         }
 
         // GET: /<controller>/
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -32,6 +34,7 @@ namespace QienUrenMachien.Controllers
         }
 
         // GET: /<controller>/
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
@@ -49,7 +52,7 @@ namespace QienUrenMachien.Controllers
                 if (result.Succeeded)
                 {
 
-                    return RedirectToAction("LoggedIn", "home");
+                    return RedirectToAction("index", "home");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
