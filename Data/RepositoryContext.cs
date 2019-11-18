@@ -6,10 +6,12 @@ namespace QienUrenMachien.Data
 {
     public class RepositoryContext : IdentityDbContext
     {
-
+        public TimeSheet timeSheet { get; set; }
         public RepositoryContext(DbContextOptions<RepositoryContext> options)
     :       base(options)
         {
+
+        
         }
     }
 }
