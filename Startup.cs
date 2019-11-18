@@ -32,7 +32,7 @@ namespace QienUrenMachien
             services.AddDbContext<RepositoryContext>(opt =>
                             opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<RepositoryContext>();
 
             //services.AddMvc(options =>
