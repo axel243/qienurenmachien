@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QienUrenMachien.Controllers
@@ -16,6 +17,18 @@ namespace QienUrenMachien.Controllers
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+        }
+
+        public IActionResult AdminDashboard()
+        {
+            var userlist = userManager.Users;
+            return View(userlist);
+        }
+
+        public IActionResult ViewUser(string Id)
+        {
+            var singleuser = userManager.Users.Single(u => u.Id == Id);
+            return View(singleuser);
         }
 
         [HttpGet]
