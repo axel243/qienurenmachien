@@ -29,21 +29,33 @@ namespace QienUrenMachien
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<RepositoryContext>();
 
             services.AddDbContext<RepositoryContext>(opt =>
                             opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
+            
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<RepositoryContext>();
+
+            //services.AddControllers(config =>
+            //{
+            //    // using Microsoft.AspNetCore.Mvc.Authorization;
+            //    // using Microsoft.AspNetCore.Authorization;
+            //    var policy = new AuthorizationPolicyBuilder()
+            //                     .RequireAuthenticatedUser()
+            //                     .Build();
+            //    config.Filters.Add(new AuthorizeFilter(policy));
+            //});
 
             //services.AddMvc(options =>
             //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //                       .RequireAuthenticatedUser()
-            //                       .Build();
-            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //   var policy = new AuthorizationPolicyBuilder()
+            //                      .RequireAuthenticatedUser()
+            //                      .Build();
+            //   options.Filters.Add(new AuthorizeFilter(policy));
             //}).AddXmlSerializerFormatters();
 
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,14 +76,15 @@ namespace QienUrenMachien
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            
             app.UseAuthentication();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

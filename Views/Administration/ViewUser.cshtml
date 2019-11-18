@@ -1,0 +1,20 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+@{
+	ViewData["Title"] = "Bekijk gebruiker";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Bekijk gebruiker</h1>
+	<p>Overzicht van gebruikerinformatie.</p>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th>ID</th>
+		<th>Naam</th>
+	</tr>
+		<tr>
+			<td>@Model.Id</td>
+			<td>@Model.UserName</td>
+		</tr>
+</table>
