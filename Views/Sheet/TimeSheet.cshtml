@@ -1,0 +1,30 @@
+﻿@model List<DateTime>
+<div>
+    <table>
+        <tr>
+            <th>Datum</th>
+            <th>Opdracht</th>
+            <th>Overwerk</th>
+            <th>Verlof</th>
+            <th>Ziek</th>
+            <th>Training</th>
+            <th>Overig</th>
+            <th>Verklaring m.b.t. overig</th>
+        </tr>
+
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.Date.ToString("dd/MM/yyyy")</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+    </table>
+</div>
+
