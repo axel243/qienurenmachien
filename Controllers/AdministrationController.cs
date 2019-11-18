@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Models;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace QienUrenMachien.Controllers
 {
+    //[Authorize(Roles = "Admin")]
+    //[Authorize]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -51,6 +54,7 @@ namespace QienUrenMachien.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult ListRoles()
         {
             var roles = roleManager.Roles;
