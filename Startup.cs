@@ -35,14 +35,6 @@ namespace QienUrenMachien
             services.AddDbContext<RepositoryContext>(opt =>
                             opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
 
-            // services.AddIdentity<IdentityUser, IdentityRole>()
-            //     .AddEntityFrameworkStores<RepositoryContext>();
-
-
-
-                
-
-
             //services.AddMvc(options =>
             //{
             //    var policy = new AuthorizationPolicyBuilder()
