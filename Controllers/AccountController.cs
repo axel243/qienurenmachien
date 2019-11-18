@@ -9,21 +9,23 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QienUrenMachien.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
 
         // GET: /<controller>/
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -32,6 +34,7 @@ namespace QienUrenMachien.Controllers
         }
 
         // GET: /<controller>/
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
@@ -49,7 +52,7 @@ namespace QienUrenMachien.Controllers
                 if (result.Succeeded)
                 {
 
-                    return RedirectToAction("LoggedIn", "home");
+                    return RedirectToAction("index", "home");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -64,7 +67,7 @@ namespace QienUrenMachien.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email};
+                var user = new ApplicationUser { UserName = model.Email};
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

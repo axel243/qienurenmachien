@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QienUrenMachien.Data;
 
 namespace QienUrenMachien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191118083550_IdentityFK2")]
+    partial class IdentityFK2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,48 +258,6 @@ namespace QienUrenMachien.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TimeSheet");
-                });
-
-            modelBuilder.Entity("QienUrenMachien.Models.TimeSheet", b =>
-                {
-                    b.Property<int>("SheetID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("Absence")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Data")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Month")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Other")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Overwork")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Project")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("ProjectHours")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Sick")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Training")
-                        .HasColumnType("float");
-
-                    b.HasKey("SheetID");
-
-                    b.ToTable("TimeSheets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
