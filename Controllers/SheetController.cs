@@ -5,18 +5,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QienUrenMachien.Data;
 using QienUrenMachien.Models;
 
 namespace QienUrenMachien.Controllers
 {
     public class SheetController : Controller
     {
+        private RepositoryContext repo;
+
+        public SheetController(RepositoryContext repo)
+        {
+            this.repo = repo;
+        }
         public IActionResult Index()
         {
+
             return View("Month");
         }
         public IActionResult TimeSheet(int Year, int Month)
         {
+
+            var test = GetTimeSheets();
+            ViewBag.Test = test;
+
+
             var result = GetAllDaysInMonth(Year, Month);
             return View(result);
         }
@@ -29,6 +42,26 @@ namespace QienUrenMachien.Controllers
                 ret.Add(new DateTime(year, month, i));
             }
             return ret;
+        }
+
+
+
+        public List<TimeSheet> GetTimeSheets()
+        {
+            var sheetList = repo.TimeSheets.Select(n => new TimeSheet
+            {
+                SheetID = n.SheetID,
+                Project = n.Project,
+                Month = n.Month,
+                ProjectHours = n.ProjectHours,
+                Overwork = n.Overwork,
+                Sick = n.Sick,
+                Absence = n.Absence,
+                Training = n.Training,
+                Other = n.Other,
+                Data = n.Data
+            }).ToList();
+            return sheetList;
         }
     }
 }

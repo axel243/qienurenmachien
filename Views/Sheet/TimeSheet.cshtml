@@ -1,4 +1,9 @@
-﻿@model List<DateTime>
+﻿
+@model List<DateTime>
+@{List<TimeSheet> sheets = ViewBag.Test;
+}
+
+
 <div>
     <table>
         <tr>
@@ -12,19 +17,29 @@
             <th>Verklaring m.b.t. overig</th>
         </tr>
 
+
+        @{var sheet = sheets[0];
+            var test = sheet.Data;
+            }
+
+
         @foreach (var d in Model)
         {
             <tr>
-                <td>@d.Date.ToString("dd/MM/yyyy")</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+        @*        <td>@d.Date.ToString("dd/MM/yyyy")</td>*@
+                    <td>@sheets[0].Project</td>
+                    <td>@sheets[0].Overwork</td>
+                    <td>@sheets[0].Absence</td>
+                    <td>@sheets[0].Sick</td>
+                    <td>@sheets[0].Training</td>
+                    <td>@sheets[0].Other</td>
+                    <td>@sheets[0].Data</td>
             </tr>
+        
         }
+
     </table>
 </div>
 
+
+@*{ SheetID: "3", Project: "macaw", Month: "januari", ProjectHours: 10, Overwork: 15, Absence: 20, , Sick: 25, , Training: 30, , Other: 35, , Status: 1 };*@
