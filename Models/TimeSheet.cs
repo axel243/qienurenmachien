@@ -15,7 +15,7 @@ namespace QienUrenMachien.Models
 
         [ForeignKey("Id")]
         public ApplicationUser applicationUser { get; set; }
-        public string UserId {get; set;}
+        public string Id {get; set;}
         public string Project { get; set; }
         public string Month { get; set; }
         public double ProjectHours { get; set; }
