@@ -46,5 +46,10 @@ namespace QienUrenMachien.Controllers
 
             return View();
         }
+
+        // public IActionResult ListRoles()
+        // {
+        //     var roles = ;
+        // }
     }
 }
