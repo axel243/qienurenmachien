@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace QienUrenMachien.Controllers
 {
-    //[Authorize(Roles = "Admin")]
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
