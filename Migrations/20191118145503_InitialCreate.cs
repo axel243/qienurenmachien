@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QienUrenMachien.Migrations
 {
-    public partial class Identity : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -152,6 +152,37 @@ namespace QienUrenMachien.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TimeSheets",
+                columns: table => new
+                {
+                    SheetID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    Project = table.Column<string>(nullable: true),
+                    Month = table.Column<string>(nullable: true),
+                    ProjectHours = table.Column<double>(nullable: false),
+                    Overwork = table.Column<double>(nullable: false),
+                    Sick = table.Column<double>(nullable: false),
+                    Absence = table.Column<double>(nullable: false),
+                    Training = table.Column<double>(nullable: false),
+                    Other = table.Column<double>(nullable: false),
+                    Submitted = table.Column<bool>(nullable: false),
+                    Approved = table.Column<string>(nullable: true),
+                    Data = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeSheets", x => x.SheetID);
+                    table.ForeignKey(
+                        name: "FK_TimeSheets_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -190,6 +221,11 @@ namespace QienUrenMachien.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSheets_Id",
+                table: "TimeSheets",
+                column: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -208,6 +244,9 @@ namespace QienUrenMachien.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "TimeSheets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
