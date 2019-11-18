@@ -217,49 +217,6 @@ namespace QienUrenMachien.Migrations
 
             modelBuilder.Entity("QienUrenMachien.Models.TimeSheet", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Absence")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Data")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Month")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Other")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Overwork")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Project")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("ProjectHours")
-                        .HasColumnType("float");
-
-                    b.Property<int>("SheetID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Sick")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Training")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TimeSheet");
-                });
-
-            modelBuilder.Entity("QienUrenMachien.Models.TimeSheet", b =>
-                {
                     b.Property<int>("SheetID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -268,8 +225,14 @@ namespace QienUrenMachien.Migrations
                     b.Property<double>("Absence")
                         .HasColumnType("float");
 
+                    b.Property<string>("Approved")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Data")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Month")
                         .HasColumnType("nvarchar(max)");
@@ -289,13 +252,18 @@ namespace QienUrenMachien.Migrations
                     b.Property<double>("Sick")
                         .HasColumnType("float");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<bool>("Submitted")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Training")
                         .HasColumnType("float");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("SheetID");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("TimeSheets");
                 });
@@ -355,9 +323,7 @@ namespace QienUrenMachien.Migrations
                 {
                     b.HasOne("QienUrenMachien.Models.ApplicationUser", "applicationUser")
                         .WithMany("TimeSheet")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Id");
                 });
 #pragma warning restore 612, 618
         }

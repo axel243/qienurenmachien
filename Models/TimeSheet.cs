@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace QienUrenMachien.Models
 {
-    public enum Status { New, ForApproval, Approved, NotApproved }
     public class TimeSheet
     {
 
@@ -25,9 +24,8 @@ namespace QienUrenMachien.Models
         public double Absence { get; set; }
         public double Training { get; set; }
         public double Other { get; set; }
-        public Status Status { get; set; }
+        public bool Submitted { get; set; }
+        public string Approved {get; set;}
         public string Data { get; set; }
-
-
     }
 }

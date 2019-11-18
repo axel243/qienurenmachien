@@ -66,7 +66,6 @@ namespace QienUrenMachien.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult ListRoles()
         {
             var roles = roleManager.Roles;

@@ -10,8 +10,8 @@ using QienUrenMachien.Data;
 namespace QienUrenMachien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20191118083550_IdentityFK2")]
-    partial class IdentityFK2
+    [Migration("20191118145503_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -219,14 +219,22 @@ namespace QienUrenMachien.Migrations
 
             modelBuilder.Entity("QienUrenMachien.Models.TimeSheet", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SheetID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Absence")
                         .HasColumnType("float");
 
+                    b.Property<string>("Approved")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Data")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Month")
                         .HasColumnType("nvarchar(max)");
@@ -243,11 +251,11 @@ namespace QienUrenMachien.Migrations
                     b.Property<double>("ProjectHours")
                         .HasColumnType("float");
 
-                    b.Property<int>("SheetID")
-                        .HasColumnType("int");
-
                     b.Property<double>("Sick")
                         .HasColumnType("float");
+
+                    b.Property<bool>("Submitted")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Training")
                         .HasColumnType("float");
@@ -255,9 +263,11 @@ namespace QienUrenMachien.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SheetID");
 
-                    b.ToTable("TimeSheet");
+                    b.HasIndex("Id");
+
+                    b.ToTable("TimeSheets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -315,9 +325,7 @@ namespace QienUrenMachien.Migrations
                 {
                     b.HasOne("QienUrenMachien.Models.ApplicationUser", "applicationUser")
                         .WithMany("TimeSheet")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Id");
                 });
 #pragma warning restore 612, 618
         }
