@@ -15,10 +15,10 @@ namespace QienUrenMachien.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -67,7 +67,7 @@ namespace QienUrenMachien.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email};
+                var user = new ApplicationUser { UserName = model.Email};
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

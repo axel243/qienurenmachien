@@ -5,14 +5,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace QienUrenMachien.Data
 {
-    public class RepositoryContext : IdentityDbContext<IdentityUser>
+    public class RepositoryContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<TimeSheet> TimeSheets { get; set; }
-        public RepositoryContext(DbContextOptions<RepositoryContext> options)
-    :       base(options)
+        public RepositoryContext (DbContextOptions<RepositoryContext> options)
+            : base(options)
         {
+        }
 
-        
+        public DbSet<TimeSheet> TimeSheets { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder){
+            base.OnModelCreating(builder);
         }
     }
 }
