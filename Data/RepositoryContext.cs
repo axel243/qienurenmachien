@@ -6,7 +6,7 @@ namespace QienUrenMachien.Data
 {
     public class RepositoryContext : IdentityDbContext<ApplicationUser>
     {
-        public TimeSheet timeSheet { get; set; }
+        public DbSet<TimeSheet> TimeSheets { get; set; }
         public RepositoryContext(DbContextOptions<RepositoryContext> options)
     :       base(options)
         {
