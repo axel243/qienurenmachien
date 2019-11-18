@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QienUrenMachien.Data;
+using QienUrenMachien.Models;
 
 namespace QienUrenMachien
 {
@@ -31,7 +32,7 @@ namespace QienUrenMachien
             services.AddDbContext<RepositoryContext>(opt =>
                             opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RepositoryContext>();
 
             //services.AddMvc(options =>
