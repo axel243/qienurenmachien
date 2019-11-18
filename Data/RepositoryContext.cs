@@ -4,7 +4,7 @@ using QienUrenMachien.Models;
 
 namespace QienUrenMachien.Data
 {
-    public class RepositoryContext : IdentityDbContext
+    public class RepositoryContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<TimeSheet> TimeSheets { get; set; }
         public RepositoryContext(DbContextOptions<RepositoryContext> options)

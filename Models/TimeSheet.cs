@@ -13,6 +13,10 @@ namespace QienUrenMachien.Models
 
         [Key]
         public int SheetID { get; set; }
+
+        [ForeignKey("Id")]
+        public ApplicationUser applicationUser { get; set; }
+        public string UserId {get; set;}
         public string Project { get; set; }
         public string Month { get; set; }
         public double ProjectHours { get; set; }
