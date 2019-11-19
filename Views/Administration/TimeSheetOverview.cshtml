@@ -1,0 +1,28 @@
+﻿@model List<QienUrenMachien.Models.ApplicationUser>
+@{
+	ViewData["Title"] = "Timesheet overview";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Timesheet overview</h1>
+	<p>Overzicht van timesheet-statuses voor de huidige maand.</p>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th>ID</th>
+		<th>Naam</th>
+		<th>Ingevuld</th>
+		<th>Goedgekeurd</th>
+	</tr>
+	@foreach (var role in Model)
+	{
+			<tr>
+				<td>@role.Id</td>
+				<td>@role.UserName</td>
+				<td>True or false</td>
+				<td>True or false</td>
+			</tr>
+	}
+</table>
+
