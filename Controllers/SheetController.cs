@@ -30,9 +30,6 @@ namespace QienUrenMachien.Controllers
             //            }
 
 
-
-
-
             return View("Month");
         }
         public IActionResult TimeSheet(int Year, int Month)
@@ -46,14 +43,21 @@ namespace QienUrenMachien.Controllers
             return View(result);
         }
 
-        public List<DateTime> GetAllDaysInMonth(int year, int month)
+        public List<Day> GetAllDaysInMonth(int year, int month)
         {
-            var ret = new List<DateTime>();
+            var days = new List<Day>();
+            
+            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            {
+                days.Add(new Day(new DateTime(year, month, i)));
+            }
+            return days;
+ /*           var ret = new List<DateTime>();
             for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
             {
                 ret.Add(new DateTime(year, month, i));
             }
-            return ret;
+            return ret;*/
         }
 
 
