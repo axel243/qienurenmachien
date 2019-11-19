@@ -21,6 +21,18 @@ namespace QienUrenMachien.Controllers
         public IActionResult Index()
         {
 
+            var sheet1 = GetTimeSheets();
+            var sheet1DATA = sheet1[0].Data;
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<TimeSheet>(sheet1DATA);
+            //            {
+            //                "1": { "SheetID": 3, "Project": "bla", "Month": "januari", "ProjectHours": 10, "Overwork": 15, "Sick": 20, "Absence": 25, "Training": 30, "Other": 35, "Status": 1 },
+            //                "2": { "SheetID": 3, "Project": "macaw", "Month": "januari", "ProjectHours": 11, "Overwork": 16, "Sick": 17, "Absence": 18, "Training": 19, "Other": 20, "Status": 1 }
+            //            }
+
+
+
+
+
             return View("Month");
         }
         public IActionResult TimeSheet(int Year, int Month)
