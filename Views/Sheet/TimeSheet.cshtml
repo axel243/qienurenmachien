@@ -18,10 +18,26 @@
         </tr>
 
 
-        @{var sheet = sheets[0];
-            var test = sheet.Data;
-            }
+        @{ var sheet = sheets[0].Data;
+            var dataDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, TimeSheet>>(sheet);
 
+        }
+
+
+
+        @foreach (var day in dataDict)
+        {
+        <tr>
+            <td>x</td>                         @*<td>@d.Date.ToString("dd/MM/yyyy")</td>*@
+            <td>@day.Value.Project</td>
+            <td>@day.Value.Overwork</td>
+            <td>@day.Value.Absence</td>
+            <td>@day.Value.Sick</td>
+            <td>@day.Value.Training</td>
+            <td>@day.Value.Other</td>
+            <td>@day.Value.Data</td>
+        </tr>
+        }
 
         @*@foreach (var d in Model)
         {
@@ -35,7 +51,7 @@
                     <td>@sheets[0].Other</td>
                     <td>@sheets[0].Data</td>
             </tr>
-        
+
         }*@
 
     </table>
