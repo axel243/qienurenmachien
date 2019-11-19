@@ -1,10 +1,11 @@
 ﻿
-@model List<Day>
+@model String
 @{List<TimeSheet> sheets = ViewBag.Test;
 }
 
 
 <div>
+    @ViewBag.Result
     <table>
         <tr>
             <th>Datum</th>
@@ -18,19 +19,7 @@
         </tr>
 
 
-        @foreach (var d in Model)
-        {
-            <tr>
-                <td>@d.date.ToString("dd/MM/yyyy")</td>
-                    <td>@d.Project</td>
-                    <td>@d.Overwork</td>
-                    <td>@d.Absence</td>
-                    <td>@d.Sick</td>
-                    <td>@d.Training</td>
-                    <td>@d.Other</td>
-            </tr>
-        
-        }
+       
 
     </table>
 </div>

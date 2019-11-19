@@ -40,24 +40,26 @@ namespace QienUrenMachien.Controllers
 
 
             var result = GetAllDaysInMonth(Year, Month);
+            ViewBag.Result = result;
             return View(result);
         }
 
-        public List<Day> GetAllDaysInMonth(int year, int month)
+        public String GetAllDaysInMonth(int year, int month)
         {
             var days = new List<Day>();
-            
-            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
-            {
-                days.Add(new Day(new DateTime(year, month, i)));
-            }
-            return days;
- /*           var ret = new List<DateTime>();
-            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
-            {
-                ret.Add(new DateTime(year, month, i));
-            }
-            return ret;*/
+
+            Day daya = new Day(new DateTime(year, month, 1), "Nos", 4, 8, 2, 5, 7, 0, "None");
+            Day dayb = new Day(new DateTime(year, month, 2), "Gen25", 7, 8, 3, 9, 0, 0, "asasa");
+            days.Add(daya);
+            days.Add(dayb);
+            /*  for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+              {
+                  days.Add(new Day(new DateTime(year, month, i), "Nos", 4, 8, 2, 5, 7, 0, "None"));
+              }
+              return days;*/
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(days);
+            return jsonString;
+
         }
 
 

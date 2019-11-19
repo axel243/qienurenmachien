@@ -7,12 +7,8 @@ namespace QienUrenMachien.Models
 {
     public class Day
     {
-        public Day(DateTime date)
-        {
-            this.date = date;
-        }
 
-        public Day(DateTime date, string project, double projectHours, double overwork, double sick, double absence, double training, double other)
+        public Day(DateTime date, string project, double projectHours, double overwork, double sick, double absence, double training, double other, string otherExplanation)
         {
             this.date = date;
             Project = project;
@@ -22,7 +18,11 @@ namespace QienUrenMachien.Models
             Absence = absence;
             Training = training;
             Other = other;
+            OtherExplanation = otherExplanation;
         }
+
+
+        // "1": { "SheetID": 3, "Project": "bla", "Month": "januari", "ProjectHours": 10, "Overwork": 15, "Sick": 20, "Absence": 25, "Training": 30, "Other": 35, "Status": 1 },
 
         public DateTime date { get; set; }
         public string Project { get; set; }
@@ -32,5 +32,6 @@ namespace QienUrenMachien.Models
         public double Absence { get; set; }
         public double Training { get; set; }
         public double Other { get; set; }
+        public string OtherExplanation { get; set; }
     }
 }
