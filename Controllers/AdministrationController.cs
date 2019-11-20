@@ -14,11 +14,11 @@ namespace QienUrenMachien.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly TimeSheetRepository repo;
+        private readonly ITimeSheetRepository repo;
 
         public AdministrationController(RoleManager<IdentityRole> roleManager, 
                                         UserManager<ApplicationUser> userManager,
-                                        TimeSheetRepository repo)
+                                        ITimeSheetRepository repo)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -39,11 +39,14 @@ namespace QienUrenMachien.Controllers
 
         public IActionResult TimesheetOverview()
         {
-            var traineeslist = userManager.GetUsersInRoleAsync("Trainee").Result;
-            var employeeslist = userManager.GetUsersInRoleAsync("Werknemer").Result;
-            var traineesAndEmployees = employeeslist.Concat(traineeslist)
-                .ToList();
-            return View(traineesAndEmployees);
+            var sheetlist = repo.GetAllTimeSheets();
+            return View(sheetlist);
+        }
+
+        public IActionResult ShowUserTimeSheet(int SheetID, string UserId)
+        {
+            var result = repo.GetOneTimeSheet(SheetID, UserId);
+            return View(result);
         }
 
         [HttpGet]

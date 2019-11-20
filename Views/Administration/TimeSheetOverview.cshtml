@@ -1,4 +1,4 @@
-﻿@model List<QienUrenMachien.Models.ApplicationUser>
+﻿@model List<QienUrenMachien.Models.TimeSheet>
 @{
 	ViewData["Title"] = "Timesheet overview";
 }
@@ -12,16 +12,25 @@
 	<tr>
 		<th>ID</th>
 		<th>Naam</th>
-		<th>Ingevuld</th>
+		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
+		<th>Toon urenformulier</th>
 	</tr>
-	@foreach (var role in Model)
+	@foreach (var sheet in Model)
 	{
 			<tr>
-				<td>@role.Id</td>
-				<td>@role.UserName</td>
-				<td>True or false</td>
-				<td>True or false</td>
+				<td>@sheet.Id</td>
+				<td>@sheet.SheetID</td>
+				@if (sheet != null)
+				{
+				<td>@sheet.Submitted</td>
+				<td>@sheet.Approved</td>
+				} else {
+				<td>Null</td>
+				<td>Null</td>
+				}
+				@*<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet">Bekijk</a></td>*@
+				<td>@Html.ActionLink("Bekijk", "ShowUserTimeSheet", "Administration", new { Id = sheet.Id }, null)</td>
 			</tr>
 	}
 </table>
