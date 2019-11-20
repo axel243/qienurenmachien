@@ -7,5 +7,8 @@ namespace QienUrenMachien.Repositories
     {
         TimeSheet GetOneTimeSheet(int SheetID, string UserId);
         List<TimeSheet> GetAllTimeSheets();
+        List<TimeSheet> GetTimeSheets();
+        List<Day> GetAllDaysInMonth(int year, int month);
+        void AddNewSheet(TimeSheet timeSheetModel);
     }
 }

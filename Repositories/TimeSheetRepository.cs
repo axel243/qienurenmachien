@@ -54,5 +54,60 @@ namespace QienUrenMachien.Repositories
                 Data = entity.Data
             };
         }
+
+        public List<TimeSheet> GetTimeSheets()
+        {
+            var sheetList = context.TimeSheets.Select(n => new TimeSheet
+            {
+                SheetID = n.SheetID,
+                Project = n.Project,
+                Month = n.Month,
+                ProjectHours = n.ProjectHours,
+                Overwork = n.Overwork,
+                Sick = n.Sick,
+                Absence = n.Absence,
+                Training = n.Training,
+                Other = n.Other,
+                Data = n.Data
+            }).ToList();
+            return sheetList;
+        }
+
+        public List<Day> GetAllDaysInMonth(int year, int month)
+        {
+            var days = new List<Day>();
+            days.Add(new Day(new DateTime(year, month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
+            days.Add(new Day(new DateTime(year, month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
+            return days;
+
+        }
+
+        public void AddNewSheet(TimeSheet timeSheetModel)
+        {
+            context.TimeSheets.Add(new TimeSheet
+            {
+                Project = timeSheetModel.Project,
+                Month = timeSheetModel.Month,
+                ProjectHours = timeSheetModel.ProjectHours,
+                Overwork = timeSheetModel.Overwork,
+                Sick = timeSheetModel.Sick,
+                Absence = timeSheetModel.Absence,
+                Training = timeSheetModel.Training,
+                Other = timeSheetModel.Other,
+                Data = timeSheetModel.Data
+
+            });
+            context.SaveChanges();
+        }
+
+        //public List<DateTime> GetAllDaysInMonth(int year, int month)
+        //{
+        //    var ret = new List<DateTime>();
+        //    for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+        //    {
+        //        ret.Add(new DateTime(year, month, i));
+        //    }
+        //    return ret;
+        //}
     }
 }
