@@ -8,25 +8,33 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using QienUrenMachien.Data;
 using QienUrenMachien.Models;
+using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
 {
     public class SheetController : Controller
     {
-        private RepositoryContext repo;
+        private readonly ITimeSheetRepository repo;
 
-        public SheetController(RepositoryContext repo)
+        public SheetController(ITimeSheetRepository repo)
         {
             this.repo = repo;
         }
-        public IActionResult Month()
+        public IActionResult Index()
+
         {
 
             return View("Month");
         }
+
         public IActionResult TimeSheet(int Year, int Month)
         {
-            var result = GetAllDaysInMonth(Year, Month);
+            var test = repo.GetTimeSheets();
+            ViewBag.Test = test;
+            var jsonString = JsonConvert.SerializeObject(repo.GetAllDaysInMonth(Year, Month));
+            TimeSheet timesheet = new TimeSheet();
+            timesheet.Data = jsonString;
+            var result = repo.GetAllDaysInMonth(Year, Month);
             return View(result);
         }
 
@@ -67,13 +75,13 @@ namespace QienUrenMachien.Controllers
             return timesheet;
         }
 
-           [HttpPost]
-           public ActionResult AddSheet(TimeSheet model)
-           {
-               if (!ModelState.IsValid)
-                   return View(model);
-                model = DaysToSheet(2019, 1);                          
-               return RedirectToAction("Index");
-           }
+             [HttpPost]
+        public ActionResult AddSheet(TimeSheet model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+            repo.AddNewSheet(model);                             // method hoort in de repository 
+            return RedirectToAction("Index");
     }
+
 }

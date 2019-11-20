@@ -8,9 +8,11 @@ namespace QienUrenMachien.Data
 {
     public class RepositoryContext : IdentityDbContext<ApplicationUser>
     {
+
         public RepositoryContext(DbContextOptions<RepositoryContext> options)
             : base(options) 
-        { 
+        {
+
         }
 
 
