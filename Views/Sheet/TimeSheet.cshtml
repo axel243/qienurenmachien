@@ -17,6 +17,47 @@
         </tr>
 
 
+
+        @{ var sheet = sheets[7].Data;
+            var dataDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, DaySheet>>(sheet);
+            var test = dataDict[1];
+ 
+        }
+
+
+
+        @foreach (var day in dataDict)
+        {
+    <tr>
+        <td>@day.Value.Month</td>                         @*<td>@d.Date.ToString("dd/MM/yyyy")</td>*@
+        <td>@day.Value.Project</td>
+        <td>@day.Value.Overwork</td>
+        <td>@day.Value.Absence</td>
+        <td>@day.Value.Sick</td>
+        <td>@day.Value.Training</td>
+        <td>@day.Value.Other</td>
+        <td>@day.Value.Data</td>
+    </tr>
+        }
+    <tr>        
+        <td>@Html.ActionLink("Add", "AddSheet", "Sheet")</td>
+    </tr>
+
+        @*@foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@sheets[0].Project</td>
+                    <td>@sheets[0].Overwork</td>
+                    <td>@sheets[0].Absence</td>
+                    <td>@sheets[0].Sick</td>
+                    <td>@sheets[0].Training</td>
+                    <td>@sheets[0].Other</td>
+                    <td>@sheets[0].Data</td>
+            </tr>
+
+        }*@
+
         @foreach (var d in Model)
         {
     <tr>
