@@ -23,20 +23,18 @@ namespace QienUrenMachien.Repositories
         {
             var traineeslist = userManager.GetUsersInRoleAsync("Trainee").Result;
             var employeeslist = userManager.GetUsersInRoleAsync("Werknemer").Result;
-            var traineesAndEmployees = employeeslist.Concat(traineeslist)
-                .ToList();
+            var traineesAndEmployeesIds = employeeslist.Concat(traineeslist)
+                .Select(e => e.Id);
 
             return context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data })
-                //.Where(t => t.Id.Equals(traineesAndEmployees[1].Id))
-                //.Where(t => traineesAndEmployees.Contains(t.applicationUser))
-                .Where(t => t.Id.Equals(traineesAndEmployees[1].Id))
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Where(t => traineesAndEmployeesIds.Contains(t.Id))
                 .ToList();
         }
 
-        public TimeSheet GetOneTimeSheet(int SheetID, string UserId)
+        public TimeSheet GetOneTimeSheet(string Id, string Month)
         {
-            var entity = context.TimeSheets.Single(t => t.SheetID == SheetID && t.Id == UserId && t.Month == "januari");
+            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
             return new TimeSheet
             {
                 SheetID = entity.SheetID,
@@ -51,7 +49,8 @@ namespace QienUrenMachien.Repositories
                 Other = entity.Other,
                 Submitted = entity.Submitted,
                 Approved = entity.Approved,
-                Data = entity.Data
+                Data = entity.Data,
+                applicationUser = entity.applicationUser
             };
         }
     }

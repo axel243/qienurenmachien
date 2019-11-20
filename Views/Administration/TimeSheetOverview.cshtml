@@ -30,7 +30,7 @@
 				<td>Null</td>
 				}
 				@*<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet">Bekijk</a></td>*@
-				<td>@Html.ActionLink("Bekijk", "ShowUserTimeSheet", "Administration", new { Id = sheet.Id }, null)</td>
+				<td>@Html.ActionLink("Bekijk", "ShowUserTimeSheet", "Administration", new { Id = sheet.Id, Month = sheet.Month }, null)</td>
 			</tr>
 	}
 </table>

@@ -5,7 +5,7 @@ namespace QienUrenMachien.Repositories
 {
     public interface ITimeSheetRepository
     {
-        TimeSheet GetOneTimeSheet(int SheetID, string UserId);
+        TimeSheet GetOneTimeSheet(string id, string Month);
         List<TimeSheet> GetAllTimeSheets();
     }
 }
