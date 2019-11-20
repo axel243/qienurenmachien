@@ -26,90 +26,54 @@ namespace QienUrenMachien.Controllers
         }
         public IActionResult TimeSheet(int Year, int Month)
         {
-            ViewBag.Year = Year;
-            ViewBag.Month = Month;
-            var test = GetTimeSheets();
-            ViewBag.Test = test;
-            var jsonString = JsonConvert.SerializeObject(GetAllDaysInMonth(Year, Month));
-            TimeSheet timesheet = new TimeSheet();
-            timesheet.Data = jsonString;
             var result = GetAllDaysInMonth(Year, Month);
             return View(result);
         }
 
-        public List<Day> GetAllDaysInMonth(int year, int month)
+        public Dictionary<int, Day> GetAllDaysInMonth(int year, int month)
         {
-            var days = new List<Day>();
-            days.Add(new Day(new DateTime(year, month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
-            days.Add(new Day(new DateTime(year, month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
-            return days;
+            Dictionary<int, Day> listDaysDictionary = new Dictionary<int, Day> { };
+            //for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            //{
+            //    days.Add(new Day(new DateTime(year, month, i), null , 0, 0, 0, 0, 0, 0, null));
+            //}
+            listDaysDictionary.Add(1,new Day(new DateTime(year, month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
+            listDaysDictionary.Add(2,new Day(new DateTime(year, month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
+            return listDaysDictionary;
             
         }
 
-        public ActionResult AddSheet()
+        public String DaysToData(int Year, int Month)
         {
-            List<DateTime> listDays = GetAllDaysInMonth(2019, 1);                               //maand en jaar is nog hardcoded
-            Dictionary<int, DaySheet> testobj = new Dictionary<int, DaySheet> { };
-            List<DaySheet> listDaySheets = new List<DaySheet>();
-
-            for (int i = 0; i < listDays.Count; i++)
-            {
-                listDaySheets.Add(new DaySheet { Day = i + 1, Month = listDays[i].ToString() });
-            }
-
-
-            for (int x = 0; x < listDaySheets.Count; x++)
-            {
-                testobj.Add(x + 1, listDaySheets[x]);
-            }
-
-            var jsonobj = Newtonsoft.Json.JsonConvert.SerializeObject(testobj);
-
-            return View(new TimeSheet { Data = jsonobj });
+            Dictionary<int, Day> DictionarySerialize = GetAllDaysInMonth(Year, Month);
+            var jsonString = JsonConvert.SerializeObject(DictionarySerialize);
+            TimeSheet timesheet = new TimeSheet();
+            timesheet.Data = jsonString;
+            return timesheet.Data;
         }
 
-        [HttpPost]
-        public ActionResult AddSheet(TimeSheet model)
+        public TimeSheet DaysToSheet(int Year, int Month)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-            AddNewSheet(model);                             // method hoort in de repository 
-            return RedirectToAction("Index");
+            Dictionary<int, Day> listDaysDictionary = GetAllDaysInMonth(Year, Month);
+            TimeSheet timesheet = new TimeSheet();
+            timesheet.Data = DaysToData(Year, Month);
+            timesheet.ProjectHours = listDaysDictionary.Sum(d => d.Value.ProjectHours);
+            timesheet.Overwork = listDaysDictionary.Sum(d => d.Value.Overwork);
+            timesheet.Sick = listDaysDictionary.Sum(d => d.Value.Sick);
+            timesheet.Absence = listDaysDictionary.Sum(d => d.Value.Absence);
+            timesheet.Training = listDaysDictionary.Sum(d => d.Value.Training);
+            timesheet.Other = listDaysDictionary.Sum(d => d.Value.Other);
+            timesheet.Submitted = true;
+            return timesheet;
         }
 
-        public void AddNewSheet(TimeSheet timeSheetModel)
-        {
-            repo.TimeSheets.Add(new TimeSheet
-            {
-                Project = timeSheetModel.Project,
-                Month = timeSheetModel.Month,
-                ProjectHours = timeSheetModel.ProjectHours,
-                Overwork = timeSheetModel.Overwork,
-                Sick = timeSheetModel.Sick,
-                Absence = timeSheetModel.Absence,
-                Training = timeSheetModel.Training,
-                Other = timeSheetModel.Other,
-                Data = timeSheetModel.Data
-                
-            });
-            repo.SaveChanges();
-        }
-        public List<TimeSheet> GetTimeSheets()
-        {
-            var sheetList = repo.TimeSheets.Select(n => new TimeSheet
-            {
-                SheetID = n.SheetID,
-                Project = n.Project,
-                Month = n.Month,
-                ProjectHours = n.ProjectHours,
-                Overwork = n.Overwork,
-                Sick = n.Sick,
-                Absence = n.Absence,
-                Training = n.Training,
-                Other = n.Other,
-                Data = n.Data
-            }).ToList();
-            return sheetList;
-        }
+           [HttpPost]
+           public ActionResult AddSheet(TimeSheet model)
+           {
+               if (!ModelState.IsValid)
+                   return View(model);
+                model = DaysToSheet(2019, 1);                          
+               return RedirectToAction("Index");
+           }
     }
 }

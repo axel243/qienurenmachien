@@ -21,9 +21,6 @@ namespace QienUrenMachien.Models
             OtherExplanation = otherExplanation;
         }
 
-
-        // "1": { "SheetID": 3, "Project": "bla", "Month": "januari", "ProjectHours": 10, "Overwork": 15, "Sick": 20, "Absence": 25, "Training": 30, "Other": 35, "Status": 1 },
-
         public DateTime date { get; set; }
         public string Project { get; set; }
         public double ProjectHours { get; set; }
