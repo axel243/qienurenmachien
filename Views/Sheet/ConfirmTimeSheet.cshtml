@@ -1,0 +1,52 @@
+@model QienUrenMachien.Models.TimeSheet
+@{
+    ViewData["Title"] = "Urenformulier";
+}
+
+<h1>Urenformulier van gebruiker</h1>
+
+<table style="width:100%;">
+    <tr>
+        <th>Gebruiker ID</th>
+        <th>Project</th>
+        <th>Maand</th>
+        <th>Projecturen</th>
+        <th>Overwerk</th>
+        <th>Ziek</th>
+        <th>Afwezig</th>
+        <th>Training</th>
+        <th>Overige</th>
+        <th>Ingeleverd</th>
+        <th>Goedgekeurd</th>
+    </tr>
+    <tr>
+        <td>@Model.Id</td>
+        <td>@Model.Project</td>
+        <td>@Model.Month</td>
+        <td>@Model.ProjectHours</td>
+        <td>@Model.Overwork</td>
+        <td>@Model.Sick</td>
+        <td>@Model.Absence</td>
+        <td>@Model.Training</td>
+        <td>@Model.Other</td>
+        <td>@Model.Submitted</td>
+        <td>@Model.Approved</td>
+    </tr>
+</table>
+
+@*@if (Model.Approved == "Approved")
+{
+    <p>Timesheet is al goedgekeurd.</p>
+}
+else
+{
+    *@<div class="form-group row">
+        <div class="col-sm-10">
+            <a class="btn btn-primary" asp-action="ApproveTimeSheet"
+               asp-controller="Sheet" asp-route-id="@Model.SheetID">Goedkeuren</a>
+            <a class="btn btn-primary" asp-action="RejectTimeSheet"
+               asp-controller="Sheet" asp-route-id="@Model.SheetID">Afkeuren</a>
+        </div>
+    </div>
+@*}*@
+
