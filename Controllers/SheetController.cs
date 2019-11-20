@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using QienUrenMachien.Data;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 
@@ -20,7 +21,9 @@ namespace QienUrenMachien.Controllers
             this.repo = repo;
         }
         public IActionResult Index()
+
         {
+
             return View("Month");
         }
 
@@ -35,34 +38,50 @@ namespace QienUrenMachien.Controllers
             return View(result);
         }
 
-        //public ActionResult AddSheet()
-        //{
-        //    List<Day> listDays = repo.GetAllDaysInMonth(2019, 1);                               //maand en jaar is nog hardcoded
-        //    Dictionary<int, DaySheet> testobj = new Dictionary<int, DaySheet> { };
-        //    List<DaySheet> listDaySheets = new List<DaySheet>();
+        public Dictionary<int, Day> GetAllDaysInMonth(int year, int month)
+        {
+            Dictionary<int, Day> listDaysDictionary = new Dictionary<int, Day> { };
+            //for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            //{
+            //    days.Add(new Day(new DateTime(year, month, i), null , 0, 0, 0, 0, 0, 0, null));
+            //}
+            listDaysDictionary.Add(1,new Day(new DateTime(year, month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
+            listDaysDictionary.Add(2,new Day(new DateTime(year, month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
+            return listDaysDictionary;
             
-        //    for (int i = 0; i < listDays.Count; i++)
-        //    {
-        //        listDaySheets.Add(new DaySheet { Day = i + 1, Month = listDays[i].ToString() });
-        //    }
+        }
 
-        //    for (int x = 0; x < listDaySheets.Count; x++)
-        //    {
-        //        testobj.Add(x + 1, listDaySheets[x]);
-        //    }
+        public String DaysToData(int Year, int Month)
+        {
+            Dictionary<int, Day> DictionarySerialize = GetAllDaysInMonth(Year, Month);
+            var jsonString = JsonConvert.SerializeObject(DictionarySerialize);
+            TimeSheet timesheet = new TimeSheet();
+            timesheet.Data = jsonString;
+            return timesheet.Data;
+        }
 
-        //    var jsonobj = Newtonsoft.Json.JsonConvert.SerializeObject(testobj);
-        //    return View(new TimeSheet { Data = jsonobj });
-        //}
+        public TimeSheet DaysToSheet(int Year, int Month)
+        {
+            Dictionary<int, Day> listDaysDictionary = GetAllDaysInMonth(Year, Month);
+            TimeSheet timesheet = new TimeSheet();
+            timesheet.Data = DaysToData(Year, Month);
+            timesheet.ProjectHours = listDaysDictionary.Sum(d => d.Value.ProjectHours);
+            timesheet.Overwork = listDaysDictionary.Sum(d => d.Value.Overwork);
+            timesheet.Sick = listDaysDictionary.Sum(d => d.Value.Sick);
+            timesheet.Absence = listDaysDictionary.Sum(d => d.Value.Absence);
+            timesheet.Training = listDaysDictionary.Sum(d => d.Value.Training);
+            timesheet.Other = listDaysDictionary.Sum(d => d.Value.Other);
+            timesheet.Submitted = true;
+            return timesheet;
+        }
 
-        [HttpPost]
+             [HttpPost]
         public ActionResult AddSheet(TimeSheet model)
         {
             if (!ModelState.IsValid)
                 return View(model);
             repo.AddNewSheet(model);                             // method hoort in de repository 
             return RedirectToAction("Index");
-        }
     }
 
 }
