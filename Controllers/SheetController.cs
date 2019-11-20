@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using QienUrenMachien.Data;
 using QienUrenMachien.Models;
 
@@ -18,9 +19,8 @@ namespace QienUrenMachien.Controllers
         {
             this.repo = repo;
         }
-        public IActionResult Index()
+        public IActionResult Month()
         {
-
 
             return View("Month");
         }
@@ -30,20 +30,20 @@ namespace QienUrenMachien.Controllers
             ViewBag.Month = Month;
             var test = GetTimeSheets();
             ViewBag.Test = test;
-
-
+            var jsonString = JsonConvert.SerializeObject(GetAllDaysInMonth(Year, Month));
+            TimeSheet timesheet = new TimeSheet();
+            timesheet.Data = jsonString;
             var result = GetAllDaysInMonth(Year, Month);
             return View(result);
         }
 
-        public List<DateTime> GetAllDaysInMonth(int year, int month)
+        public List<Day> GetAllDaysInMonth(int year, int month)
         {
-            var ret = new List<DateTime>();
-            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
-            {
-                ret.Add(new DateTime(year, month, i));
-            }
-            return ret;
+            var days = new List<Day>();
+            days.Add(new Day(new DateTime(year, month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
+            days.Add(new Day(new DateTime(year, month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
+            return days;
+            
         }
 
         public ActionResult AddSheet()

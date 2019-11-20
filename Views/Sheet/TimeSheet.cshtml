@@ -1,7 +1,5 @@
 ﻿
-@model List<DateTime>
-@{List<TimeSheet> sheets = ViewBag.Test;
-}
+@model List<Day>
 
 
 <div>
@@ -9,6 +7,7 @@
         <tr>
             <th>Datum</th>
             <th>Opdracht</th>
+            <th>Opdracht Uren</th>
             <th>Overwerk</th>
             <th>Verlof</th>
             <th>Ziek</th>
@@ -16,6 +15,7 @@
             <th>Overig</th>
             <th>Verklaring m.b.t. overig</th>
         </tr>
+
 
 
         @{ var sheet = sheets[7].Data;
@@ -58,8 +58,21 @@
 
         }*@
 
+        @foreach (var d in Model)
+        {
+    <tr>
+        <td>@d.date.ToString("dd/MM/yyyy")</td>
+        <td>@d.Project</td>
+        <td>@d.ProjectHours</td>
+        <td>@d.Overwork</td>
+        <td>@d.Absence</td>
+        <td>@d.Sick</td>
+        <td>@d.Training</td>
+        <td>@d.Other</td>
+        <td>@d.OtherExplanation</td>
+    </tr>
+        
+        }
+
     </table>
 </div>
-
-
-@*{ SheetID: "3", Project: "macaw", Month: "januari", ProjectHours: 10, Overwork: 15, Absence: 20, , Sick: 25, , Training: 30, , Other: 35, , Status: 1 };*@
