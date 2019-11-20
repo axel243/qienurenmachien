@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QienUrenMachien.Data;
 using QienUrenMachien.Models;
+using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien
 {
@@ -55,6 +56,7 @@ namespace QienUrenMachien
             //}).AddXmlSerializerFormatters();
 
             services.AddControllersWithViews();
+            services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
             services.AddRazorPages();
         }
 

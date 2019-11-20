@@ -1,0 +1,37 @@
+﻿@model List<QienUrenMachien.Models.TimeSheet>
+@{
+	ViewData["Title"] = "Timesheet overview";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Timesheet overview</h1>
+	<p>Overzicht van timesheet-statuses voor de huidige maand.</p>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th>ID</th>
+		<th>Naam</th>
+		<th>Ingeleverd</th>
+		<th>Goedgekeurd</th>
+		<th>Toon urenformulier</th>
+	</tr>
+	@foreach (var sheet in Model)
+	{
+			<tr>
+				<td>@sheet.Id</td>
+				<td>@sheet.SheetID</td>
+				@if (sheet != null)
+				{
+				<td>@sheet.Submitted</td>
+				<td>@sheet.Approved</td>
+				} else {
+				<td>Null</td>
+				<td>Null</td>
+				}
+				@*<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet">Bekijk</a></td>*@
+				<td>@Html.ActionLink("Bekijk", "ShowUserTimeSheet", "Administration", new { Id = sheet.Id }, null)</td>
+			</tr>
+	}
+</table>
+
