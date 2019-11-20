@@ -13,6 +13,8 @@ namespace QienUrenMachien.Repositories
 
         TimeSheet GetOneTimeSheet(string id, string Month);
 
+        TimeSheet GetOneTimeSheet(string url);
+
         List<TimeSheet> GetAllTimeSheets();
     }
 }

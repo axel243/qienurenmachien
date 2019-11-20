@@ -41,7 +41,7 @@ namespace QienUrenMachien.Controllers
                     message.CC.Add(new MailAddress("cc@email.com", "CC Name"));
                     message.Bcc.Add(new MailAddress("bcc@email.com", "BCC Name"));
                     message.Subject = "Lever je timesheet in lul";
-                    message.Body = "https://localhost:44398/sheet/confirmsheet/" + result.Url;
+                    message.Body = "https://localhost:44398/sheet/confirmtimesheet/" + result.Url;
                     message.IsBodyHtml = true;
 
                     using (var client = new SmtpClient("smtp.gmail.com"))

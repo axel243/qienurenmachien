@@ -91,5 +91,12 @@ namespace QienUrenMachien.Repositories
                 applicationUser = entity.applicationUser
             };
         }
+
+        public TimeSheet GetOneTimeSheet(string url)
+        {
+            Console.WriteLine("######################");
+            Console.WriteLine(url);
+            return context.TimeSheets.Where(c => c.Url == url).SingleOrDefault();
+        }
     }
 }
