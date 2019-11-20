@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Models;
+using QienUrenMachien.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,12 +14,15 @@ namespace QienUrenMachien.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ITimeSheetRepository repo;
 
         public AdministrationController(RoleManager<IdentityRole> roleManager, 
-                                        UserManager<ApplicationUser> userManager)
+                                        UserManager<ApplicationUser> userManager,
+                                        ITimeSheetRepository repo)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.repo = repo;
         }
 
         public IActionResult AdminDashboard()
@@ -31,6 +35,18 @@ namespace QienUrenMachien.Controllers
         {
             var singleuser = userManager.Users.Single(u => u.Id == Id);
             return View(singleuser);
+        }
+
+        public IActionResult TimesheetOverview()
+        {
+            var sheetlist = repo.GetAllTimeSheets();
+            return View(sheetlist);
+        }
+
+        public IActionResult ShowUserTimeSheet(int SheetID, string UserId)
+        {
+            var result = repo.GetOneTimeSheet(SheetID, UserId);
+            return View(result);
         }
 
         [HttpGet]
