@@ -19,25 +19,70 @@
 
 
         @{ var sheet = sheets[0].Data;
-            var dataDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, TimeSheet>>(sheet);
-            var test = dataDict["1"];
+            var dataDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, DaySheet>>(sheet);
+            var test = dataDict[1];
+
+
+
+            var test99 = new DaySheet
+            {
+                SheetID = 8,
+                Project = "telegraaf",
+                Month = "januari",
+                ProjectHours = 10,
+                Overwork = 11,
+                Sick = 12,
+                Absence = 13,
+                Training = 14,
+                Other = 15,
+                Day = 99
+            };
+
+            var test100 = new DaySheet
+            {
+                SheetID = 9,
+                Project = "vara",
+                Month = "januari",
+                ProjectHours = 19,
+                Overwork = 88,
+                Sick = 33,
+                Absence = 22,
+                Training = 44,
+                Other = 00,
+                Day = 100
+            };
+
+
+            Dictionary<int, DaySheet> testobj = new Dictionary<int, DaySheet>
+            {
+                { 99, test99 },
+                { 100, test100 }
+            };
+
+            testobj.Add(1, test99);
+
+            var jsonobj = Newtonsoft.Json.JsonConvert.SerializeObject(testobj);
+ 
         }
 
 
 
         @foreach (var day in dataDict)
         {
-        <tr>
-            <td>x</td>                         @*<td>@d.Date.ToString("dd/MM/yyyy")</td>*@
-            <td>@day.Value.Project</td>
-            <td>@day.Value.Overwork</td>
-            <td>@day.Value.Absence</td>
-            <td>@day.Value.Sick</td>
-            <td>@day.Value.Training</td>
-            <td>@day.Value.Other</td>
-            <td>@day.Value.Data</td>
-        </tr>
+    <tr>
+        <td>x</td>                         @*<td>@d.Date.ToString("dd/MM/yyyy")</td>*@
+        <td>@day.Value.Project</td>
+        <td>@day.Value.Overwork</td>
+        <td>@day.Value.Absence</td>
+        <td>@day.Value.Sick</td>
+        <td>@day.Value.Training</td>
+        <td>@day.Value.Other</td>
+        <td>@day.Value.Data</td>
+    </tr>
         }
+    <tr>        
+        <td>@Html.ActionLink("Add", "AddSheet", "Sheet")</td>
+    </tr>
 
         @*@foreach (var d in Model)
         {
