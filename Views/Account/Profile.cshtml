@@ -1,0 +1,13 @@
+@model ApplicationUser
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+    <div class="card">
+
+        <h3>@Html.DisplayFor(model => model.Firstname) @Html.DisplayFor(model => model.Lastname)</h3>
+        <img id="profilepicture" src="@Url.Content(Model.ProfileImageUrl)">
+        @Html.ActionLink("Edit", "EditProfile", "Account")
+
+    </div>
