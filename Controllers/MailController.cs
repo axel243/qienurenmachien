@@ -10,6 +10,7 @@ using QienUrenMachien.Repositories;
 using QienUrenMachien.Models;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Mail;
+using Microsoft.AspNetCore.Identity;
 
 namespace QienUrenMachien.Controllers
 {
@@ -18,9 +19,11 @@ namespace QienUrenMachien.Controllers
     {
         private readonly ITimeSheetRepository repo;
         private readonly MailServer mailServer;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public MailController(ITimeSheetRepository repo)
+        public MailController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
             this.repo = repo;
             this.mailServer = new MailServer();
         }
@@ -31,7 +34,7 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task<IActionResult> TestMail()
         {
-            TimeSheet _timeSheet = await repo.GetTimeSheet(1);
+            TimeSheet _timeSheet = await repo.GetTimeSheet(userManager.GetUserId(User));
 
             _timeSheet.Url = Guid.NewGuid().ToString();
             var result = await repo.UpdateTimeSheet(_timeSheet);
