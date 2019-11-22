@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Net.Mail;
 using System.Net;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
 
 namespace QienUrenMachien.Controllers
 {
@@ -19,26 +20,19 @@ namespace QienUrenMachien.Controllers
         private readonly ITimeSheetRepository repo;
         private readonly UserManager<ApplicationUser> userManager;
 
+        private readonly MailServer mailServer;
+
         public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager)
         {
             this.repo = repo;
             this.userManager = userManager;
+            this.mailServer = new MailServer();
         }
 
         public IActionResult Index()
         {
             return View("Month");
         }
-
-        // public IActionResult ConfirmTimeSheet(string url)
-        // {
-        //     Console.WriteLine("##################");
-        //     Console.WriteLine(url);
-        //     Console.WriteLine(url);
-        //     Console.WriteLine("##################");
-        //     var result = repo.GetOneTimeSheet("4db457e1-1b69-4da0-8d02-0979749471ba");
-        //     return View(result);
-        // }
 
         [Route("Sheet/ConfirmTimeSheet/{url}")]
         [HttpGet]
@@ -67,27 +61,7 @@ namespace QienUrenMachien.Controllers
 
             ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
 
-            using (var message = new MailMessage())
-            {
-                message.To.Add(new MailAddress(user.UserName, "To Name"));
-                message.From = new MailAddress("info@qienurenmachien.nl", "Qien Uren Machien");
-                message.CC.Add(new MailAddress("cc@email.com", "CC Name"));
-                message.Bcc.Add(new MailAddress("bcc@email.com", "BCC Name"));
-                message.Subject = "Je uren zijn goedgekeurd";
-                message.Body = "money money money!!!!!";
-                message.IsBodyHtml = true;
-
-                using (var client = new SmtpClient("smtp.gmail.com"))
-                {
-                    client.Port = 587;
-                    client.Credentials = new NetworkCredential("qienurenmachien@gmail.com", "Test1234!");
-                    client.EnableSsl = true;
-                    client.Send(message);
-                }
-
-
-
-            }
+            mailServer.SendApprovalMail(user.UserName, "Approved");
 
             return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
         }
@@ -100,7 +74,10 @@ namespace QienUrenMachien.Controllers
 
             _timeSheet.Approved = "Rejected";
             var result = await repo.UpdateTimeSheet(_timeSheet);
-            Console.WriteLine("######");
+
+            ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+            mailServer.SendApprovalMail(user.UserName, "Rejected");
 
             return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
         }

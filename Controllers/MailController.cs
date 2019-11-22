@@ -9,6 +9,7 @@ using System.Net.Mail;
 using QienUrenMachien.Repositories;
 using QienUrenMachien.Models;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
 
 namespace QienUrenMachien.Controllers
 {
@@ -16,10 +17,12 @@ namespace QienUrenMachien.Controllers
 
     {
         private readonly ITimeSheetRepository repo;
+        private readonly MailServer mailServer;
 
         public MailController(ITimeSheetRepository repo)
         {
             this.repo = repo;
+            this.mailServer = new MailServer();
         }
 
 
@@ -35,27 +38,7 @@ namespace QienUrenMachien.Controllers
 
             if (result != null)
             {
-                using (var message = new MailMessage())
-                {
-                    message.To.Add(new MailAddress("j.m.r.kramer@gmail.com", "To Name"));
-                    message.From = new MailAddress("info@qienurenmachien.nl", "Qien Uren Machien");
-                    message.CC.Add(new MailAddress("cc@email.com", "CC Name"));
-                    message.Bcc.Add(new MailAddress("bcc@email.com", "BCC Name"));
-                    message.Subject = "Lever je timesheet in lul";
-                    message.Body = "https://localhost:44398/sheet/confirmtimesheet/" + result.Url;
-                    message.IsBodyHtml = true;
-
-                    using (var client = new SmtpClient("smtp.gmail.com"))
-                    {
-                        client.Port = 587;
-                        client.Credentials = new NetworkCredential("qienurenmachien@gmail.com", "Test1234!");
-                        client.EnableSsl = true;
-                        client.Send(message);
-                    }
-
-
-
-                }
+                mailServer.SendConfirmationMail("j.m.r.kramer@gmail.com", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
             }
 
             return View();

@@ -14,7 +14,7 @@ namespace QienUrenMachien.Mail
 {
     public class MailServer
     {
-        public void SendMail(string recipient, string subject, string body)
+        private void SendMail(string recipient, string subject, string body)
         {
             using (var message = new MailMessage())
             {
@@ -34,6 +34,22 @@ namespace QienUrenMachien.Mail
                     client.Send(message);
                 }
             } 
-        }   
+        }
+
+        public void SendConfirmationMail(string recipient, string body)
+        {
+            string subject = "Nieuwe timesheet ingediend.";
+
+            SendMail(recipient, subject, body);
+        }
+
+        public void SendApprovalMail(string recipient, string body)
+        {
+            string subject = $"Timesheet {body}";
+
+            SendMail(recipient, subject, body);
+        }
+        
+           
     }
 }
