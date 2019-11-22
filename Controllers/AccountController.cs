@@ -24,6 +24,92 @@ namespace QienUrenMachien.Controllers
             this.userManager = userManager;
         }
 
+        public IActionResult Index()
+        {
+            var userid = userManager.GetUserId(HttpContext.User);
+
+            if (userid == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                var user = userManager.FindByIdAsync(userid).Result;
+                return View("Profile", user);
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var userid = userManager.GetUserId(HttpContext.User);
+
+            var currentUser = await userManager.FindByIdAsync(userid);
+
+            if (currentUser == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {userid} cannot be found";
+                return View("NotFound");
+            }
+            return View(currentUser);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(ApplicationUser model)
+        {
+            var userid = model.Id;
+            ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
+
+            if (currentUser == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {model.Id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                currentUser.Street = model.Street;
+
+                // Update the Role using UpdateAsync
+                var result = await userManager.UpdateAsync(currentUser);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Profile");
+                }
+                return View(model);
+            }
+        }
+
+
+
+
+        //[HttpPost]
+        //public async Task<ActionResult> EditProfile(ApplicationUser userdetails)
+        //{
+        //    IdentityResult x = await userManager.UpdateAsync(userdetails);
+        //    if (x.Succeeded)
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    return View(userdetails);
+        //}
+
+        //[HttpGet]
+        //public IActionResult EditProfile()
+        //{
+
+        //    var userid = userManager.GetUserId(HttpContext.User);
+
+        //    if (userid == null)
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //    else
+        //    {
+        //        ApplicationUser user = userManager.FindByIdAsync(userid).Result;
+        //        return View(user);
+        //    }
+        //}
+
         // GET: /<controller>/
         [AllowAnonymous]
         [HttpGet]
@@ -83,9 +169,7 @@ namespace QienUrenMachien.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-
             }
-
             return View(model);
         }
 
