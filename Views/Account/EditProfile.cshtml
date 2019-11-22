@@ -1,12 +1,24 @@
 @model ApplicationUser
 
     <form method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+
         <div class="form-group">
             <label asp-for="UserName"></label>
-            <input asp-for="UserName" class="form-control" readonly/>
+            <input asp-for="UserName" class="form-control" readonly />
         </div>
 
-        @*<div class="form-group">
+        <div class="form-group">
             <label asp-for="Firstname"></label>
             <input asp-for="Firstname" class="form-control" readonly />
         </div>
@@ -14,14 +26,14 @@
         <div class="form-group">
             <label asp-for="Lastname"></label>
             <input asp-for="Lastname" class="form-control" readonly />
-        </div>*@
+        </div>
 
         <div class="form-group">
             <label asp-for="Street"></label>
             <input asp-for="Street" class="form-control" />
         </div>
 
-        @*<div class="form-group">
+        <div class="form-group">
             <label asp-for="Zipcode"></label>
             <input asp-for="Zipcode" class="form-control" />
         </div>
@@ -39,7 +51,7 @@
         <div class="form-group">
             <label asp-for="ProfileImageUrl"></label>
             <input asp-for="ProfileImageUrl" class="form-control" />
-        </div>*@
+        </div>
 
         <button type="submit" class="btn btn-primary">Opslaan</button>
     </form>

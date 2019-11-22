@@ -75,7 +75,6 @@ namespace QienUrenMachien.Controllers
                 {
                     return RedirectToAction("Profile");
                 }
-
                 return View(model);
             }
         }
@@ -88,7 +87,7 @@ namespace QienUrenMachien.Controllers
         //{
         //    IdentityResult x = await userManager.UpdateAsync(userdetails);
         //    if (x.Succeeded)
-        //    { 
+        //    {
         //        return RedirectToAction("Index", "Home");
         //    }
         //    return View(userdetails);
