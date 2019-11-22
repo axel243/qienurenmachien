@@ -79,7 +79,7 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Profile");
+                    return RedirectToAction("index");
                 }
                 return View(currentUser);
             }
