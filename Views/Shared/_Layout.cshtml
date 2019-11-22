@@ -30,21 +30,6 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
-						@if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Admin">Admin</a>
-							</li>
-							@*<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Admin Users</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Admin Roles</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Admin Timesheets</a>
-							</li>*@
-						}
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Sheet" asp-action="Index">Time Sheet</a>
 						</li>

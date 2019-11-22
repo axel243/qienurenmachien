@@ -27,11 +27,6 @@ namespace QienUrenMachien.Controllers
             this.repo = repo;
         }
 
-        public IActionResult Admin()
-        {
-            return View();
-        }
-
         public IActionResult AdminDashboard()
         {
             var userlist = userManager.Users;
