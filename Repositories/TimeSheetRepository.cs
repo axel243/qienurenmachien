@@ -75,10 +75,10 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
-        public TimeSheet GetOneTimeSheet(string Id, string Month)
+        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
             var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
-            return new TimeSheet
+            return new TimeSheetViewModel
             {
                 SheetID = entity.SheetID,
                 Id = entity.Id,
@@ -92,8 +92,7 @@ namespace QienUrenMachien.Repositories
                 Other = entity.Other,
                 Submitted = entity.Submitted,
                 Approved = entity.Approved,
-                Data = entity.Data,
-                applicationUser = entity.applicationUser
+                Data = entity.Data
             };
         }
 
