@@ -67,6 +67,11 @@ namespace QienUrenMachien.Controllers
             else
             {
                 currentUser.Street = model.Street;
+                currentUser.Zipcode = model.Zipcode;
+                currentUser.City = model.City;
+                currentUser.Country = model.Country;
+                currentUser.ProfileImageUrl = model.ProfileImageUrl;
+
 
                 // Update the Role using UpdateAsync
                 var result = await userManager.UpdateAsync(currentUser);
@@ -75,7 +80,7 @@ namespace QienUrenMachien.Controllers
                 {
                     return RedirectToAction("Profile");
                 }
-                return View(model);
+                return View(currentUser);
             }
         }
 
