@@ -6,6 +6,8 @@ using QienUrenMachien.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace QienUrenMachien.Repositories
@@ -21,7 +23,47 @@ namespace QienUrenMachien.Repositories
             this.userManager = userManager;
         }
 
+<<<<<<< HEAD
         public List<SelectListItem> GetMonths()
+=======
+        public async Task<TimeSheet> UpdateTimeSheet(TimeSheet _timeSheet)   
+        {
+            context.TimeSheets.Update(_timeSheet);
+            await context.SaveChangesAsync();
+
+
+            //using (var message = new MailMessage())
+            //{
+            //    message.To.Add(new MailAddress("j.m.r.kramer@gmail.com", "To Name"));
+            //    message.From = new MailAddress("info@qienurenmachien.nl", "Qien Uren Machien");
+            //    message.CC.Add(new MailAddress("cc@email.com", "CC Name"));
+            //    message.Bcc.Add(new MailAddress("bcc@email.com", "BCC Name"));
+            //    message.Subject = "Lever je timesheet in lul";
+            //    message.Body = "https://localhost:44398/sheet/confirmsheet/" + _timeSheet.Url;
+            //    message.IsBodyHtml = true;
+
+            //    using (var client = new SmtpClient("smtp.gmail.com"))
+            //    {
+            //        client.Port = 587;
+            //        client.Credentials = new NetworkCredential("qienurenmachien@gmail.com", "Test1234!");
+            //        client.EnableSsl = true;
+            //        client.Send(message);
+            //    }
+
+
+
+            //}
+            
+            return _timeSheet;
+        }
+
+        public async Task<TimeSheet> GetTimeSheet(int id)
+        {
+            return await context.TimeSheets.FindAsync(id);
+        }
+
+        public List<TimeSheet> GetAllTimeSheets()
+>>>>>>> master
         {
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = DateTime.Now.ToString("MMMM"), Selected = true });
@@ -80,6 +122,13 @@ namespace QienUrenMachien.Repositories
                 Data = entity.Data,
                 applicationUser = entity.applicationUser
             };
+        }
+
+        public TimeSheet GetOneTimeSheet(string url)
+        {
+            Console.WriteLine("######################");
+            Console.WriteLine(url);
+            return context.TimeSheets.Where(c => c.Url == url).SingleOrDefault();
         }
     }
 }
