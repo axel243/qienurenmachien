@@ -10,6 +10,7 @@ using QienUrenMachien.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System.Net.Mail;
 using System.Net;
+using QienUrenMachien.Entities;
 
 namespace QienUrenMachien.Controllers
 {

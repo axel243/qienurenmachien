@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using QienUrenMachien.Entities;
 
 namespace QienUrenMachien.Controllers
 {
