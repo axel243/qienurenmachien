@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.Net;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Mail;
+using System.Text.Json;
 
 namespace QienUrenMachien.Controllers
 {
@@ -98,5 +99,37 @@ namespace QienUrenMachien.Controllers
             }
             return ret;
         }
+
+        [Route("Sheet/UserTimeSheet/")]
+        [HttpGet]
+        public IActionResult UserTimeSheet()
+        {
+            while (true){
+                try {
+                    var result = repo.GetOneTimeSheet(userManager.GetUserId(User), "January");
+                    return View(result);
+                }
+                
+                catch {
+                                int nDays = DateTime.DaysInMonth(2019, 1);
+                string data = "{";
+
+                for (int i = 1; i <= nDays; i++)
+                {
+                    Day _day = new Day();
+                    data += $"\"{i}\": " + JsonSerializer.Serialize<Day>(_day);
+                    if (i != nDays)
+                    {
+                        data += ", ";
+                    }
+                }
+                data += "}";
+
+                TimeSheet entity2 = repo.AddTimeSheet(userManager.GetUserId(User), data);
+                }
+            }
+
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using QienUrenMachien.Data;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace QienUrenMachien.Repositories
@@ -31,9 +33,37 @@ namespace QienUrenMachien.Repositories
             return _timeSheet;
         }
 
+        public TimeSheet AddTimeSheet(string userId, string data)
+        {
+            Console.WriteLine(userId);
+            TimeSheet _timeSheet = new TimeSheet();
+            _timeSheet.Id = userId;
+            _timeSheet.Month = "January";
+            _timeSheet.ProjectHours = 0;
+            _timeSheet.Overwork = 0;
+            _timeSheet.Sick = 0;
+            _timeSheet.Training = 0;
+            _timeSheet.Other = 0;
+            _timeSheet.Project = "Macaw";
+            _timeSheet.Submitted = false;
+            _timeSheet.Approved = "Not submitted";
+            _timeSheet.Data = data;
+
+            var result = context.Add(_timeSheet);
+            context.SaveChanges();
+
+
+            return _timeSheet;
+        }
+
         public async Task<TimeSheet> GetTimeSheet(int id)
         {
             return await context.TimeSheets.FindAsync(id);
+        }
+
+        public async Task<TimeSheet> GetTimeSheet(string id)
+        {
+            return context.TimeSheets.Where(c => c.Id == id && c.Month == "January").SingleOrDefault();
         }
 
         public List<SelectListItem> GetMonths()
@@ -75,10 +105,12 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
-        public TimeSheet GetOneTimeSheet(string Id, string Month)
+        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
+
             var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
-            return new TimeSheet
+
+            return new TimeSheetViewModel
             {
                 SheetID = entity.SheetID,
                 Id = entity.Id,
@@ -92,9 +124,9 @@ namespace QienUrenMachien.Repositories
                 Other = entity.Other,
                 Submitted = entity.Submitted,
                 Approved = entity.Approved,
-                Data = entity.Data,
-                applicationUser = entity.applicationUser
+                Data = entity.Data
             };
+
         }
 
         public TimeSheet GetOneTimeSheet(string url)
