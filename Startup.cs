@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QienUrenMachien.Data;
+using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 

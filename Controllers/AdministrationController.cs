@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 using System;
