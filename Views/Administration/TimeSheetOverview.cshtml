@@ -1,37 +1,75 @@
-﻿@model List<QienUrenMachien.Models.TimeSheet>
+﻿@model QienUrenMachien.Models.TimeSheetsViewModel
 @{
-	ViewData["Title"] = "Timesheet overview";
+	ViewBag.Title = "TimeSheetOverview";
 }
+<div class="text-center">
+	<h1 class="display-4">Timesheet overzicht</h1>
+	<p>De timesheet-statuses van trainees en werknemers.</p>
+</div>
+
+<h2>Maand: @Model.Month</h2>
+<form asp-controller="Administration" asp-action="TimeSheetOverview" method="post">
+	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected">
+		@*<option value="">Kies maand</option>*@
+	</select>
+	<input class="btn-default" type="submit" value="Kies"/>
+</form>
 
 <div class="text-center">
-	<h1 class="display-4">Timesheet overview</h1>
-	<p>Overzicht van timesheet-statuses voor de huidige maand.</p>
+	<h2>Trainees</h2>
 </div>
+
 
 <table style="width:100%;">
 	<tr>
-		<th>ID</th>
-		<th>Naam</th>
+		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
 	</tr>
-	@foreach (var sheet in Model)
+	@foreach (var sheet in Model.Trainees)
 	{
-			<tr>
-				<td>@sheet.Id</td>
-				<td>@sheet.SheetID</td>
-				@if (sheet != null)
-				{
-				<td>@sheet.Submitted</td>
-				<td>@sheet.Approved</td>
-				} else {
-				<td>Null</td>
-				<td>Null</td>
-				}
-				@*<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet">Bekijk</a></td>*@
-				<td>@Html.ActionLink("Bekijk", "ShowUserTimeSheet", "Administration", new { Id = sheet.Id, Month = sheet.Month }, null)</td>
-			</tr>
-	}
+
+		var details = new Dictionary<string, string>
+{
+		{ "Id", sheet.Id },
+		{ "Month", sheet.Month }
+	};
+<tr>
+	<td>@sheet.Id</td>
+	<td>@sheet.Submitted</td>
+	<td>@sheet.Approved</td>
+	<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet" asp-all-route-data="details">Bekijk</a></td>
+</tr>
+}
+</table>
+
+
+<div class="text-center">
+	<h2>Werknemers</h2>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th>GebruikerID</th>
+		<th>Ingeleverd</th>
+		<th>Goedgekeurd</th>
+		<th>Toon urenformulier</th>
+	</tr>
+	@foreach (var sheet in Model.Employees)
+	{
+
+		var details = new Dictionary<string, string>
+{
+		{ "Id", sheet.Id },
+		{ "Month", sheet.Month }
+	};
+<tr>
+	<td>@sheet.Id</td>
+	<td>@sheet.Submitted</td>
+	<td>@sheet.Approved</td>
+	<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet" asp-all-route-data="details">Bekijk</a></td>
+</tr>
+}
 </table>
 
