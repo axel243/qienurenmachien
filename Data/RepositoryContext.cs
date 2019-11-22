@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using QienUrenMachien.Models;
+using QienUrenMachien.Entities;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 

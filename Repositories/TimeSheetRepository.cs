@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Data;
+using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using System;
 using System.Collections.Generic;

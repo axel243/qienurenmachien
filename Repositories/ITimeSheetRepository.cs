@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
