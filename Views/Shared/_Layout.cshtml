@@ -31,7 +31,6 @@
                         </li>
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
-<<<<<<< HEAD
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Admin Users</a>
 						</li>
@@ -41,17 +40,6 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Admin Timesheets</a>
 						</li>
-=======
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Admin Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Admin Roles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimesheetOverview">Admin Timesheets</a>
-                            </li>
->>>>>>> master
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Sheet" asp-action="Index">Time Sheet</a>

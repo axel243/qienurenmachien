@@ -22,10 +22,6 @@ namespace QienUrenMachien.Repositories
             this.context = context;
             this.userManager = userManager;
         }
-
-<<<<<<< HEAD
-        public List<SelectListItem> GetMonths()
-=======
         public async Task<TimeSheet> UpdateTimeSheet(TimeSheet _timeSheet)   
         {
             context.TimeSheets.Update(_timeSheet);
@@ -62,8 +58,7 @@ namespace QienUrenMachien.Repositories
             return await context.TimeSheets.FindAsync(id);
         }
 
-        public List<TimeSheet> GetAllTimeSheets()
->>>>>>> master
+        public List<SelectListItem> GetMonths()
         {
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = DateTime.Now.ToString("MMMM"), Selected = true });
