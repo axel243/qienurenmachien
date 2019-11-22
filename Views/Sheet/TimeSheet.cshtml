@@ -1,16 +1,7 @@
 ﻿
-@model Dictionary<int, Day>
-    @{
-        var projectHoursInput = 0;
-        var OverworkInput = 0;
-        var AbsenceInput = 0;
-        var SickInput = 0;
-        var TrainingInput = 0;
-        var OtherInput = 0;
-    }
-
+@model List<Day>
     <div>
-        @using (Html.BeginForm("AddSheet", "Sheet"))
+        @using (Html.BeginForm("AddSheet", "Sheet",new {Year = ViewBag.Year, Month = ViewBag.Month }))
         {
             <table>
                 <tr>
@@ -26,47 +17,46 @@
                 </tr>
 
                 @*@foreach (var d in Model)
-                    {
-                        <tr>
-                            <td>@d.date.ToString("dd/MM/yyyy")</td>
-                            <td>@d.Project</td>
-                            <td>@d.ProjectHours</td>
-                            <td>@d.Overwork</td>
-                            <td>@d.Absence</td>
-                            <td>@d.Sick</td>
-                            <td>@d.Training</td>
-                            <td>@d.Other</td>
-                            <td>@d.OtherExplanation</td>
-                        </tr>
+                {
+                    <tr>
+                        <td>@d.date.ToString("dd/MM/yyyy")</td>
+                        <td>@d.Project</td>
+                        <td>@d.ProjectHours</td>
+                        <td>@d.Overwork</td>
+                        <td>@d.Absence</td>
+                        <td>@d.Sick</td>
+                        <td>@d.Training</td>
+                        <td>@d.Other</td>
+                        <td>@d.OtherExplanation</td>
+                    </tr>
 
-                    }*@
+                }*@
 
                 @foreach (var d in Model)
                 {
                     <tr>
-                        <td>@d.Value.date.ToString("dd/MM/yyyy")</td>
-                        <td>@Html.EditorFor(m => d.Value.Project)</td>
-                        <td>@Html.EditorFor(m => d.Value.ProjectHours)</td>
-                        <td>@Html.EditorFor(m => d.Value.Overwork)</td>
-                        <td>@Html.EditorFor(m => d.Value.Absence)</td>
-                        <td>@Html.EditorFor(m => d.Value.Sick)</td>
-                        <td>@Html.EditorFor(m => d.Value.Training)</td>
-                        <td>@Html.EditorFor(m => d.Value.Other)</td>
-                        <td>@Html.EditorFor(m => d.Value.OtherExplanation)</td>
+                        <td>@d.date.ToString("dd/MM/yyyy")</td>
+                        <td>@Html.EditorFor(m => d.Project)</td>
+                        <td>@Html.EditorFor(m => d.ProjectHours)</td>
+                        <td>@Html.EditorFor(m => d.Overwork)</td>
+                        <td>@Html.EditorFor(m => d.Absence)</td>
+                        <td>@Html.EditorFor(m => d.Sick)</td>
+                        <td>@Html.EditorFor(m => d.Training)</td>
+                        <td>@Html.EditorFor(m => d.Other)</td>
+                        <td>@Html.EditorFor(m => d.OtherExplanation)</td>
                     </tr>
 
                 }
                 <tr>
                     <td></td>
                     <td><b>Totaal uren:</b></td>
-                    <td>@Model.Sum(d => d.Value.ProjectHours)</td>
-                    <td>@Model.Sum(d => d.Value.Overwork)</td>
-                    <td>@Model.Sum(d => d.Value.Absence)</td>
-                    <td>@Model.Sum(d => d.Value.Sick)</td>
-                    <td>@Model.Sum(d => d.Value.Training)</td>
-                    <td>@Model.Sum(d => d.Value.Other)</td>
+                    <td>@Model.Sum(d => d.ProjectHours)</td>
+                    <td>@Model.Sum(d => d.Overwork)</td>
+                    <td>@Model.Sum(d => d.Absence)</td>
+                    <td>@Model.Sum(d => d.Sick)</td>
+                    <td>@Model.Sum(d => d.Training)</td>
+                    <td>@Model.Sum(d => d.Other)</td>
                 </tr>
-
             </table>
 
             <button type="submit">Verzend</button>

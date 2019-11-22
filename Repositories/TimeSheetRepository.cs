@@ -27,7 +27,7 @@ namespace QienUrenMachien.Repositories
                 .ToList();
 
             return context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data })
                 //.Where(t => t.Id.Equals(traineesAndEmployees[1].Id))
                 //.Where(t => traineesAndEmployees.Contains(t.applicationUser))
                 .Where(t => t.Id.Equals(traineesAndEmployees[1].Id))
@@ -36,12 +36,11 @@ namespace QienUrenMachien.Repositories
 
         public TimeSheet GetOneTimeSheet(int SheetID, string UserId)
         {
-            var entity = context.TimeSheets.Single(t => t.SheetID == SheetID && t.Id == UserId && t.Month == "januari");
+            var entity = context.TimeSheets.Single(t => t.SheetID == SheetID && t.Id == UserId && t.Month == 1);
             return new TimeSheet
             {
                 SheetID = entity.SheetID,
                 Id = entity.Id,
-                Project = entity.Project,
                 Month = entity.Month,
                 ProjectHours = entity.ProjectHours,
                 Overwork = entity.Overwork,
@@ -60,7 +59,6 @@ namespace QienUrenMachien.Repositories
             var sheetList = context.TimeSheets.Select(n => new TimeSheet
             {
                 SheetID = n.SheetID,
-                Project = n.Project,
                 Month = n.Month,
                 ProjectHours = n.ProjectHours,
                 Overwork = n.Overwork,
@@ -73,12 +71,16 @@ namespace QienUrenMachien.Repositories
             return sheetList;
         }
 
-        public List<Day> GetAllDaysInMonth(int year, int month)
+        public List<Day> GetAllDaysInMonth(int Year, int Month)
         {
-            var days = new List<Day>();
-            days.Add(new Day(new DateTime(year, month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
-            days.Add(new Day(new DateTime(year, month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
-            return days;
+            List<Day> listDays = new List<Day>();
+            //for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            //{
+            //    days.Add(new Day(new DateTime(year, month, i), null , 0, 0, 0, 0, 0, 0, null));
+            //}
+            listDays.Add(new Day(new DateTime(Year, Month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
+            listDays.Add(new Day(new DateTime(Year, Month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
+            return listDays;
 
         }
 
@@ -86,7 +88,6 @@ namespace QienUrenMachien.Repositories
         {
             context.TimeSheets.Add(new TimeSheet
             {
-                Project = timeSheetModel.Project,
                 Month = timeSheetModel.Month,
                 ProjectHours = timeSheetModel.ProjectHours,
                 Overwork = timeSheetModel.Overwork,
@@ -99,15 +100,5 @@ namespace QienUrenMachien.Repositories
             });
             context.SaveChanges();
         }
-
-        //public List<DateTime> GetAllDaysInMonth(int year, int month)
-        //{
-        //    var ret = new List<DateTime>();
-        //    for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
-        //    {
-        //        ret.Add(new DateTime(year, month, i));
-        //    }
-        //    return ret;
-        //}
     }
 }
