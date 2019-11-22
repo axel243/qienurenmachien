@@ -6,37 +6,46 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
+using QienUrenMachien.Repositories;
+using QienUrenMachien.Models;
+using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
+using Microsoft.AspNetCore.Identity;
 
 namespace QienUrenMachien.Controllers
 {
     public class MailController : Controller
-    {        // GET: /<controller>/
+
+    {
+        private readonly ITimeSheetRepository repo;
+        private readonly MailServer mailServer;
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public MailController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager)
+        {
+            this.userManager = userManager;
+            this.repo = repo;
+            this.mailServer = new MailServer();
+        }
+
+
+        // GET: /<controller>/
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult TestMail()
+        public async Task<IActionResult> TestMail()
         {
+            TimeSheet _timeSheet = await repo.GetTimeSheet(userManager.GetUserId(User));
 
-            using (var message = new MailMessage())
+            _timeSheet.Url = Guid.NewGuid().ToString();
+            var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            if (result != null)
             {
-                message.To.Add(new MailAddress("j.m.r.kramer@gmail.com", "To Name"));
-                message.From = new MailAddress("info@qienurenmachien.nl", "Qien Uren Machien");
-                message.CC.Add(new MailAddress("cc@email.com", "CC Name"));
-                message.Bcc.Add(new MailAddress("bcc@email.com", "BCC Name"));
-                message.Subject = "Lever je timesheet in lul";
-                message.Body = "Hello World!";
-                message.IsBodyHtml = true;
-
-                using (var client = new SmtpClient("smtp.gmail.com"))
-                {
-                    client.Port = 587;
-                    client.Credentials = new NetworkCredential("qienurenmachien@gmail.com", "Test1234!");
-                    client.EnableSsl = true;
-                    client.Send(message);
-                }
-
-
-                return View();
+                mailServer.SendConfirmationMail("j.m.r.kramer@gmail.com", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
             }
+
+            return View();
+
         }
     }
 }
