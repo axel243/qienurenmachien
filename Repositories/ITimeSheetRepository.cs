@@ -13,7 +13,7 @@ namespace QienUrenMachien.Repositories
 
         Task<TimeSheet> GetTimeSheet(int Id);
 
-        TimeSheetViewModel GetOneTimeSheet(string id, string Month);
+        TimeSheetViewModel GetOneTimeSheet(int SheetID);
         Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model);
         Task<List<TimeSheet>> GetAllEmployeeTimeSheets(TimeSheetsViewModel model);
         List<SelectListItem> GetMonths();

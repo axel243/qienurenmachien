@@ -75,9 +75,9 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
-        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
+        public TimeSheetViewModel GetOneTimeSheet(int SheetID)
         {
-            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
+            var entity = context.TimeSheets.Single(t => SheetID == t.SheetID);  // && t.Month == [getcurrentmonth]
             return new TimeSheetViewModel
             {
                 SheetID = entity.SheetID,
