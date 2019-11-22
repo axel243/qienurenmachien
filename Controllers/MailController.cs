@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Mail;
 using QienUrenMachien.Repositories;
 using QienUrenMachien.Models;
+using QienUrenMachien.Entities;
 
 namespace QienUrenMachien.Controllers
 {
