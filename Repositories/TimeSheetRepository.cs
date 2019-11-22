@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Data;
 using QienUrenMachien.Models;
 using System;
@@ -21,6 +23,9 @@ namespace QienUrenMachien.Repositories
             this.userManager = userManager;
         }
 
+<<<<<<< HEAD
+        public List<SelectListItem> GetMonths()
+=======
         public async Task<TimeSheet> UpdateTimeSheet(TimeSheet _timeSheet)   
         {
             context.TimeSheets.Update(_timeSheet);
@@ -58,16 +63,43 @@ namespace QienUrenMachien.Repositories
         }
 
         public List<TimeSheet> GetAllTimeSheets()
+>>>>>>> master
         {
-            var traineeslist = userManager.GetUsersInRoleAsync("Trainee").Result;
-            var employeeslist = userManager.GetUsersInRoleAsync("Werknemer").Result;
-            var traineesAndEmployeesIds = employeeslist.Concat(traineeslist)
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = DateTime.Now.ToString("MMMM"), Selected = true });
+            DateTime dt = DateTime.Now;
+            for (int i = 1; i < DateTime.Now.Month; i++)
+            {
+                dt = dt.AddMonths(-1);
+                var month = dt.ToString("MMMM");
+                //var year = dt.Year;
+                list.Add(new SelectListItem { Value = month, Text = month });
+            }
+            return list;
+        }
+
+        public async Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model)
+        {
+            var traineeslist = await userManager.GetUsersInRoleAsync("Trainee");
+            var traineesIds = traineeslist
                 .Select(e => e.Id);
 
-            return context.TimeSheets
+            return await context.TimeSheets
                 .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
-                .Where(t => traineesAndEmployeesIds.Contains(t.Id))
-                .ToList();
+                .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month))
+                .ToListAsync();
+        }
+
+        public async Task<List<TimeSheet>> GetAllEmployeeTimeSheets(TimeSheetsViewModel model)
+        {
+            var employeeslist = await userManager.GetUsersInRoleAsync("Werknemer");
+            var employeesIds = employeeslist
+                .Select(e => e.Id);
+
+            return await context.TimeSheets
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month))
+                .ToListAsync();
         }
 
         public TimeSheet GetOneTimeSheet(string Id, string Month)
