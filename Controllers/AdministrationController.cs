@@ -43,11 +43,11 @@ namespace QienUrenMachien.Controllers
             return View(sheetlist);
         }
 
-        public IActionResult ShowUserTimeSheet(int SheetID, string UserId)
-        {
-            var result = repo.GetOneTimeSheet(SheetID, UserId);
-            return View(result);
-        }
+        //public IActionResult ShowUserTimeSheet(int SheetID, string UserId)
+        //{
+        //    var result = repo.GetOneTimeSheet(SheetID, UserId);
+        //    return View(result);
+        //}
 
         [HttpGet]
         public IActionResult CreateRole()

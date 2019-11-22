@@ -34,9 +34,29 @@ namespace QienUrenMachien.Repositories
                 .ToList();
         }
 
-        public TimeSheet GetOneTimeSheet(int SheetID, string UserId)
+        //public TimeSheet GetOneTimeSheet(int SheetID, string UserId)
+        //{
+        //    var entity = context.TimeSheets.Single(t => t.SheetID == SheetID && t.Id == UserId && t.Month == 1);
+        //    return new TimeSheet
+        //    {
+        //        SheetID = entity.SheetID,
+        //        Id = entity.Id,
+        //        Month = entity.Month,
+        //        ProjectHours = entity.ProjectHours,
+        //        Overwork = entity.Overwork,
+        //        Sick = entity.Sick,
+        //        Absence = entity.Absence,
+        //        Training = entity.Training,
+        //        Other = entity.Other,
+        //        Submitted = entity.Submitted,
+        //        Approved = entity.Approved,
+        //        Data = entity.Data
+        //    };
+        //}
+
+        public TimeSheet GetOneTimeSheet(int SheetID)
         {
-            var entity = context.TimeSheets.Single(t => t.SheetID == SheetID && t.Id == UserId && t.Month == 1);
+            var entity = context.TimeSheets.Single(t => t.SheetID == SheetID);
             return new TimeSheet
             {
                 SheetID = entity.SheetID,
@@ -54,6 +74,7 @@ namespace QienUrenMachien.Repositories
             };
         }
 
+
         public List<TimeSheet> GetTimeSheets()
         {
             var sheetList = context.TimeSheets.Select(n => new TimeSheet
@@ -69,19 +90,6 @@ namespace QienUrenMachien.Repositories
                 Data = n.Data
             }).ToList();
             return sheetList;
-        }
-
-        public List<Day> GetAllDaysInMonth(int Year, int Month)
-        {
-            List<Day> listDays = new List<Day>();
-            //for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
-            //{
-            //    days.Add(new Day(new DateTime(year, month, i), null , 0, 0, 0, 0, 0, 0, null));
-            //}
-            listDays.Add(new Day(new DateTime(Year, Month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
-            listDays.Add(new Day(new DateTime(Year, Month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
-            return listDays;
-
         }
 
         public void AddNewSheet(TimeSheet timeSheetModel)

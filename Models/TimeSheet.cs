@@ -25,9 +25,11 @@ namespace QienUrenMachien.Models
         public double Absence { get; set; }
         public double Training { get; set; }
         public double Other { get; set; }
-        public bool Submitted { get; set; }
+        public int Submitted { get; set; }
         public string Approved {get; set;}
         public string Data { get; set; }
+        [NotMapped]
+        public List<Day> days { get; set; }
 
         public string Url { get; set; }
     }

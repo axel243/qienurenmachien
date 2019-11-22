@@ -16,67 +16,67 @@ namespace QienUrenMachien.Controllers
     public class SheetController : Controller
     {
         private readonly ITimeSheetRepository repo;
-        public List<Day> listDays;
+        TimeSheet timesheet = new TimeSheet();
         public SheetController(ITimeSheetRepository repo)
         {
             this.repo = repo;
         }
         public IActionResult Month()
-
         {
-
             return View("Month");
         }
 
         public IActionResult TimeSheet(int Year, int Month)
         {
-            //var test = repo.GetTimeSheets();
-            var result = GetAllDaysInMonth(Year, Month);
-            ViewBag.Year = Year;
-            ViewBag.Month = Month;
+            timesheet.Year = Year;
+            timesheet.Month = Month;
+            var result = SetAllDaysInMonth();
             return View(result);
         }
 
-        public List<Day> GetAllDaysInMonth(int Year, int Month)
+        public TimeSheet SetAllDaysInMonth()
         {
             List<Day> days = new List<Day>();
-            for (int i = 1; i <= DateTime.DaysInMonth(Year, Month); i++)
+            for (int i = 1; i <= DateTime.DaysInMonth(timesheet.Year, timesheet.Month); i++)
             {
-                days.Add(new Day(new DateTime(Year, Month, i), null, 0, 0, 0, 0, 0, 0, null));
+                days.Add(new Day(new DateTime(timesheet.Year, timesheet.Month, i), null, 0, 0, 0, 0, 0, 0, null));
             }
-            //listDays.Add(new Day(new DateTime(Year, Month, 1), "Nos", 4, 4, 2, 5, 7, 0, "None"));
-            //listDays.Add(new Day(new DateTime(Year, Month, 2), "Qien", 4, 4, 2, 5, 7, 0, "Eerder weggegaan"));
-            listDays = days;
-            return days;
+            timesheet.days = days;
+            return timesheet;
 
         }
 
-        public string DaysToData(int Year, int Month)
+        public string DaysToData()
         {
-            List<Day> listDays = GetAllDaysInMonth(Year, Month);
-            var jsonString = JsonConvert.SerializeObject(listDays);
+            var jsonString = JsonConvert.SerializeObject(timesheet.days);
             return jsonString;
         }
 
+       
         [HttpPost]
-        public ActionResult AddSheet(List<Day> listDaysTotal, int Year, int Month)
+        public ActionResult AddSheet(TimeSheet timesheet)
         {
-            TimeSheet timesheet = new TimeSheet();
-            listDaysTotal = GetAllDaysInMonth(Year, Month);
+            this.timesheet = timesheet;
             if (!ModelState.IsValid)
                 return View(timesheet);
-            timesheet.Data = DaysToData(Year, Month);
-            timesheet.Month = Month;
-            timesheet.ProjectHours = listDaysTotal.Sum(d => d.ProjectHours);
-            timesheet.Overwork = listDaysTotal.Sum(d => d.Overwork);
-            timesheet.Sick = listDaysTotal.Sum(d => d.Sick);
-            timesheet.Absence = listDaysTotal.Sum(d => d.Absence);
-            timesheet.Training = listDaysTotal.Sum(d => d.Training);
-            timesheet.Other = listDaysTotal.Sum(d => d.Other);
-            timesheet.Submitted = true;
+            timesheet.Data = DaysToData();
+            timesheet.ProjectHours = timesheet.days.Sum(d => d.ProjectHours);
+            timesheet.Overwork = timesheet.days.Sum(d => d.Overwork);
+            timesheet.Sick = timesheet.days.Sum(d => d.Sick);
+            timesheet.Absence = timesheet.days.Sum(d => d.Absence);
+            timesheet.Training = timesheet.days.Sum(d => d.Training);
+            timesheet.Other = timesheet.days.Sum(d => d.Other);
+            timesheet.Submitted = 1;
             repo.AddNewSheet(timesheet);
             return RedirectToAction("Month");
         }
+
+        //public object DataToDays()
+        //{
+        //    timesheet = repo.GetOneTimeSheet(12);
+        //    var jsonString = JsonConvert.DeserializeObject(timesheet.Data);
+        //    return jsonString;
+        //}
 
     }
 }

@@ -7,6 +7,10 @@ namespace QienUrenMachien.Models
 {
     public class Day
     {
+        public Day()
+        {
+
+        }
 
         public Day(DateTime date, string project, double projectHours, double overwork, double sick, double absence, double training, double other, string otherExplanation)
         {

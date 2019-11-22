@@ -1,7 +1,7 @@
 ﻿
-@model List<Day>
+@model TimeSheet
     <div>
-        @using (Html.BeginForm("AddSheet", "Sheet",new {Year = ViewBag.Year, Month = ViewBag.Month }))
+        @using (Html.BeginForm("AddSheet", "Sheet", new { Year = Model.Year, Month = Model.Month }))
         {
             <table>
                 <tr>
@@ -26,36 +26,23 @@
                         <td>@d.Absence</td>
                         <td>@d.Sick</td>
                         <td>@d.Training</td>
-                        <td>@d.Other</td>
+                        <td>@d.Other</td>       
                         <td>@d.OtherExplanation</td>
                     </tr>
 
                 }*@
 
-                @foreach (var d in Model)
-                {
-                    <tr>
-                        <td>@d.date.ToString("dd/MM/yyyy")</td>
-                        <td>@Html.EditorFor(m => d.Project)</td>
-                        <td>@Html.EditorFor(m => d.ProjectHours)</td>
-                        <td>@Html.EditorFor(m => d.Overwork)</td>
-                        <td>@Html.EditorFor(m => d.Absence)</td>
-                        <td>@Html.EditorFor(m => d.Sick)</td>
-                        <td>@Html.EditorFor(m => d.Training)</td>
-                        <td>@Html.EditorFor(m => d.Other)</td>
-                        <td>@Html.EditorFor(m => d.OtherExplanation)</td>
-                    </tr>
-
-                }
+                @Html.EditorFor(m => m.days)
+               
                 <tr>
                     <td></td>
                     <td><b>Totaal uren:</b></td>
-                    <td>@Model.Sum(d => d.ProjectHours)</td>
-                    <td>@Model.Sum(d => d.Overwork)</td>
-                    <td>@Model.Sum(d => d.Absence)</td>
-                    <td>@Model.Sum(d => d.Sick)</td>
-                    <td>@Model.Sum(d => d.Training)</td>
-                    <td>@Model.Sum(d => d.Other)</td>
+                    <td>@Model.days.Sum(d => d.ProjectHours)</td>
+                    <td>@Model.days.Sum(d => d.Overwork)</td>
+                    <td>@Model.days.Sum(d => d.Absence)</td>
+                    <td>@Model.days.Sum(d => d.Sick)</td>
+                    <td>@Model.days.Sum(d => d.Training)</td>
+                    <td>@Model.days.Sum(d => d.Other)</td>
                 </tr>
             </table>
 

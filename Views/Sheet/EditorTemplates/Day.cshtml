@@ -1,0 +1,13 @@
+﻿@model Day
+    <tr>
+        <td>@Model.date.ToString("dd/MM/yyyy")</td>
+        <td>@Html.EditorFor(m => m.Project)</td>
+        <td>@Html.EditorFor(m => m.ProjectHours)</td>
+        <td>@Html.EditorFor(m => m.Overwork)</td>
+        <td>@Html.EditorFor(m => m.Absence)</td>
+        <td>@Html.EditorFor(m => m.Sick)</td>
+        <td>@Html.EditorFor(m => m.Training)</td>
+        <td>@Html.EditorFor(m => m.Other)</td>
+        <td>@Html.EditorFor(m => m.OtherExplanation)</td>
+    </tr>
+
