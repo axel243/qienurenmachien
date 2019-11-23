@@ -114,6 +114,7 @@ namespace QienUrenMachien.Repositories
             {
                 SheetID = entity.SheetID,
                 Id = entity.Id,
+                Project = entity.Project,
                 Month = entity.Month,
                 ProjectHours = entity.ProjectHours,
                 Overwork = entity.Overwork,
