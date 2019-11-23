@@ -148,8 +148,8 @@ namespace QienUrenMachien.Controllers
                 }
                 
                 catch {
-                                int nDays = DateTime.DaysInMonth(2019, 1);
-                string data = "{";
+                    int nDays = DateTime.DaysInMonth(2019, 1);
+                    string data = "{";
 
                 for (int i = 1; i <= nDays; i++)
                 {
