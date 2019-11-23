@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QienUrenMachien.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,7 +17,8 @@ namespace QienUrenMachien.Entities
         [ForeignKey("Id")]
         public ApplicationUser applicationUser { get; set; }
         public string Id {get; set;}
-        public int Month { get; set; }
+        public string Project {get; set;}
+        public string Month { get; set; }
         [NotMapped]
         public int Year { get; set; }
         public double ProjectHours { get; set; }
@@ -25,7 +27,7 @@ namespace QienUrenMachien.Entities
         public double Absence { get; set; }
         public double Training { get; set; }
         public double Other { get; set; }
-        public int Submitted { get; set; }
+        public bool Submitted { get; set; }
         public string Approved {get; set;}
         public string Data { get; set; }
         [NotMapped]
