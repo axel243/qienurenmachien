@@ -149,8 +149,8 @@ namespace QienUrenMachien.Controllers
 
                 for (int i = 1; i <= nDays; i++)
                 {
-                    Day _day = new Day();
-                    data += $"\"{i}\": " + JsonSerializer.Serialize<Day>(_day);
+                    DayJulian _day = new DayJulian();
+                    data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
                     if (i != nDays)
                     {
                         data += ", ";
