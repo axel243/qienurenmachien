@@ -114,7 +114,6 @@ namespace QienUrenMachien.Repositories
             {
                 SheetID = entity.SheetID,
                 Id = entity.Id,
-                Project = entity.Project,
                 Month = entity.Month,
                 ProjectHours = entity.ProjectHours,
                 Overwork = entity.Overwork,
@@ -134,6 +133,41 @@ namespace QienUrenMachien.Repositories
             Console.WriteLine("######################");
             Console.WriteLine(url);
             return context.TimeSheets.Where(c => c.Url == url).SingleOrDefault();
+        }
+
+
+        public List<TimeSheet> GetTimeSheets()
+        {
+            var sheetList = context.TimeSheets.Select(n => new TimeSheet
+            {
+                SheetID = n.SheetID,
+                Month = n.Month,
+                ProjectHours = n.ProjectHours,
+                Overwork = n.Overwork,
+                Sick = n.Sick,
+                Absence = n.Absence,
+                Training = n.Training,
+                Other = n.Other,
+                Data = n.Data
+            }).ToList();
+            return sheetList;
+        }
+
+        public void AddNewSheet(TimeSheet timeSheetModel)
+        {
+            context.TimeSheets.Add(new TimeSheet
+            {
+                Month = timeSheetModel.Month,
+                ProjectHours = timeSheetModel.ProjectHours,
+                Overwork = timeSheetModel.Overwork,
+                Sick = timeSheetModel.Sick,
+                Absence = timeSheetModel.Absence,
+                Training = timeSheetModel.Training,
+                Other = timeSheetModel.Other,
+                Data = timeSheetModel.Data
+
+            });
+            context.SaveChanges();
         }
     }
 }
