@@ -3,9 +3,12 @@
 @model TimeSheetViewModel
 @{
     ViewData["Title"] = "Urenformulier";
+    int x = 1;
+    int y = 0;
 }
 
 <h1>Urenformulier van gebruiker</h1>
+
 
 <table style="width:100%;">
     <tr>
@@ -33,10 +36,10 @@
         <td>@Model.Approved</td>
     </tr>
 </table>
+<br />
 
 
-
-<table style="width:100%;">
+<table id="TimeSheetTable" style="width:100%;">
     <tr>
         <th>Dag</th>
         <th>Projecturen</th>
@@ -47,18 +50,46 @@
         <th>Overige</th>
     </tr>
 
-    @foreach (var day in JObject.Parse(Model.Data))
+    @if (Model.Submitted == true)
     {
-<tr>
-    <td>@day.Key</td>
-    <td>@day.Value["projecthours"]</td>
-    <td>@day.Value["overwork"]</td>
-    <td>@day.Value["sick"]</td>
-    <td>@day.Value["absence"]</td>
-    <td>@day.Value["training"]</td>
-    <td>@day.Value["other"]</td>
-</tr>
+        @foreach (var day in JObject.Parse(Model.Data))
+        {
+            <tr>
+                <td>@day.Key</td>
+                <td>@day.Value["projecthours"]</td>
+                <td>@day.Value["overwork"]</td>
+                <td>@day.Value["sick"]</td>
+                <td>@day.Value["absence"]</td>
+                <td>@day.Value["training"]</td>
+                <td>@day.Value["other"]</td>
+            </tr>
+        }
     }
+    else
+    {
+
+
+
+        @foreach (var day in JObject.Parse(Model.Data))
+        {
+            <tr>
+                <td>@day.Key</td>
+                <td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
+                <td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y+1)"></td>
+                <td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y+2)"></td>
+                <td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y+3)"></td>
+                <td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y+4)"></td>
+                <td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y+5)"></td>
+            </tr>
+            x++;
+        }
+    }
+
+
+
+
+
+
 </table>
 
 
