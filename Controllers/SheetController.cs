@@ -135,11 +135,11 @@ namespace QienUrenMachien.Controllers
 
         [Route("Sheet/UserTimeSheet/")]
         [HttpGet]
-        public IActionResult UserTimeSheet()
+        public async Task<IActionResult> UserTimeSheet()
         {
             while (true){
                 try {
-                    var result = repo.GetOneTimeSheet(userManager.GetUserId(User), "January");
+                    var result = await repo.GetOneTimeSheetAsync(userManager.GetUserId(User), "January");
                     return View(result);
                 }
                 
