@@ -5,42 +5,55 @@
 
 // Convert table data to string
 function TableToString() {
-    var data = []
+    var data = {}
 
     var table = document.getElementById('TimeSheetTable'),
         rows = table.rows, rowcount = rows.length, r, c;
     for (r = 1; r < rowcount; r++) {
         var day = {};
-        day[r] = {}
         for (c = 0; c < 6; c++) {
             if (c == 0) {
-                day[r].projecthours = document.getElementById("" + r + c).value;
+                day.projecthours = document.getElementById("" + r + c).value;
             }
             else if (c == 1) {
-                day[r].overwork = document.getElementById("" + r + c).value;
+                day.overwork = document.getElementById("" + r + c).value;
             }
             else if (c == 2) {
-                day[r].sick = document.getElementById("" + r + c).value;
+                day.sick = document.getElementById("" + r + c).value;
             }
             else if (c == 3) {
-                day[r].absence = document.getElementById("" + r + c).value;
+                day.absence = document.getElementById("" + r + c).value;
             }
             else if (c == 4) {
-                day[r].training = document.getElementById("" + r + c).value;
+                day.training = document.getElementById("" + r + c).value;
             }
             else if (c == 5) {
-                day[r].other = document.getElementById("" + r + c).value;
+                day.other = document.getElementById("" + r + c).value;
             }
         }
-        data.push(day);
+        data[r] = day;
     }
 
     // Stringify object array
-    console.log(JSON.stringify(data));
+
+    //console.log(JSON.stringify(data));
+    let SheetID = document.getElementById("SheetID").innerHTML;
+    connection.invoke("SendMessage", parseInt(SheetID), JSON.stringify(data)).catch(function (err) {
+        return console.error(err.toString());
+    });
+    console.log("Updated database");
 }
 
 
 // Whenever the input table get changed create new data string
 $("input").change(function() {
     TableToString();
+});
+
+//Websocket
+var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44398/chatHub").build();
+
+connection.start().then(function () {
+}).catch(function (err) {
+    return console.error(err.toString());
 });

@@ -109,6 +109,31 @@ namespace QienUrenMachien.Repositories
         {
 
             var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
+       
+
+            return new TimeSheetViewModel
+            {
+                SheetID = entity.SheetID,
+                Id = entity.Id,
+                Project = entity.Project,
+                Month = entity.Month,
+                ProjectHours = entity.ProjectHours,
+                Overwork = entity.Overwork,
+                Sick = entity.Sick,
+                Absence = entity.Absence,
+                Training = entity.Training,
+                Other = entity.Other,
+                Submitted = entity.Submitted,
+                Approved = entity.Approved,
+                Data = entity.Data
+            };
+
+        }
+
+        public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month)
+        {
+
+            var entity = await context.TimeSheets.Where(t => t.Id == Id && t.Month == Month).FirstOrDefaultAsync<TimeSheet>();  // && t.Month == [getcurrentmonth]
 
             return new TimeSheetViewModel
             {
