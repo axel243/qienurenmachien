@@ -70,12 +70,12 @@ namespace QienUrenMachien.Controllers
                 currentUser.ProfileImageUrl = model.ProfileImageUrl;
 
 
-                // Update the Role using UpdateAsync
+                // Update the user using UpdateAsync
                 var result = await userManager.UpdateAsync(currentUser);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "Profile");
+                    return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
                 return View(currentUser);
             }
