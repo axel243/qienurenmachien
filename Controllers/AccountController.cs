@@ -27,65 +27,9 @@ namespace QienUrenMachien.Controllers
 
         public IActionResult Index()
         {
-            var userid = userManager.GetUserId(HttpContext.User);
-
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            else
-            {
-                var user = userManager.FindByIdAsync(userid).Result;
-                return View("Profile", user);
-            }
+            return View();
         }
-        [HttpGet]
-        public async Task<IActionResult> EditProfile()
-        {
-            var userid = userManager.GetUserId(HttpContext.User);
-
-            var currentUser = await userManager.FindByIdAsync(userid);
-
-            if (currentUser == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
-                return View("NotFound");
-            }
-            return View(currentUser);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditProfile(ApplicationUser model)
-        {
-            var userid = model.Id;
-            ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
-
-            if (currentUser == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
-                return View("NotFound");
-            }
-            else
-            {
-                currentUser.Street = model.Street;
-                currentUser.PhoneNumber = model.PhoneNumber;
-                currentUser.Zipcode = model.Zipcode;
-                currentUser.City = model.City;
-                currentUser.Country = model.Country;
-                currentUser.ProfileImageUrl = model.ProfileImageUrl;
-
-
-                // Update the Role using UpdateAsync
-                var result = await userManager.UpdateAsync(currentUser);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("index");
-                }
-                return View(currentUser);
-            }
-        }
-
+     
         // GET: /<controller>/
         [AllowAnonymous]
         [HttpGet]
