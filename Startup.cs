@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QienUrenMachien.Data;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Hubs;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 
@@ -38,27 +39,20 @@ namespace QienUrenMachien
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RepositoryContext>();
 
-            //services.AddControllers(config =>
-            //{
-            //    // using Microsoft.AspNetCore.Mvc.Authorization;
-            //    // using Microsoft.AspNetCore.Authorization;
-            //    var policy = new AuthorizationPolicyBuilder()
-            //                     .RequireAuthenticatedUser()
-            //                     .Build();
-            //    config.Filters.Add(new AuthorizeFilter(policy));
-            //});
-
-            //services.AddMvc(options =>
-            //{
-            //   var policy = new AuthorizationPolicyBuilder()
-            //                      .RequireAuthenticatedUser()
-            //                      .Build();
-            //   options.Filters.Add(new AuthorizeFilter(policy));
-            //}).AddXmlSerializerFormatters();
-
             services.AddControllersWithViews();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
             services.AddRazorPages();
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(_ => true)
+                    .AllowCredentials();
+            }));
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +72,7 @@ namespace QienUrenMachien
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
             
             app.UseAuthentication();
@@ -89,6 +84,7 @@ namespace QienUrenMachien
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }
