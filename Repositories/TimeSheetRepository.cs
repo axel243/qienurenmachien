@@ -105,9 +105,9 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
-        public TimeSheetViewModel GetOneTimeSheet(int SheetID)
+        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
-            var entity = context.TimeSheets.Single(t => SheetID == t.SheetID);
+            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
 
             return new TimeSheetViewModel
             {

@@ -57,9 +57,9 @@ namespace QienUrenMachien.Controllers
             return View(model);
         }
 
-        public IActionResult ShowUserTimeSheet(int SheetID)
+        public IActionResult ShowUserTimeSheet(string Id, string Month)
         {
-            var result = repo.GetOneTimeSheet(SheetID);
+            var result = repo.GetOneTimeSheet(Id, Month);
             return View(result);
         }
 
