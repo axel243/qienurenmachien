@@ -57,11 +57,13 @@ namespace QienUrenMachien.Controllers
             return View(model);
         }
 
-        public IActionResult ShowUserTimeSheet(string Id, string Month)
+
+        public async Task<IActionResult> ShowUserTimeSheet(string Id, string Month)
         {
-            var result = repo.GetOneTimeSheet(Id, Month);
+            var result = await repo.GetOneTimeSheetAsync(Id, Month);
             return View(result);
         }
+
 
         [HttpGet]
         public IActionResult CreateRole()

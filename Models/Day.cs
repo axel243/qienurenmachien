@@ -9,20 +9,31 @@ namespace QienUrenMachien.Models
     {
         public Day()
         {
-            projecthours = 0;
-            overwork = 0;
-            sick = 0;
-            absence = 0;
-            training = 0;
-            other = 0;
 
         }
 
-        public double projecthours { get; set; }
-        public double overwork { get; set; }
-        public double sick { get; set; }
-        public double absence { get; set; }
-        public double training { get; set; }
-        public double other { get; set; }
+        public Day(DateTime date, string project, double projectHours, double overwork, double sick, double absence, double training, double other, string otherExplanation)
+        {
+            this.date = date;
+            Project = project;
+            ProjectHours = projectHours;
+            Overwork = overwork;
+            Sick = sick;
+            Absence = absence;
+            Training = training;
+            Other = other;
+            OtherExplanation = otherExplanation;
+        }
+
+        public DateTime date { get; set; }
+        public string Project { get; set; }
+        public double ProjectHours { get; set; }
+        public double Overwork { get; set; }
+        public double Sick { get; set; }
+        public double Absence { get; set; }
+        public double Training { get; set; }
+        public double Other { get; set; }
+        public string OtherExplanation { get; set; }
+
     }
 }

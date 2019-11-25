@@ -105,9 +105,11 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
-        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
+        public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month)
         {
-            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
+
+            var entity = await context.TimeSheets.Where(t => t.Id == Id && t.Month == Month).FirstOrDefaultAsync<TimeSheet>();
+
 
             return new TimeSheetViewModel
             {
@@ -133,6 +135,41 @@ namespace QienUrenMachien.Repositories
             Console.WriteLine("######################");
             Console.WriteLine(url);
             return context.TimeSheets.Where(c => c.Url == url).SingleOrDefault();
+        }
+
+
+        public List<TimeSheet> GetTimeSheets()
+        {
+            var sheetList = context.TimeSheets.Select(n => new TimeSheet
+            {
+                SheetID = n.SheetID,
+                Month = n.Month,
+                ProjectHours = n.ProjectHours,
+                Overwork = n.Overwork,
+                Sick = n.Sick,
+                Absence = n.Absence,
+                Training = n.Training,
+                Other = n.Other,
+                Data = n.Data
+            }).ToList();
+            return sheetList;
+        }
+
+        public void AddNewSheet(TimeSheet timeSheetModel)
+        {
+            context.TimeSheets.Add(new TimeSheet
+            {
+                Month = timeSheetModel.Month,
+                ProjectHours = timeSheetModel.ProjectHours,
+                Overwork = timeSheetModel.Overwork,
+                Sick = timeSheetModel.Sick,
+                Absence = timeSheetModel.Absence,
+                Training = timeSheetModel.Training,
+                Other = timeSheetModel.Other,
+                Data = timeSheetModel.Data
+
+            });
+            context.SaveChanges();
         }
     }
 }

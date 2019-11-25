@@ -24,7 +24,7 @@
                     var user = await GetCurrentUserAsync();
                     //------------------------------------------------------------------------------------
                     
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
                     
                 }
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QienUrenMachien</a>
@@ -35,7 +35,6 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
                         <ul class="navbar-nav flex-grow-1">
-
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
@@ -46,10 +45,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Sheet" asp-action="Index">Time Sheet</a>
                             </li>
                         </ul>
-
                         <ul class="navbar-nav ml-auto">
-
-
                             @if (signInManager.IsSignedIn(User))
                             {
                                 <li class="nav-item">
@@ -58,9 +54,6 @@
                                             Logout @User.Identity.Name
                                         </button>
                                     </form>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Profile</a>
                                 </li>
                             }
                             else
@@ -72,9 +65,9 @@
                                     <a asp-action="login" asp-controller="account" class="nav-link">Login</a>
                                 </li>
                             }
-                        </ul>
-                    </div>
+                        </ul> 
                 </div>
+            </div>
         </nav>
     </header>
     <div class="container">
@@ -90,6 +83,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
