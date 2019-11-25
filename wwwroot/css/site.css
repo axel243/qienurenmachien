@@ -12,10 +12,27 @@ a {
   color: #0366d6;
 }
 
+.btn-default {
+	background-color: white;
+	border-color: lightgray;
+	border-radius: 0.2rem;
+}
+
 .btn-primary {
-	color: #fff;
-	background-color: #1861ac;
-	border-color: #1861ac;
+	background-color: #6685a5;
+	border-color: #6685a5;
+	border-radius: 0.2rem;
+}
+
+.btn-primary:hover {
+	background-color: #57708a;
+	border-color: #57708a;
+}
+
+.btn-danger {
+	background-color: #fb4758;
+	border-color: #fb4758;
+	border-radius: 0.2rem;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -87,10 +104,8 @@ td, th {
 /*------------------profile----------------*/
 .card {
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
-    max-width: 600px;
     max-height: 500px;
     text-align: center;
-    border-radius: 5%;
 }
 
 #profilepicture {
@@ -102,4 +117,13 @@ td, th {
     border-radius: 50%;
     width: 50px;
     height: 50px;
+}
+
+#profilepictureInList {
+	display: inline;
+	margin-left: auto;
+	margin-right: 15px;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
 }

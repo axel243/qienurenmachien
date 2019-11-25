@@ -10,9 +10,8 @@
 <h2>Maand: @Model.Month</h2>
 <form asp-controller="Administration" asp-action="TimeSheetOverview" method="post">
 	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected">
-		@*<option value="">Kies maand</option>*@
 	</select>
-	<input class="btn-default" type="submit" value="Kies"/>
+	<input class="btn btn-default" style="" type="submit" value="Kies"/>
 </form>
 
 <div class="text-center">
