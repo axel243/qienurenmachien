@@ -6,77 +6,163 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using QienUrenMachien.Data;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
+using Microsoft.AspNetCore.Identity;
+using System.Net.Mail;
+using System.Net;
+using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
+using System.Text.Json;
 
 namespace QienUrenMachien.Controllers
 {
     public class SheetController : Controller
     {
         private readonly ITimeSheetRepository repo;
-        TimeSheet timesheet = new TimeSheet();
-        public SheetController(ITimeSheetRepository repo)
+
+        //public IActionResult Month();
+
+        private readonly UserManager<ApplicationUser> userManager;
+
+        private readonly MailServer mailServer;
+
+        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager)
         {
             this.repo = repo;
+            this.userManager = userManager;
+            this.mailServer = new MailServer();
         }
-        public IActionResult Month()
+
+        public IActionResult Index()
         {
             return View("Month");
         }
 
-        public IActionResult TimeSheet(int Year, int Month)
+        [Route("Sheet/ConfirmTimeSheet/{url}")]
+        [HttpGet]
+        public IActionResult ConfirmTimeSheet(string url)
         {
-            timesheet.Year = Year;
-            timesheet.Month = Month;
-            var result = SetAllDaysInMonth();
+            ViewBag.url = url;
+
+            if (url == null)
+            {
+                ViewBag.ErrorMessage = $"Sheet with Id = {url} cannot be found";
+                return View("NotFound");
+            };
+
+            var result = repo.GetOneTimeSheet(url);
             return View(result);
         }
 
-        public TimeSheet SetAllDaysInMonth()
+        [Route("Sheet/ApproveTimeSheet/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> ApproveTimeSheet(int id)
         {
-            List<Day> days = new List<Day>();
-            for (int i = 1; i <= DateTime.DaysInMonth(timesheet.Year, timesheet.Month); i++)
-            {
-                days.Add(new Day(new DateTime(timesheet.Year, timesheet.Month, i), null, 0, 0, 0, 0, 0, 0, null));
-            }
-            timesheet.days = days;
-            return timesheet;
+            var _timeSheet = await repo.GetTimeSheet(id);
 
+            _timeSheet.Approved = "Approved";
+            var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+            mailServer.SendApprovalMail(user.UserName, "Approved");
+
+            return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
         }
 
-        public string DaysToData()
+        [Route("Sheet/RejectTimeSheet/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> RejectTimeSheet(int id)
         {
-            var jsonString = JsonConvert.SerializeObject(timesheet.days);
-            return jsonString;
+            var _timeSheet = await repo.GetTimeSheet(id);
+
+            _timeSheet.Approved = "Rejected";
+            var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+            mailServer.SendApprovalMail(user.UserName, "Rejected");
+
+            return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
         }
 
-       
-        [HttpPost]
-        public ActionResult AddSheet(TimeSheet timesheet)
-        {
-            this.timesheet = timesheet;
-            if (!ModelState.IsValid)
-                return View(timesheet);
-            timesheet.Data = DaysToData();
-            timesheet.ProjectHours = timesheet.days.Sum(d => d.ProjectHours);
-            timesheet.Overwork = timesheet.days.Sum(d => d.Overwork);
-            timesheet.Sick = timesheet.days.Sum(d => d.Sick);
-            timesheet.Absence = timesheet.days.Sum(d => d.Absence);
-            timesheet.Training = timesheet.days.Sum(d => d.Training);
-            timesheet.Other = timesheet.days.Sum(d => d.Other);
-            timesheet.Submitted = 1;
-            repo.AddNewSheet(timesheet);
-            return RedirectToAction("Month");
-        }
-
-        //public object DataToDays()
+        //public IActionResult TimeSheet(int Year, int Month)
         //{
-        //    timesheet = repo.GetOneTimeSheet(12);
-        //    var jsonString = JsonConvert.DeserializeObject(timesheet.Data);
+        //    timesheet.Year = Year;
+        //    timesheet.Month = Month;
+        //    var result = SetAllDaysInMonth();
+        //    return View(result);
+        //}
+
+        //public TimeSheet SetAllDaysInMonth()
+        //{
+        //    List<Day> days = new List<Day>();
+        //    for (int i = 1; i <= DateTime.DaysInMonth(timesheet.Year, timesheet.Month); i++)
+        //    {
+        //        days.Add(new Day(new DateTime(timesheet.Year, timesheet.Month, i), null, 0, 0, 0, 0, 0, 0, null));
+        //    }
+        //    timesheet.days = days;
+        //    return timesheet;
+
+        //}
+
+        //public string DaysToData()
+        //{
+        //    var jsonString = JsonConvert.SerializeObject(timesheet.days);
         //    return jsonString;
         //}
+
+
+        //[HttpPost]
+        //public ActionResult AddSheet(TimeSheet timesheet)
+        //{
+        //    this.timesheet = timesheet;
+        //    if (!ModelState.IsValid)
+        //        return View(timesheet);
+        //    timesheet.Data = DaysToData();
+        //    timesheet.ProjectHours = timesheet.days.Sum(d => d.ProjectHours);
+        //    timesheet.Overwork = timesheet.days.Sum(d => d.Overwork);
+        //    timesheet.Sick = timesheet.days.Sum(d => d.Sick);
+        //    timesheet.Absence = timesheet.days.Sum(d => d.Absence);
+        //    timesheet.Training = timesheet.days.Sum(d => d.Training);
+        //    timesheet.Other = timesheet.days.Sum(d => d.Other);
+        //    timesheet.Submitted = 1;
+        //    repo.Add(timesheet);
+        //    return RedirectToAction("Month");
+        //}
+
+        [Route("Sheet/UserTimeSheet/")]
+        [HttpGet]
+        public async Task<IActionResult> UserTimeSheet()
+        {
+            while (true){
+                try {
+                    var result = await repo.GetOneTimeSheetAsync(userManager.GetUserId(User), "January");
+                    return View(result);
+                }
+                
+                catch {
+                    int nDays = DateTime.DaysInMonth(2019, 1);
+                    string data = "{";
+
+                for (int i = 1; i <= nDays; i++)
+                {
+                    DayJulian _day = new DayJulian();
+                    data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
+                    if (i != nDays)
+                    {
+                        data += ", ";
+                    }
+                }
+                data += "}";
+
+                TimeSheet entity2 = repo.AddTimeSheet(userManager.GetUserId(User), data);
+                }
+            }
+
+        }
 
     }
 }

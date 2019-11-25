@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QienUrenMachien.Data;
 
 namespace QienUrenMachien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191121143027_userdetails")]
+    partial class userdetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,16 +152,13 @@ namespace QienUrenMachien.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("QienUrenMachien.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("BankNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -189,9 +188,6 @@ namespace QienUrenMachien.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NewProfile")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -242,7 +238,7 @@ namespace QienUrenMachien.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
+            modelBuilder.Entity("QienUrenMachien.Models.TimeSheet", b =>
                 {
                     b.Property<int>("SheetID")
                         .ValueGeneratedOnAdd()
@@ -306,7 +302,7 @@ namespace QienUrenMachien.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", null)
+                    b.HasOne("QienUrenMachien.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,7 +311,7 @@ namespace QienUrenMachien.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", null)
+                    b.HasOne("QienUrenMachien.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -330,7 +326,7 @@ namespace QienUrenMachien.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", null)
+                    b.HasOne("QienUrenMachien.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -339,16 +335,16 @@ namespace QienUrenMachien.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", null)
+                    b.HasOne("QienUrenMachien.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
+            modelBuilder.Entity("QienUrenMachien.Models.TimeSheet", b =>
                 {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
+                    b.HasOne("QienUrenMachien.Models.ApplicationUser", "applicationUser")
                         .WithMany("TimeSheet")
                         .HasForeignKey("Id");
                 });

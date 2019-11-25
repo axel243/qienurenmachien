@@ -34,5 +34,6 @@ namespace QienUrenMachien.Models
         public double Training { get; set; }
         public double Other { get; set; }
         public string OtherExplanation { get; set; }
+
     }
 }

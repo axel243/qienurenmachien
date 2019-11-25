@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,17 +39,31 @@ namespace QienUrenMachien.Controllers
             return View(singleuser);
         }
 
-        public IActionResult TimesheetOverview()
+        public async Task<IActionResult> TimeSheetOverview()
         {
-            var sheetlist = repo.GetAllTimeSheets();
-            return View(sheetlist);
+            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM") };
+            model.Employees = await repo.GetAllEmployeeTimeSheets(model);
+            model.Trainees = await repo.GetAllTraineeTimeSheets(model);
+            model.Months = repo.GetMonths();
+            return View(model);
         }
 
-        //public IActionResult ShowUserTimeSheet(int SheetID, string UserId)
-        //{
-        //    var result = repo.GetOneTimeSheet(SheetID, UserId);
-        //    return View(result);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> TimeSheetOverview(TimeSheetsViewModel model)
+        {
+            model.Employees = await repo.GetAllEmployeeTimeSheets(model);
+            model.Trainees = await repo.GetAllTraineeTimeSheets(model);
+            model.Months = repo.GetMonths();
+            return View(model);
+        }
+
+
+        public IActionResult ShowUserTimeSheet(string Id, string Month)
+        {
+            var result = repo.GetOneTimeSheet(Id, Month);
+            return View(result);
+        }
+
 
         [HttpGet]
         public IActionResult CreateRole()

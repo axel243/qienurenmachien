@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using QienUrenMachien.Entities;
 
 namespace QienUrenMachien.Controllers
 {
@@ -24,6 +25,11 @@ namespace QienUrenMachien.Controllers
             this.userManager = userManager;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+     
         // GET: /<controller>/
         [AllowAnonymous]
         [HttpGet]
@@ -83,9 +89,7 @@ namespace QienUrenMachien.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-
             }
-
             return View(model);
         }
 
