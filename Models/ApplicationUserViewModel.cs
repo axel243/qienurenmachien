@@ -13,6 +13,8 @@ namespace QienUrenMachien.Models
         public virtual string City { get; set; }
         public virtual string Zipcode { get; set; }
         public virtual string Country { get; set; }
-        public virtual string ProfileImageUrl { get; set; } 
+        public virtual string ProfileImageUrl { get; set; }
+        public virtual string BankNumber { get; set; }
+        public virtual string NewProfile { get; set; }
     }
 }
