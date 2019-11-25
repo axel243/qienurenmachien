@@ -68,6 +68,7 @@ namespace QienUrenMachien.Controllers
             else
             {
                 currentUser.Street = model.Street;
+                currentUser.PhoneNumber = model.PhoneNumber;
                 currentUser.Zipcode = model.Zipcode;
                 currentUser.City = model.City;
                 currentUser.Country = model.Country;
