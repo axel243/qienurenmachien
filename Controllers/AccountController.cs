@@ -48,7 +48,7 @@ namespace QienUrenMachien.Controllers
 
             if (currentUser == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {userid} cannot be found";
+                ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
             }
             return View(currentUser);
@@ -62,12 +62,13 @@ namespace QienUrenMachien.Controllers
 
             if (currentUser == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {model.Id} cannot be found";
+                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
                 return View("NotFound");
             }
             else
             {
                 currentUser.Street = model.Street;
+                currentUser.PhoneNumber = model.PhoneNumber;
                 currentUser.Zipcode = model.Zipcode;
                 currentUser.City = model.City;
                 currentUser.Country = model.Country;
@@ -84,37 +85,6 @@ namespace QienUrenMachien.Controllers
                 return View(currentUser);
             }
         }
-
-
-
-
-        //[HttpPost]
-        //public async Task<ActionResult> EditProfile(ApplicationUser userdetails)
-        //{
-        //    IdentityResult x = await userManager.UpdateAsync(userdetails);
-        //    if (x.Succeeded)
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    return View(userdetails);
-        //}
-
-        //[HttpGet]
-        //public IActionResult EditProfile()
-        //{
-
-        //    var userid = userManager.GetUserId(HttpContext.User);
-
-        //    if (userid == null)
-        //    {
-        //        return RedirectToAction("Login", "Account");
-        //    }
-        //    else
-        //    {
-        //        ApplicationUser user = userManager.FindByIdAsync(userid).Result;
-        //        return View(user);
-        //    }
-        //}
 
         // GET: /<controller>/
         [AllowAnonymous]
