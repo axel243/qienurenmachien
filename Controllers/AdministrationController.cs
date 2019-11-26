@@ -33,6 +33,44 @@ namespace QienUrenMachien.Controllers
             return View(userlist);
         }
 
+
+        [HttpGet]
+        public IActionResult RegisterUser()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email,
+                Firstname = model.Firstname,
+                Lastname = model.Lastname,
+                Street = model.Street,
+                City = model.City,
+                Zipcode = model.Zipcode,
+                PhoneNumber = model.PhoneNumber,
+                Country = model.Country
+    };
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("AdminDashboard", "Administration");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
+
+
         public IActionResult ViewUser(string Id)
         {
             var singleuser = userManager.Users.Single(u => u.Id == Id);

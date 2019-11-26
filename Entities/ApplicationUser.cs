@@ -11,6 +11,7 @@ namespace QienUrenMachien.Entities
         public virtual string Street { get; set; }
         public virtual string City { get; set; }
         public virtual string Zipcode { get; set; }
+        public virtual string PhoneNumber { get; set; }
         public virtual string Country { get; set; }
         public virtual string ProfileImageUrl { get; set; }
         public virtual string BankNumber { get; set; }

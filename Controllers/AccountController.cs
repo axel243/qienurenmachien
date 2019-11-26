@@ -29,7 +29,7 @@ namespace QienUrenMachien.Controllers
         {
             return View();
         }
-     
+
         // GET: /<controller>/
         [AllowAnonymous]
         [HttpGet]
