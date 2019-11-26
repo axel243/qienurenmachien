@@ -57,3 +57,27 @@ connection.start().then(function () {
 }).catch(function (err) {
     return console.error(err.toString());
 });
+
+connection.on("ReceiveMessage", function (jsonObject) {
+    var encodedMsg = JSON.parse(jsonObject);
+
+    var table = document.getElementById("OverViewTable");
+    var row = table.insertRow(1);
+    var index = 0;
+
+    for (let [key, value] of Object.entries(encodedMsg)) {
+        var cel = row.insertCell(index);
+        cel.innerHTML = value;
+        index++;
+    };
+
+    document.getElementById("OverViewTable").deleteRow(-1);
+    console.log(encodedMsg);
+
+});
+
+
+
+
+    //var table = document.getElementById("myTable");
+    
