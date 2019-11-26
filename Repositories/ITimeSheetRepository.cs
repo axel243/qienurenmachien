@@ -16,11 +16,17 @@ namespace QienUrenMachien.Repositories
         TimeSheetViewModel GetOneTimeSheet(string id, string Month);
         Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model);
         Task<List<TimeSheet>> GetAllEmployeeTimeSheets(TimeSheetsViewModel model);
+
+        Task<List<TimeSheet>> GetUserOverview(string id);
         List<SelectListItem> GetMonths();
         TimeSheet GetOneTimeSheet(string url);
 
         Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month);
+
+        Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url);
         Task<TimeSheet> GetTimeSheet(string id);
+
+        Task<TimeSheet> GetTimeSheetUrl(string url);
 
         TimeSheet AddTimeSheet(string userId, string data);
     }

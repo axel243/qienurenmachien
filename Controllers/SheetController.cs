@@ -133,36 +133,84 @@ namespace QienUrenMachien.Controllers
         //    return RedirectToAction("Month");
         //}
 
-        [Route("Sheet/UserTimeSheet/")]
-        [HttpGet]
-        public async Task<IActionResult> UserTimeSheet()
-        {
-            while (true){
-                try {
-                    var result = await repo.GetOneTimeSheetAsync(userManager.GetUserId(User), "January");
-                    return View(result);
-                }
+        //[Route("Sheet/UserTimeSheet/")]
+        //[HttpGet]
+        //public async Task<IActionResult> UserTimeSheet()
+        //{
+        //    while (true){
+        //        try {
+        //            var result = await repo.GetOneTimeSheetAsync(userManager.GetUserId(User), "January");
+        //            return View(result);
+        //        }
                 
-                catch {
-                    int nDays = DateTime.DaysInMonth(2019, 1);
-                    string data = "{";
+        //        catch {
+        //            int nDays = DateTime.DaysInMonth(2019, 1);
+        //            string data = "{";
 
-                for (int i = 1; i <= nDays; i++)
-                {
-                    DayJulian _day = new DayJulian();
-                    data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
-                    if (i != nDays)
-                    {
-                        data += ", ";
-                    }
-                }
-                data += "}";
+        //        for (int i = 1; i <= nDays; i++)
+        //        {
+        //            DayJulian _day = new DayJulian();
+        //            data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
+        //            if (i != nDays)
+        //            {
+        //                data += ", ";
+        //            }
+        //        }
+        //        data += "}";
 
-                TimeSheet entity2 = repo.AddTimeSheet(userManager.GetUserId(User), data);
-                }
-            }
+        //        TimeSheet entity2 = repo.AddTimeSheet(userManager.GetUserId(User), data);
+        //        }
+        //    }
+
+        //}
+
+        [Route("Sheet/Overview/")]
+        [HttpGet]
+        public async Task<IActionResult> Overview()
+        {
+
+            var result = await repo.GetUserOverview(userManager.GetUserId(User));
+
+            return View(result);
 
         }
+
+
+        [Route("Sheet/Overview/{url}")]
+        [HttpGet]
+        public async Task<IActionResult> UserTimeSheet(string url)
+        {
+            var result = await repo.GetOneTimeSheetByUrl(url);
+
+            return View(result);
+
+        }
+
+        [Route("Sheet/SubmitTimeSheet/{url}")]
+        [HttpGet]
+        public async Task<IActionResult> SubmitTimeSheet(string url)
+        {
+            var _timeSheet = await repo.GetTimeSheetUrl(url);
+
+            _timeSheet.Submitted = true;
+            var result = await repo.UpdateTimeSheet(_timeSheet);
+            mailServer.SendConfirmationMail("j.m.r.kramer@gmail.com", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
+
+            return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
+        }
+
+        [Route("Sheet/UnSubmitTimeSheet/{url}")]
+        [HttpGet]
+        public async Task<IActionResult> UnSubmitTimeSheet(string url)
+        {
+            var _timeSheet = await repo.GetTimeSheetUrl(url);
+
+            _timeSheet.Submitted = false;
+            var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
+        }
+
 
     }
 }
