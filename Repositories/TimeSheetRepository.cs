@@ -110,7 +110,6 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
-<<<<<<< HEAD
         public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
 
@@ -137,8 +136,6 @@ namespace QienUrenMachien.Repositories
 
         }
 
-=======
->>>>>>> master
         public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month)
         {
 
