@@ -1,25 +1,28 @@
-﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+﻿@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
+
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
 @{
 	ViewData["Title"] = "Admin Dashboard";
 }
+	<div class="text-center">
+		<h1 class="display-4">Overzicht Gebruikers</h1>
+		<p>Overzicht van alle accounts.</p>
+	</div>
 
-<div class="text-center">
-	<h1 class="display-4">Admin Dashboard</h1>
-	<p>Overzicht van alle accounts.</p>
-</div>
-
-<table style="width:100%;">
-	<tr>
-		<th>ID</th>
-		<th>Naam</th>
-		<th>Bekijk</th>
-	</tr>
-	@foreach (var role in Model)
-	{
-	<tr>
-		<td>@role.Id</td>
-		<td>@role.UserName</td>
-		<td>@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
-	</tr>
-	}
-</table>
+	<table style="width:100%;">
+		<tr>
+			<th>Naam</th>
+			<th>ID</th>
+			<th>Bekijk</th>
+		</tr>
+		@foreach (var role in Model)
+		{
+			<tr>
+				<td><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.UserName</td>
+				<td>@role.Id</td>
+				<td>@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
+			</tr>
+		}
+	</table>

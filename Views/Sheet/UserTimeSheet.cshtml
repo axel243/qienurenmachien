@@ -87,13 +87,17 @@
         }
     }
 
-
-
-
-
-
 </table>
 
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a class="btn btn-primary" asp-action="SubmitTimeSheet"
+           asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+        <a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
+           asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
+    </div>
+</div>
 
 
 
