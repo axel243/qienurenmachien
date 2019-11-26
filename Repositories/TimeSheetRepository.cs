@@ -110,6 +110,7 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
+<<<<<<< HEAD
         public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
 
@@ -136,10 +137,13 @@ namespace QienUrenMachien.Repositories
 
         }
 
+=======
+>>>>>>> master
         public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month)
         {
 
-            var entity = await context.TimeSheets.Where(t => t.Id == Id && t.Month == Month).FirstOrDefaultAsync<TimeSheet>();  // && t.Month == [getcurrentmonth]
+            var entity = await context.TimeSheets.Where(t => t.Id == Id && t.Month == Month).FirstOrDefaultAsync<TimeSheet>();
+
 
             return new TimeSheetViewModel
             {

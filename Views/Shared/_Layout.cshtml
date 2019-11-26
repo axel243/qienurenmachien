@@ -24,7 +24,7 @@
                     var user = await GetCurrentUserAsync();
                     //------------------------------------------------------------------------------------
                     
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
                     
                 }
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QienUrenMachien</a>
@@ -32,9 +32,9 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <div class="navbar-collapse collapse d-sm-inline-flex">  @*'flex-sm-row-reverse' weggehaald*@
 
-
+                        <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
@@ -45,21 +45,15 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Sheet" asp-action="Index">Time Sheet</a>
                             </li>
                         </ul>
-
                         <ul class="navbar-nav ml-auto">
-
-
                             @if (signInManager.IsSignedIn(User))
                             {
                                 <li class="nav-item">
                                     <form method="post" asp-action="logout" asp-controller="account">
-                                        <button class="btn btn-dark" style="font-size: 16px; background-color: #DAD2D8; color: #343a40" type="submit">
+                                        <button class="btn btn-light" style="font-size: 16px; background-color: #f2f2f2; color: #343a40" type="submit">
                                             Logout @User.Identity.Name
                                         </button>
                                     </form>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Profile</a>
                                 </li>
                             }
                             else
@@ -71,9 +65,9 @@
                                     <a asp-action="login" asp-controller="account" class="nav-link">Login</a>
                                 </li>
                             }
-                        </ul>
-                    </div>
+                        </ul> 
                 </div>
+            </div>
         </nav>
     </header>
     <div class="container">
