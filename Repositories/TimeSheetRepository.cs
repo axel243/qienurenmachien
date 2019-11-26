@@ -61,6 +61,11 @@ namespace QienUrenMachien.Repositories
             return await context.TimeSheets.FindAsync(id);
         }
 
+        public async Task<TimeSheet> GetTimeSheetUrl(string url)
+        {
+            return await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();
+        }
+
         public async Task<TimeSheet> GetTimeSheet(string id)
         {
             return context.TimeSheets.Where(c => c.Id == id && c.Month == "January").SingleOrDefault();
@@ -105,6 +110,35 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
+<<<<<<< HEAD
+        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
+        {
+
+            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
+       
+
+            return new TimeSheetViewModel
+            {
+                SheetID = entity.SheetID,
+                Id = entity.Id,
+                Project = entity.Project,
+                Month = entity.Month,
+                ProjectHours = entity.ProjectHours,
+                Overwork = entity.Overwork,
+                Sick = entity.Sick,
+                Absence = entity.Absence,
+                Training = entity.Training,
+                Other = entity.Other,
+                Submitted = entity.Submitted,
+                Approved = entity.Approved,
+                Data = entity.Data,
+                Url = entity.Url
+            };
+
+        }
+
+=======
+>>>>>>> master
         public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month)
         {
 
@@ -124,11 +158,38 @@ namespace QienUrenMachien.Repositories
                 Training = entity.Training,
                 Other = entity.Other,
                 Submitted = entity.Submitted,
-                Approved = entity.Approved,
-                Data = entity.Data
+                Data = entity.Data,
+                Url = entity.Url
             };
 
         }
+
+        public async Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url)
+        {
+
+            var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();  // && t.Month == [getcurrentmonth]
+
+            return new TimeSheetViewModel
+            {
+                SheetID = entity.SheetID,
+                Id = entity.Id,
+                Project = entity.Project,
+                Month = entity.Month,
+                ProjectHours = entity.ProjectHours,
+                Overwork = entity.Overwork,
+                Sick = entity.Sick,
+                Absence = entity.Absence,
+                Training = entity.Training,
+                Other = entity.Other,
+                Submitted = entity.Submitted,
+                Approved = entity.Approved,
+                Data = entity.Data,
+                Url = entity.Url
+            };
+
+        }
+
+
 
         public TimeSheet GetOneTimeSheet(string url)
         {
@@ -170,6 +231,13 @@ namespace QienUrenMachien.Repositories
 
             });
             context.SaveChanges();
+        }
+
+        public async Task<List<TimeSheet>> GetUserOverview(string id)
+        {
+            var result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+
+            return result;
         }
     }
 }
