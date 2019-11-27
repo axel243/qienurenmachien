@@ -1,4 +1,4 @@
-﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+﻿@model QienUrenMachien.Entities.ApplicationUser
 @{
 	ViewData["Title"] = "Bekijk gebruiker";
 }
@@ -10,15 +10,21 @@
 
 <table style="width:100%;">
 	<tr>
-		<th>ID</th>
-		<th>Naam</th>
-		<th>Email</th>
+		<th>Gebruikersnaam</th>
+		<th>Voornaam</th>
+		<th>Achternaam</th>
+		<th>Woonplaats</th>
+		<th>Straat</th>
 		<th>Telefoon</th>
+		<th>ID</th>
 	</tr>
-		<tr>
-			<td>@Model.Id</td>
-			<td>@Model.UserName</td>
-			<td>@Model.Email</td>
-			<td>@Model.PhoneNumber</td>
-		</tr>
+	<tr>
+		<td>@Model.UserName</td>
+		<td>@Model.Firstname</td>
+		<td>@Model.Lastname</td>
+		<td>@Model.City</td>
+		<td>@Model.Street</td>
+		<td>@Model.PhoneNumber</td>
+		<td>@Model.Id</td>
+	</tr>
 </table>
