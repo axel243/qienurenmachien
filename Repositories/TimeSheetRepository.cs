@@ -94,7 +94,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, Year = t.Year, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month))
                 .ToListAsync();
         }
@@ -114,7 +114,7 @@ namespace QienUrenMachien.Repositories
         public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
 
-            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
+            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
        
 
             return new TimeSheetViewModel
@@ -165,7 +165,7 @@ namespace QienUrenMachien.Repositories
         public async Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url)
         {
 
-            var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();  // && t.Month == [getcurrentmonth]
+            var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();
 
             return new TimeSheetViewModel
             {
