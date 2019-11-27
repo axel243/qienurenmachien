@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
@@ -27,10 +28,16 @@ namespace QienUrenMachien.Controllers
             this.repo = repo;
         }
 
-        public IActionResult AdminDashboard()
+        public async Task<IActionResult> AdminDashboard(string searchString)
         {
             var userlist = userManager.Users;
-            return View(userlist);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                userlist = userlist.Where(u => u.UserName.Contains(searchString));
+            }
+
+            return View(await userlist.ToListAsync());
         }
 
 

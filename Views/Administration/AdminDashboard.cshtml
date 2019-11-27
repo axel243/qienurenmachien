@@ -11,6 +11,12 @@
 		<p>Overzicht van alle accounts.</p>
 	</div>
 
+	<form asp-controller="Administration" asp-action="AdminDashboard">
+		<p>
+			Zoek: <input type="text" name="SearchString" style="border-radius: 5px; background-color: #e6e6e6; border: none;"/>
+		</p>
+	</form>
+
 	<table style="width:100%;">
 		<tr>
 			<th>Naam</th>
