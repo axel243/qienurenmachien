@@ -33,5 +33,6 @@ namespace QienUrenMachien.Models
         public virtual string ProfileImageUrl { get; set; }
         public virtual string BankNumber { get; set; }
         public virtual string NewProfile { get; set; }
+        public string Role { get; set; }
     }
 }
