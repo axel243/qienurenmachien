@@ -2,9 +2,9 @@
 @using Newtonsoft.Json.Linq;
 @model TimeSheetViewModel
 @{
-    ViewData["Title"] = "Urenformulier";
-    int x = 1;
-    int y = 0;
+	ViewData["Title"] = "Urenformulier";
+	int x = 1;
+	int y = 0;
 }
 
 <h1>Urenformulier van gebruiker</h1>
@@ -12,91 +12,107 @@
 <p hidden id="SheetID">@Model.SheetID</p>
 
 
-<table style="width:100%;">
-    <tr>
-        <th>Project</th>
-        <th>Maand</th>
-        <th>Projecturen</th>
-        <th>Overwerk</th>
-        <th>Ziek</th>
-        <th>Afwezig</th>
-        <th>Training</th>
-        <th>Overige</th>
-        <th>Ingeleverd</th>
-        <th>Goedgekeurd</th>
-    </tr>
-    <tr>
-        <td>@Model.Project</td>
-        <td>@Model.Month</td>
-        <td>@Model.ProjectHours</td>
-        <td>@Model.Overwork</td>
-        <td>@Model.Sick</td>
-        <td>@Model.Absence</td>
-        <td>@Model.Training</td>
-        <td>@Model.Other</td>
-        <td>@Model.Submitted</td>
-        <td>@Model.Approved</td>
-    </tr>
+<table id="OverViewTable" style="width:100%;">
+	<tr>
+		<th>Project</th>
+		<th>Maand</th>
+		<th>Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
+		<th>Ingeleverd</th>
+		<th>Goedgekeurd</th>
+	</tr>
+	<tr>
+		<td>@Model.Project</td>
+		<td>@Model.Month</td>
+		<td>@Model.ProjectHours</td>
+		<td>@Model.Overwork</td>
+		<td>@Model.Sick</td>
+		<td>@Model.Absence</td>
+		<td>@Model.Training</td>
+		<td>@Model.Other</td>
+		<td>@Model.Submitted</td>
+		<td>@Model.Approved</td>
+	</tr>
 </table>
 <br />
 
 
 <table id="TimeSheetTable" style="width:100%;">
-    <tr>
-        <th>Dag</th>
-        <th>Projecturen</th>
-        <th>Overwerk</th>
-        <th>Ziek</th>
-        <th>Afwezig</th>
-        <th>Training</th>
-        <th>Overige</th>
-    </tr>
+	<tr>
+		<th>Dag</th>
+		<th>Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
+	</tr>
 
-    @if (Model.Submitted == true)
-    {
-        @foreach (var day in JObject.Parse(Model.Data))
-        {
-            <tr>
-                <td>@day.Key</td>
-                <td>@day.Value["projecthours"]</td>
-                <td>@day.Value["overwork"]</td>
-                <td>@day.Value["sick"]</td>
-                <td>@day.Value["absence"]</td>
-                <td>@day.Value["training"]</td>
-                <td>@day.Value["other"]</td>
-            </tr>
-        }
-    }
-    else
-    {
+	@if (Model.Submitted == true)
+	{
+		@foreach (var day in JObject.Parse(Model.Data))
+		{
+			<tr>
+				<td>@day.Key</td>
+				<td>@day.Value["projecthours"]</td>
+				<td>@day.Value["overwork"]</td>
+				<td>@day.Value["sick"]</td>
+				<td>@day.Value["absence"]</td>
+				<td>@day.Value["training"]</td>
+				<td>@day.Value["other"]</td>
+			</tr>
+		}
+	}
+	else
+	{
 
 
 
-        @foreach (var day in JObject.Parse(Model.Data))
-        {
-            <tr>
-                <td>@day.Key</td>
-                <td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
-                <td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y+1)"></td>
-                <td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y+2)"></td>
-                <td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y+3)"></td>
-                <td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y+4)"></td>
-                <td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y+5)"></td>
-            </tr>
-            x++;
-        }
-    }
+		@foreach (var day in JObject.Parse(Model.Data))
+		{
+			DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, Convert.ToInt32(day.Key));
+			@if (dt.ToString("dddd") == "Saturday" || dt.ToString("dddd") == "Sunday")
+			{
+			<tr style="background-color: #f3f3f3">
+				<td>@dt.ToString("dddd") @day.Key</td>
+				<td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
+				<td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y + 1)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y + 2)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y + 3)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y + 4)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y + 5)"></td>
+			</tr>
+			}
+			else
+			{		
+			<tr>
+				<td>@dt.ToString("dddd") @day.Key</td>
+				<td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
+				<td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y + 1)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y + 2)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y + 3)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y + 4)"></td>
+				<td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y + 5)"></td>
+			</tr>
+			}
+			x++;
+		}
+	}
 
 </table>
 
 
 <div class="form-group row">
-    <div class="col-sm-10">
-        <a class="btn btn-primary" asp-action="SubmitTimeSheet"
-           asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
-        <a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
-           asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
-    </div>
+	<div class="col-sm-10">
+		<a class="btn btn-primary" asp-action="SubmitTimeSheet"
+		   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+		<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
+		   asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
+	</div>
 </div>
 
 

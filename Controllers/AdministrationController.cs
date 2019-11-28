@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
@@ -27,11 +28,55 @@ namespace QienUrenMachien.Controllers
             this.repo = repo;
         }
 
-        public IActionResult AdminDashboard()
+        public async Task<IActionResult> AdminDashboard(string searchString)
         {
             var userlist = userManager.Users;
-            return View(userlist);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                userlist = userlist.Where(u => u.UserName.Contains(searchString));
+            }
+
+            return View(await userlist.ToListAsync());
         }
+
+
+        [HttpGet]
+        public IActionResult RegisterUser()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email,
+                Firstname = model.Firstname,
+                Lastname = model.Lastname,
+                Street = model.Street,
+                City = model.City,
+                Zipcode = model.Zipcode,
+                PhoneNumber = model.PhoneNumber,
+                Country = model.Country
+    };
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("AdminDashboard", "Administration");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
+
 
         public IActionResult ViewUser(string Id)
         {
@@ -41,7 +86,7 @@ namespace QienUrenMachien.Controllers
 
         public async Task<IActionResult> TimeSheetOverview()
         {
-            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM") };
+            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM"), Year = DateTime.Now.Year };
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
             model.Months = repo.GetMonths();

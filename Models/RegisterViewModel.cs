@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using QienUrenMachien.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QienUrenMachien.Models
 {
-    public class RegisterViewModel
+    public class RegisterViewModel 
     {
         [Required]
         [EmailAddress]
@@ -21,5 +23,15 @@ namespace QienUrenMachien.Models
         [Compare("Password",
             ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public virtual string Firstname { get; set; }
+        public virtual string Lastname { get; set; }
+        public virtual string Street { get; set; }
+        public virtual string City { get; set; }
+        public virtual string PhoneNumber { get; set; }
+        public virtual string Zipcode { get; set; }
+        public virtual string Country { get; set; }
+        public virtual string ProfileImageUrl { get; set; }
+        public virtual string BankNumber { get; set; }
+        public virtual string NewProfile { get; set; }
     }
 }

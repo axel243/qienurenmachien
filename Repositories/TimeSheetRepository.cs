@@ -38,7 +38,7 @@ namespace QienUrenMachien.Repositories
             Console.WriteLine(userId);
             TimeSheet _timeSheet = new TimeSheet();
             _timeSheet.Id = userId;
-            _timeSheet.Month = "January";
+            _timeSheet.Month = DateTime.Now.ToString("MMMM");
             _timeSheet.ProjectHours = 0;
             _timeSheet.Overwork = 0;
             _timeSheet.Sick = 0;
@@ -48,6 +48,7 @@ namespace QienUrenMachien.Repositories
             _timeSheet.Submitted = false;
             _timeSheet.Approved = "Not submitted";
             _timeSheet.Data = data;
+            _timeSheet.Url = Guid.NewGuid().ToString();
 
             var result = context.Add(_timeSheet);
             context.SaveChanges();
@@ -93,7 +94,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, Year = t.Year, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month))
                 .ToListAsync();
         }
@@ -113,7 +114,7 @@ namespace QienUrenMachien.Repositories
         public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         {
 
-            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);  // && t.Month == [getcurrentmonth]
+            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
        
 
             return new TimeSheetViewModel
@@ -164,7 +165,7 @@ namespace QienUrenMachien.Repositories
         public async Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url)
         {
 
-            var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();  // && t.Month == [getcurrentmonth]
+            var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();
 
             return new TimeSheetViewModel
             {
@@ -233,6 +234,28 @@ namespace QienUrenMachien.Repositories
         public async Task<List<TimeSheet>> GetUserOverview(string id)
         {
             var result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+
+            if (result.Count == 0)
+            {
+                DateTime dt = DateTime.Now;
+
+                int nDays = DateTime.DaysInMonth(2019, dt.Month);
+                string data = "{";
+
+                for (int i = 1; i <= nDays; i++)
+                {
+                    DayJulian _day = new DayJulian();
+                    data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
+                    if (i != nDays)
+                    {
+                        data += ", ";
+                    }
+                }
+                data += "}";
+
+                TimeSheet entity2 = AddTimeSheet(id, data);
+                result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+            }
 
             return result;
         }
