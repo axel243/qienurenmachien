@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
+
+@model IEnumerable<IdentityUser>
+
+<div class="text-center">
+    <h1 class="display-4">Overzicht Profielen</h1>
+    <p>Overzicht van alle gewijzigde profielen in afwachting</p>
+</div>
+
+
+<table style="width:100%;">
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Bekijk</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.UserName</td>
+            <td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = user.Id })</td>
+        </tr>
+    }
+</table>
