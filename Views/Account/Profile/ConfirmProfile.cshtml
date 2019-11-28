@@ -1,6 +1,7 @@
 ﻿@using QienUrenMachien.Entities
 @model ApplicationUser
 
+
 @{
     ViewData["Title"] = "ConfirmProfile";
     ApplicationUser User = ViewBag.User;
@@ -159,7 +160,8 @@
                     <label asp-for="ProfileImageUrl">Link profielfoto</label>
                     <input asp-for="ProfileImageUrl" class="form-control" readonly />
                 </div>
-                <button type="submit" class="btn btn-primary">Accepteren</button>
+                <button type="submit" class="btn btn-primary" formaction="AcceptedProfile">Accepteren</button>
+                <button type="submit" class="btn btn-primary" formaction="DeniedProfile">Weigeren</button>
             </form>
         </div>
     </div>
