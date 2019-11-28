@@ -95,6 +95,7 @@ namespace QienUrenMachien.Controllers
 
             var jsonProfile = currentUser.NewProfile;
 
+            ViewBag.User = currentUser;
 
             var x = JsonConvert.DeserializeObject<ApplicationUser>(jsonProfile);
             ApplicationUser tempUser = new ApplicationUser();
@@ -105,11 +106,7 @@ namespace QienUrenMachien.Controllers
             tempUser.Country = x.Country;
             tempUser.ProfileImageUrl = x.ProfileImageUrl;
 
-            return View(@"~/Views/Account/Profile/ConfirmProfile.cshtml", new List<ApplicationUser>()
-                                                                            {
-                                                                            currentUser,
-                                                                            tempUser
-                                                                            });
+            return View(@"~/Views/Account/Profile/ConfirmProfile.cshtml", tempUser);
         }
 
 
@@ -123,11 +120,19 @@ namespace QienUrenMachien.Controllers
 
             if (currentUser == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                //ViewBag.ErrorMessage = $"User with Id = {model[0].Id} cannot be found";
                 return View("NotFound");
             }
             else
             {
+                //currentUser.Street = model[0].Street;
+                //currentUser.PhoneNumber = model[0].PhoneNumber;
+                //currentUser.Zipcode = model[0].Zipcode;
+                //currentUser.City = model[0].City;
+                //currentUser.Country = model[0].Country;
+                //currentUser.ProfileImageUrl = model[0].ProfileImageUrl;
+                //currentUser.NewProfile = null;
+
                 currentUser.Street = model.Street;
                 currentUser.PhoneNumber = model.PhoneNumber;
                 currentUser.Zipcode = model.Zipcode;
