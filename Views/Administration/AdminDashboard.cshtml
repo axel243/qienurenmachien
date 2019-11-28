@@ -19,16 +19,16 @@
 
 	<table style="width:100%;">
 		<tr>
-			<th>Naam</th>
-			<th>ID</th>
-			<th>Bekijk</th>
+			<th style="text-align: left;">Naam</th>
+			<th style="text-align: left;">ID</th>
+			<th style="text-align: left;">Bekijk</th>
 		</tr>
 		@foreach (var role in Model)
 		{
 			<tr>
-				<td><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.UserName</td>
-				<td>@role.Id</td>
-				<td>@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
+				<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.UserName</td>
+				<td style="text-align: left;">@role.Id</td>
+				<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
 			</tr>
 		}
 	</table>
