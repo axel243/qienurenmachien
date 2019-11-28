@@ -112,7 +112,7 @@ namespace QienUrenMachien.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmProfile(ApplicationUser model)
+        public async Task<IActionResult> AcceptedProfile(ApplicationUser model)
         {
 
             var userid = "a30d8e07-d447-4aa1-84d7-3e0b302b4d01";
@@ -151,31 +151,31 @@ namespace QienUrenMachien.Controllers
                 return View(currentUser);
             }
         }
-        //[HttpPost]
-        //public async Task<IActionResult> OnPostDeny()
-        //{
-        //    var userid = "a30d8e07-d447-4aa1-84d7-3e0b302b4d01";
-        //    ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
-        //    if (currentUser == null)
-        //    {
-        //        ViewBag.ErrorMessage = $"User with Id = {currentUser.Id} cannot be found";
-        //        return View("NotFound");
-        //    }
-        //    else
-        //    {
-        //        // field in db legen
-        //        currentUser.NewProfile = "";
+        [HttpPost]
+        public async Task<IActionResult> DeniedProfile()
+        {
+            var userid = "a30d8e07-d447-4aa1-84d7-3e0b302b4d01";
+            ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
-        //        // Update the user using UpdateAsync
-        //        var result = await userManager.UpdateAsync(currentUser);
+            if (currentUser == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {currentUser.Id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                // field in db legen
+                currentUser.NewProfile = null;
+                // Update the user using UpdateAsync
+                var result = await userManager.UpdateAsync(currentUser);
 
-        //        if (result.Succeeded)
-        //        {
-        //            return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
-        //        }
-        //        return View(currentUser);
-        //    }
-        //}
+                if (result.Succeeded)
+                {
+                    return View(@"~/Views/Account/Profile/DeniedProfile.cshtml");
+                }
+                return View(currentUser);
+            }
+        }
     }
 }
