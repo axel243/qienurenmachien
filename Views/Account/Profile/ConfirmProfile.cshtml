@@ -1,0 +1,168 @@
+﻿@using QienUrenMachien.Entities
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = "ConfirmProfile";
+    ApplicationUser User = ViewBag.User;
+}
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Huidige Profiel</h3>
+            <form>
+                <input type="hidden" asp-for="@User.Id" />
+                <div class="form-group">
+                    <label asp-for="@User.UserName">Email / Username</label>
+                    <input asp-for="@User.UserName" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.Firstname">Voornaam</label>
+                    <input asp-for="@User.Firstname" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.Lastname">Achternaam</label>
+                    <input asp-for="@User.Lastname" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.PhoneNumber">Telefoon</label>
+                    <input asp-for="@User.PhoneNumber" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.Street">Straat + huisnr</label>
+                    <input asp-for="@User.Street" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.Zipcode">Postcode</label>
+                    <input asp-for="@User.Zipcode" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.City">Woonplaats</label>
+                    <input asp-for="@User.City" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.Country">Land</label>
+                    <input asp-for="@User.Country" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@User.ProfileImageUrl">Link profielfoto</label>
+                    <input asp-for="@User.ProfileImageUrl" class="form-control" readonly />
+                </div>
+            </form>
+        </div>
+
+        @*<div class="col-sm-6">
+            <h3>Nieuwe Profiel</h3>
+            <form method="post">
+                <input type="hidden" asp-for="@Model[1].Id" />
+                <div class="form-group">
+                    <label asp-for="@Model[1].UserName">Email / Username</label>
+                    <input asp-for="@Model[1].UserName" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].Firstname">Voornaam</label>
+                    <input asp-for="@Model[1].Firstname" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].Lastname">Achternaam</label>
+                    <input asp-for="@Model[1].Lastname" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].PhoneNumber">Telefoon</label>
+                    <input asp-for="@Model[1].PhoneNumber" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].Street">Straat + huisnr</label>
+                    <input asp-for="@Model[1].Street" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].Zipcode">Postcode</label>
+                    <input asp-for="@Model[1].Zipcode" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].City">Woonplaats</label>
+                    <input asp-for="@Model[1].City" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].Country">Land</label>
+                    <input asp-for="@Model[1].Country" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[1].ProfileImageUrl">Link profielfoto</label>
+                    <input asp-for="@Model[1].ProfileImageUrl" class="form-control" readonly />
+                </div>
+                <button type="submit" class="btn btn-primary">Accepteren</button>
+            </form>
+        </div>*@
+
+        <div class="col-sm-6">
+            <h3>Nieuwe Profiel</h3>
+            <form method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="UserName">Email / Username</label>
+                    <input asp-for="UserName" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Firstname">Voornaam</label>
+                    <input asp-for="Firstname" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Lastname">Achternaam</label>
+                    <input asp-for="Lastname" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Telefoon</label>
+                    <input asp-for="PhoneNumber" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Street">Straat + huisnr</label>
+                    <input asp-for="Street" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Zipcode">Postcode</label>
+                    <input asp-for="Zipcode" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="City">Woonplaats</label>
+                    <input asp-for="City" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Country">Land</label>
+                    <input asp-for="Country" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ProfileImageUrl">Link profielfoto</label>
+                    <input asp-for="ProfileImageUrl" class="form-control" readonly />
+                </div>
+                <button type="submit" class="btn btn-primary">Accepteren</button>
+            </form>
+        </div>
+    </div>
+
+
+
