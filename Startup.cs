@@ -37,7 +37,7 @@ namespace QienUrenMachien
                             opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<RepositoryContext>();
+                .AddEntityFrameworkStores<RepositoryContext>().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
