@@ -48,6 +48,7 @@ namespace QienUrenMachien.Repositories
             _timeSheet.Submitted = false;
             _timeSheet.Approved = "Not submitted";
             _timeSheet.Data = data;
+            _timeSheet.Comment = "";
 
             var result = context.Add(_timeSheet);
             context.SaveChanges();
@@ -166,7 +167,8 @@ namespace QienUrenMachien.Repositories
                 Absence = timeSheetModel.Absence,
                 Training = timeSheetModel.Training,
                 Other = timeSheetModel.Other,
-                Data = timeSheetModel.Data
+                Data = timeSheetModel.Data,
+                Comment = timeSheetModel.Comment
 
             });
             context.SaveChanges();

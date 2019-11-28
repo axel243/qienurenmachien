@@ -32,6 +32,7 @@ namespace QienUrenMachien.Entities
         public string Data { get; set; }
         [NotMapped]
         public List<Day> days { get; set; }
+        public string Comment { get; set; }
 
         public string Url { get; set; }
     }
