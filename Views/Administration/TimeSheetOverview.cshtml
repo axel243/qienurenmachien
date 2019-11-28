@@ -34,7 +34,7 @@
 	totaalOverige += sheet.Other;
 }
 
-<h2>Totaal aantal uren van deze maand:</h2>
+<h2>Urentotaal van deze maand:</h2>
 <table style="width:100%;">
 	<tr>
 		<th>Projecturen</th>
@@ -68,6 +68,7 @@
 
 <table style="width:100%;">
 	<tr>
+		<th>Gebruiker</th>
 		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
@@ -82,6 +83,7 @@
 		{ "Month", sheet.Month }
 	};
 <tr>
+	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Id</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
@@ -97,6 +99,7 @@
 
 <table style="width:100%;">
 	<tr>
+		<th>Gebruiker</th>
 		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
@@ -111,6 +114,7 @@
 		{ "Month", sheet.Month }
 	};
 <tr>
+	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Id</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
