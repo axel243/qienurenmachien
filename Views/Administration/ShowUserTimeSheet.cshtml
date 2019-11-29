@@ -1,14 +1,19 @@
 ﻿@model QienUrenMachien.Models.TimeSheetViewModel
+@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
 @{
-    ViewData["Title"] = "Urenformulier";
+	ViewData["Title"] = "Urenformulier";
+	var user = userManager.FindByIdAsync(Model.Id);
 }
 
-<h1>Urenformulier van gebruiker</h1>
+<h1 style="text-align: center;">Urenformulier van @user.Result.UserName</h1>
 
 <table style="width:100%;">
 	<tr>
 		<th>Gebruiker ID</th>
 		<th>Maand</th>
+		<th>Jaar</th>
 		<th>Projecturen</th>
 		<th>Overwerk</th>
 		<th>Ziek</th>
@@ -21,6 +26,7 @@
 	<tr>
 		<td>@Model.Id</td>
 		<td>@Model.Month</td>
+		<td>@Model.Year</td>
 		<td>@Model.ProjectHours</td>
 		<td>@Model.Overwork</td>
 		<td>@Model.Sick</td>

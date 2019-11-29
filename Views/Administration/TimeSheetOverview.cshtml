@@ -1,17 +1,64 @@
 ﻿@model QienUrenMachien.Models.TimeSheetsViewModel
 @{
 	ViewBag.Title = "TimeSheetOverview";
+	double totaalProjecturen = 0;
+	double totaalOverwerk = 0;
+	double totaalZiek = 0;
+	double totaalAfwezig = 0;
+	double totaalTraining = 0;
+	double totaalOverige = 0;
+
 }
 <div class="text-center">
 	<h1 class="display-4">Timesheet overzicht</h1>
 	<p>De timesheet-statuses van trainees en werknemers.</p>
 </div>
 
+@foreach (var sheet in Model.Trainees)
+{
+	totaalProjecturen += sheet.ProjectHours;
+	totaalOverwerk += sheet.Overwork;
+	totaalZiek += sheet.Sick;
+	totaalAfwezig += sheet.Absence;
+	totaalTraining += sheet.Training;
+	totaalOverige += sheet.Other;
+}
+
+@foreach (var sheet in Model.Employees)
+{
+	totaalProjecturen += sheet.ProjectHours;
+	totaalOverwerk += sheet.Overwork;
+	totaalZiek += sheet.Sick;
+	totaalAfwezig += sheet.Absence;
+	totaalTraining += sheet.Training;
+	totaalOverige += sheet.Other;
+}
+
+<h2>Urentotaal van deze maand:</h2>
+<table style="width:100%;">
+	<tr>
+		<th>Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
+	</tr>
+	<tr>
+		<td>@totaalProjecturen</td>
+		<td>@totaalOverwerk</td>
+		<td>@totaalZiek</td>
+		<td>@totaalAfwezig</td>
+		<td>@totaalTraining</td>
+		<td>@totaalOverige</td>
+	</tr>
+</table>
+
 <h2>Maand: @Model.Month</h2>
 <form asp-controller="Administration" asp-action="TimeSheetOverview" method="post">
 	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected">
 	</select>
-	<input class="btn btn-default" style="" type="submit" value="Kies"/>
+	<input class="btn btn-default" style="" type="submit" value="Kies" />
 </form>
 
 <div class="text-center">
@@ -21,6 +68,7 @@
 
 <table style="width:100%;">
 	<tr>
+		<th>Gebruiker</th>
 		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
@@ -29,12 +77,13 @@
 	@foreach (var sheet in Model.Trainees)
 	{
 
-	var details = new Dictionary<string, string>
-	{
+		var details = new Dictionary<string, string>
+{
 		{ "Id", sheet.Id },
 		{ "Month", sheet.Month }
 	};
 <tr>
+	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Id</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
@@ -50,6 +99,7 @@
 
 <table style="width:100%;">
 	<tr>
+		<th>Gebruiker</th>
 		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
@@ -58,12 +108,13 @@
 	@foreach (var sheet in Model.Employees)
 	{
 
-	var details = new Dictionary<string, string>
-	{
+		var details = new Dictionary<string, string>
+{
 		{ "Id", sheet.Id },
 		{ "Month", sheet.Month }
 	};
 <tr>
+	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Id</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>

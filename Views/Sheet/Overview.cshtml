@@ -1,0 +1,32 @@
+﻿
+@model List<QienUrenMachien.Entities.TimeSheet>
+@{
+    ViewBag.Title = "TimeSheetOverview";
+}
+<div class="text-center">
+    <h1 class="display-4">Timesheet overzicht</h1>
+    <p>Overzicht van jouw timesheet-statuses.</p>
+</div>
+
+<table style="width:100%;">
+    <tr>
+        <th>Opdracht</th>
+        <th>Maand</th>
+        <th>Ingeleverd</th>
+        <th>Goedgekeurd</th>
+        <th>Toon urenformulier</th>
+    </tr>
+    @foreach (var sheet in Model)
+    {
+
+        var url = sheet.Url;
+<tr>
+    <td>@sheet.Project</td>
+    <td>@sheet.Month</td>
+    <td>@sheet.Submitted</td>
+    <td>@sheet.Approved</td>
+    <td><a asp-controller="Sheet" asp-action="UserTimeSheet" asp-route-url="@url">Bekijk</a></td>
+</tr>
+}
+</table>
+
