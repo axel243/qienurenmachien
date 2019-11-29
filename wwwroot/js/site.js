@@ -13,22 +13,58 @@ function TableToString() {
         var day = {};
         for (c = 0; c < 6; c++) {
             if (c == 0) {
-                day.projecthours = document.getElementById("" + r + c).value;
+                if (document.getElementById("" + r + c).value == "") {
+                    day.projecthours = 0;
+                }
+                else {
+
+                    day.projecthours = document.getElementById("" + r + c).value;
+                }
             }
             else if (c == 1) {
-                day.overwork = document.getElementById("" + r + c).value;
+                if (document.getElementById("" + r + c).value == "") {
+                    day.overwork = 0;
+                }
+                else {
+
+                    day.overwork = document.getElementById("" + r + c).value;
+                }
             }
             else if (c == 2) {
-                day.sick = document.getElementById("" + r + c).value;
+                if (document.getElementById("" + r + c).value == "") {
+                    day.sick = 0;
+                }
+                else {
+
+                    day.sick = document.getElementById("" + r + c).value;
+                }
             }
             else if (c == 3) {
-                day.absence = document.getElementById("" + r + c).value;
+                if (document.getElementById("" + r + c).value == "") {
+                    day.absence = 0;
+                }
+                else {
+
+                    day.absence = document.getElementById("" + r + c).value;
+                }
             }
             else if (c == 4) {
-                day.training = document.getElementById("" + r + c).value;
+                if (document.getElementById("" + r + c).value == "") {
+                    day.training = 0;
+                }
+                else {
+
+                    day.training = document.getElementById("" + r + c).value;
+                }
             }
             else if (c == 5) {
-                day.other = document.getElementById("" + r + c).value;
+                if (document.getElementById("" + r + c).value == "") {
+                    day.other = 0;
+                }
+                else {
+
+                    day.other = document.getElementById("" + r + c).value;
+                }
             }
         }
         data[r] = day;
@@ -36,7 +72,7 @@ function TableToString() {
 
     // Stringify object array
 
-    //console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data));
     let SheetID = document.getElementById("SheetID").innerHTML;
     connection.invoke("SendMessage", parseInt(SheetID), JSON.stringify(data)).catch(function (err) {
         return console.error(err.toString());
