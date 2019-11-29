@@ -51,6 +51,8 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
+            var role = await roleManager.FindByNameAsync(model.Role);
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email,
@@ -63,13 +65,17 @@ namespace QienUrenMachien.Controllers
                 Country = model.Country
     };
                 var result = await userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
+                var resultRole = await userManager.AddToRoleAsync(user, role.Name);
+                if (result.Succeeded && resultRole.Succeeded)
                 {
                     return RedirectToAction("AdminDashboard", "Administration");
                 }
 
                 foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                foreach (var error in resultRole.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
