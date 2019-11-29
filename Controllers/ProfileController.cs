@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
 
 namespace QienUrenMachien.Controllers
 {
@@ -15,11 +16,13 @@ namespace QienUrenMachien.Controllers
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly MailServer mailServer;
 
         public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.mailServer = new MailServer();
         }
         public IActionResult Index()
         {
@@ -74,6 +77,7 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    mailServer.SendEditedProfileMail(currentUser.UserName, currentUser.Firstname);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
                 return View(currentUser);
@@ -119,7 +123,8 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> AcceptedProfile(ApplicationUser model)
         {
-           
+            var adminid = userManager.GetUserId(HttpContext.User);
+            var adminuser = await userManager.FindByIdAsync(adminid);
             var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
@@ -145,6 +150,7 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    mailServer.SendAcceptedProfileMail(currentUser.UserName, adminuser.UserName);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
                 return View(currentUser);
@@ -154,6 +160,9 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> DeniedProfile(ApplicationUser model)
         {
+            var adminid = userManager.GetUserId(HttpContext.User);
+            var adminuser = await userManager.FindByIdAsync(adminid);
+
             var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
@@ -171,6 +180,8 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    mailServer.SendDeclinedProfileMail(currentUser.UserName, adminuser.UserName);
+
                     return View(@"~/Views/Account/Profile/DeniedProfile.cshtml");
                 }
                 return View(currentUser);
