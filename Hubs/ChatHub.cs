@@ -19,10 +19,11 @@ namespace QienUrenMachien.Hubs
             this.repo = repo;
         }
 
-        public async Task SendMessage(int SheetID, string data)
+        public async Task SendMessage(int SheetID, string data, string comment)
         {
             Console.WriteLine(SheetID);
             Console.WriteLine(data);
+            Console.WriteLine(comment);
             var _timeSheet = await repo.GetTimeSheet(SheetID);
 
             _timeSheet.Data = data;
@@ -36,6 +37,7 @@ namespace QienUrenMachien.Hubs
             double absence = 0;
             double training = 0;
             double other = 0;
+           
 
             foreach (var item in JSONobj)
             {
@@ -53,6 +55,7 @@ namespace QienUrenMachien.Hubs
             _timeSheet.Absence = absence;
             _timeSheet.Training = training;
             _timeSheet.Other = other;
+            _timeSheet.Comment = comment;
 
             var TableUpdate = new
             {
@@ -65,7 +68,8 @@ namespace QienUrenMachien.Hubs
                 Training = _timeSheet.Training,
                 Other = _timeSheet.Other,
                 Submitted = _timeSheet.Submitted,
-                Approved = _timeSheet.Approved
+                Approved = _timeSheet.Approved,
+                Comment = _timeSheet.Comment
 
             };
 

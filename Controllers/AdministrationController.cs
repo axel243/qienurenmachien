@@ -19,7 +19,7 @@ namespace QienUrenMachien.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ITimeSheetRepository repo;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, 
+        public AdministrationController(RoleManager<IdentityRole> roleManager,
                                         UserManager<ApplicationUser> userManager,
                                         ITimeSheetRepository repo)
         {
@@ -40,10 +40,11 @@ namespace QienUrenMachien.Controllers
             return View(await userlist.ToListAsync());
         }
 
-
+        [Route("Administration/RegisterUser")]
         [HttpGet]
-        public IActionResult RegisterUser()
+        public async Task <IActionResult> RegisterUser()
         {
+            var usersAreWerkgevers = userManager.GetUsersInRoleAsync("Werkgever");  
 
             return View();
         }
