@@ -51,8 +51,6 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
-            var role = await roleManager.FindByNameAsync(model.Role);
-
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email,
@@ -65,17 +63,13 @@ namespace QienUrenMachien.Controllers
                 Country = model.Country
     };
                 var result = await userManager.CreateAsync(user, model.Password);
-                var resultRole = await userManager.AddToRoleAsync(user, role.Name);
-                if (result.Succeeded && resultRole.Succeeded)
+
+                if (result.Succeeded)
                 {
                     return RedirectToAction("AdminDashboard", "Administration");
                 }
 
                 foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-                foreach (var error in resultRole.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
@@ -92,7 +86,7 @@ namespace QienUrenMachien.Controllers
 
         public async Task<IActionResult> TimeSheetOverview()
         {
-            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM"), Year = DateTime.Now.Year };
+            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM") };
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
             model.Months = repo.GetMonths();

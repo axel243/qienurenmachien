@@ -71,7 +71,7 @@ namespace QienUrenMachien.Repositories
 
         public async Task<TimeSheet> GetTimeSheet(string id)
         {
-            return context.TimeSheets.Where(c => c.Id == id && c.Month == "January").SingleOrDefault();
+            return await context.TimeSheets.Where(c => c.Id == id && c.Month == "January").SingleOrDefaultAsync();
         }
 
         public List<SelectListItem> GetMonths()
@@ -96,7 +96,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, Year = t.Year, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month))
                 .ToListAsync();
         }
@@ -159,7 +159,7 @@ namespace QienUrenMachien.Repositories
                 Other = entity.Other,
                 Submitted = entity.Submitted,
                 Data = entity.Data,
-                Url = entity.Url
+                Url = entity.Url,
             };
 
         }

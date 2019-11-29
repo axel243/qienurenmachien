@@ -35,5 +35,7 @@ namespace QienUrenMachien.Entities
         public string Comment { get; set; }
 
         public string Url { get; set; }
+
+        public DateTime theDate { get; set; }
     }
 }

@@ -8,6 +8,13 @@
 	double totaalTraining = 0;
 	double totaalOverige = 0;
 
+	double totaalProjecturen2 = 0;
+	double totaalOverwerk2 = 0;
+	double totaalZiek2 = 0;
+	double totaalAfwezig2 = 0;
+	double totaalTraining2 = 0;
+	double totaalOverige2 = 0;
+
 }
 <div class="text-center">
 	<h1 class="display-4">Timesheet overzicht</h1>
@@ -26,15 +33,15 @@
 
 @foreach (var sheet in Model.Employees)
 {
-	totaalProjecturen += sheet.ProjectHours;
-	totaalOverwerk += sheet.Overwork;
-	totaalZiek += sheet.Sick;
-	totaalAfwezig += sheet.Absence;
-	totaalTraining += sheet.Training;
-	totaalOverige += sheet.Other;
+	totaalProjecturen2 += sheet.ProjectHours;
+	totaalOverwerk2 += sheet.Overwork;
+	totaalZiek2 += sheet.Sick;
+	totaalAfwezig2 += sheet.Absence;
+	totaalTraining2 += sheet.Training;
+	totaalOverige2 += sheet.Other;
 }
 
-<h2>Urentotaal van deze maand:</h2>
+<h2>Trainees urentotaal van deze maand:</h2>
 <table style="width:100%;">
 	<tr>
 		<th>Projecturen</th>
@@ -51,6 +58,26 @@
 		<td>@totaalAfwezig</td>
 		<td>@totaalTraining</td>
 		<td>@totaalOverige</td>
+	</tr>
+</table>
+
+<h2>Werknemers urentotaal van deze maand:</h2>
+<table style="width:100%;">
+	<tr>
+		<th>Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
+	</tr>
+	<tr>
+		<td>@totaalProjecturen2</td>
+		<td>@totaalOverwerk2</td>
+		<td>@totaalZiek2</td>
+		<td>@totaalAfwezig2</td>
+		<td>@totaalTraining2</td>
+		<td>@totaalOverige2</td>
 	</tr>
 </table>
 
