@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using QienUrenMachien.Entities;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,14 @@ namespace QienUrenMachien.Models
         public string Role { get; set; }
         public string Werkgever { get; set; }
 
-        public UserManager<ApplicationUser> userManager;
+        public List<SelectListItem> Werkgevers { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "MX", Text = "Mexico" },
+            new SelectListItem { Value = "CA", Text = "Canada" },
+            new SelectListItem { Value = "US", Text = "USA"  },
+        };
 
-       
+
 
     }
 }

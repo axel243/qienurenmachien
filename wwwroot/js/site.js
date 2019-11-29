@@ -74,10 +74,13 @@ function TableToString() {
 
     console.log(JSON.stringify(data));
     let SheetID = document.getElementById("SheetID").innerHTML;
-    connection.invoke("SendMessage", parseInt(SheetID), JSON.stringify(data)).catch(function (err) {
+    let comment = document.getElementById("Comment").value;
+    console.log(comment)
+    connection.invoke("SendMessage", parseInt(SheetID), JSON.stringify(data), comment).catch(function (err) {
         return console.error(err.toString());
     });
     console.log("Updated database");
+   
 }
 
 
@@ -96,7 +99,9 @@ connection.start().then(function () {
 
 connection.on("ReceiveMessage", function (jsonObject) {
     var encodedMsg = JSON.parse(jsonObject);
-
+    console.log(encodedMsg.Comment)
+    var comment = document.getElementById("Comment")
+    comment.innerHTML = encodedMsg.Comment;
     var table = document.getElementById("OverViewTable");
     var row = table.insertRow(1);
     var index = 0;
@@ -106,7 +111,7 @@ connection.on("ReceiveMessage", function (jsonObject) {
         cel.innerHTML = value;
         index++;
     };
-
+   
     document.getElementById("OverViewTable").deleteRow(-1);
     console.log(encodedMsg);
 
