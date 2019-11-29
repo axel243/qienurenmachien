@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using QienUrenMachien.Entities;
 using Microsoft.Extensions.Logging;
+using QienUrenMachien.Mail;
 
 namespace QienUrenMachien.Controllers
 {
@@ -19,11 +20,13 @@ namespace QienUrenMachien.Controllers
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly MailServer mailServer;
 
         public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.mailServer = new MailServer();
         }
 
         public IActionResult Index()
@@ -190,11 +193,12 @@ namespace QienUrenMachien.Controllers
                 {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-                passwordResetLink = Url.Action("ResetPassword", "Account",                              //deze link moet in de mail verzonden worden
+                passwordResetLink = Url.Action("ResetPassword", "Account",
                     new { email = model.Email, token = token }, Request.Scheme);
 
-
-                return View("ForgotPasswordConfirmation", passwordResetLink);
+                    // hier wordt de mail verzonden met de wachtwoord resetlink
+                    mailServer.SendForgotPasswordMail(user.UserName, passwordResetLink);
+                    return View("ForgotPasswordConfirmation", passwordResetLink);
             }
             return View("ForgotPasswordConfirmation", passwordResetLink);
             }
