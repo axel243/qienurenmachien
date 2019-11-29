@@ -85,7 +85,7 @@ function TableToString() {
 
 
 // Whenever the input table get changed create new data string
-$("input").change(function() {
+$(("input", "textarea")).change(function() {
     TableToString();
 });
 

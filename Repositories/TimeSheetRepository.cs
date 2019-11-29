@@ -184,7 +184,8 @@ namespace QienUrenMachien.Repositories
                 Submitted = entity.Submitted,
                 Approved = entity.Approved,
                 Data = entity.Data,
-                Url = entity.Url
+                Url = entity.Url,
+                Comment = entity.Comment
             };
 
         }
