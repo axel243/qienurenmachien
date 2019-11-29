@@ -86,10 +86,11 @@ namespace QienUrenMachien.Controllers
 
         public async Task<IActionResult> TimeSheetOverview()
         {
-            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM") };
+            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM"), theDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1) };
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
             model.Months = repo.GetMonths();
+            model.Years = repo.GetYears();
             return View(model);
         }
 
@@ -99,6 +100,7 @@ namespace QienUrenMachien.Controllers
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
             model.Months = repo.GetMonths();
+            model.Years = repo.GetYears();
             return View(model);
         }
 
