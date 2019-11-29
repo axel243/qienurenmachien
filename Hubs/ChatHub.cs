@@ -21,6 +21,8 @@ namespace QienUrenMachien.Hubs
 
         public async Task SendMessage(int SheetID, string data)
         {
+            Console.WriteLine(SheetID);
+            Console.WriteLine(data);
             var _timeSheet = await repo.GetTimeSheet(SheetID);
 
             _timeSheet.Data = data;
