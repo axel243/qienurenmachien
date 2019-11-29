@@ -85,6 +85,10 @@
 <form asp-controller="Administration" asp-action="TimeSheetOverview" method="post">
 	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected">
 	</select>
+	@*<input class="btn btn-default" style="" type="submit" value="Kies" />*@
+	<h2>Jaar: @Model.theDate</h2>
+	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected">
+	</select>
 	<input class="btn btn-default" style="" type="submit" value="Kies" />
 </form>
 
