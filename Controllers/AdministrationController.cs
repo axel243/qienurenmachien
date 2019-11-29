@@ -44,7 +44,7 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task <IActionResult> RegisterUser()
         {
-            var usersAreWerkgevers = userManager.GetUsersInRoleAsync("Werkgever");  
+            var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");  
 
             return View();
         }
