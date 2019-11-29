@@ -49,7 +49,38 @@ namespace QienUrenMachien.Mail
 
             SendMail(recipient, subject, body);
         }
-        
-           
+
+        public void SendForgotPasswordMail(string recipient, string resetlink)
+        {
+            string subject = $"Link om het wachtwoord te resetten"; 
+            string body = "<br/> <a href=" + resetlink + ">Wachtwoord resetten</a>";
+            SendMail(recipient, subject, body);
+        }
+
+        public void SendEditedProfileMail(string recipient, string person)
+        {
+            //recipient zal de admin moeten zijn, nu zijn recipient en person nog gelijk
+            string subject = $"Verzoek profiels wijziging van {person}";
+            string body = $"{person} heeft een profielswijziging ingediend";
+            
+
+            SendMail(recipient, subject, body);
+        }
+        public void SendAcceptedProfileMail(string recipient, string admin)
+        {
+            string subject = "Profielwijziging is goedgekeurd";
+            string body = $"Het verzoek tot wijziging van je profiel is goedgekeurd door {admin}";
+
+            SendMail(recipient, subject, body);
+        }
+
+        public void SendDeclinedProfileMail(string recipient, string admin)
+        {
+            string subject = "Profielwijziging is afgekeurd";
+            string body = $"Het verzoek tot wijziging van je profiel is afgekeurd door {admin}";
+
+            SendMail(recipient, subject, body);
+        }
+
     }
 }
