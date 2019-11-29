@@ -194,7 +194,7 @@ namespace QienUrenMachien.Controllers
 
             _timeSheet.Submitted = true;
             var result = await repo.UpdateTimeSheet(_timeSheet);
-            mailServer.SendConfirmationMail("j.m.r.kramer@gmail.com", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
+            mailServer.SendConfirmationMail("m-adda@hotmail.nl", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }
