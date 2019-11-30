@@ -42,7 +42,7 @@ namespace QienUrenMachien.Controllers
 
         [Route("Administration/RegisterUser")]
         [HttpGet]
-        public async Task <IActionResult> RegisterUser()
+        public /*async Task*/ IActionResult RegisterUser()
         {
             var usersAreWerkgevers = userManager.GetUsersInRoleAsync("Werkgever");  
 
