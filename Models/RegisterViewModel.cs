@@ -37,7 +37,7 @@ namespace QienUrenMachien.Models
         public virtual string NewProfile { get; set; }
         public string Role { get; set; }
         public string Werkgever { get; set; }
-
+        public bool showWerkgever = false;
         public List<SelectListItem> Werkgevers{ get; set; }
 
 

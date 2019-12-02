@@ -3,6 +3,20 @@
 @{
     ViewBag.Title = "User Registration";
 }
+<script>
+    function hideWerkgevers() {
+  var x = document.getElementById("isWerknemer");
+  
+    x.style.display = "none";
+    };
+
+     function showWerkgevers() {
+  var x = document.getElementById("isWerknemer");
+  
+    x.style.display = "block";
+  }
+
+</script>
 
 <h1>User Registration</h1>
 
@@ -11,14 +25,18 @@
         <form method="post" runat="server">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Role"> Rol</label>
                 <select asp-for="Role">
-                    <option value="Trainee">Trainee</option>
-                    <option value="Werkgever">Werkgever</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Werknemer">Werknemer</option>
+                    <option onclick="hideWerkgevers()" value="Trainee">Trainee</option>
+                    <option onclick="hideWerkgevers()" value="Werkgever">Werkgever</option>
+                    <option onclick="hideWerkgevers()" value="Admin">Admin</option>
+                    <option onclick="showWerkgevers()" value="Werknemer">Werknemer</option>
                 </select>
-               <select asp-for="Werkgever" asp-items="Model.Werkgevers"></select>
             </div>
+                <div style="display: none" class="form-group" id="isWerknemer">
+                    <label asp-for="Werkgever"> Werkgever</label>
+                    <select asp-for="Werkgever" asp-items="Model.Werkgevers"></select>
+                </div>
                 <div class="form-group">
                     <label asp-for="Email"></label>
                     <input asp-for="Email" class="form-control" />
