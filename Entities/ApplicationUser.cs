@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace QienUrenMachien.Entities
@@ -6,7 +7,7 @@ namespace QienUrenMachien.Entities
     public class ApplicationUser : IdentityUser
     {
         public virtual List<TimeSheet> TimeSheet { get; set; }
-        public virtual List<ActivityLog> ActivityLogs { get; set; }
+        //public virtual List<ActivityLog> ActivityLogs { get; set; }
         public virtual string Firstname { get; set; }
         public virtual string Lastname { get; set; }
         public virtual string Street { get; set; }
@@ -17,5 +18,8 @@ namespace QienUrenMachien.Entities
         public virtual string ProfileImageUrl { get; set; }
         public virtual string BankNumber { get; set; }
         public virtual string NewProfile { get; set; }
+        public virtual string WerkgeverID { get; set; }
+        public virtual ApplicationUser Werkgever { get; set; }
+        public virtual List<ApplicationUser> Werknemers { get; set; }
     }
 }
