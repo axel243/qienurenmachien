@@ -56,18 +56,34 @@
 	{
 		@foreach (var day in JObject.Parse(Model.Data))
 		{
-			<tr>
-				<td>@day.Key</td>
-				<td>@day.Value["projecthours"]</td>
-				<td>@day.Value["overwork"]</td>
-				<td>@day.Value["sick"]</td>
-				<td>@day.Value["absence"]</td>
-				<td>@day.Value["training"]</td>
-				<td>@day.Value["other"]</td>
-			</tr>
+			DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, Convert.ToInt32(day.Key));
+			@if (dt.ToString("dddd") == "Saturday" || dt.ToString("dddd") == "Sunday")
+			{
+				<tr style="background-color: #f3f3f3">
+					<td>@dt.ToString("dddd") @day.Key</td>
+					<td>@day.Value["projecthours"]</td>
+					<td>@day.Value["overwork"]</td>
+					<td>@day.Value["sick"]</td>
+					<td>@day.Value["absence"]</td>
+					<td>@day.Value["training"]</td>
+					<td>@day.Value["other"]</td>
+				</tr>
+			}
+			else
+			{
+				<tr>
+					<td>@dt.ToString("dddd") @day.Key</td>
+					<td>@day.Value["projecthours"]</td>
+					<td>@day.Value["overwork"]</td>
+					<td>@day.Value["sick"]</td>
+					<td>@day.Value["absence"]</td>
+					<td>@day.Value["training"]</td>
+					<td>@day.Value["other"]</td>
+				</tr>
+			}
+			}
 		}
-	}
-	else
+else
 	{
 
 
@@ -77,27 +93,27 @@
 			DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, Convert.ToInt32(day.Key));
 			@if (dt.ToString("dddd") == "Saturday" || dt.ToString("dddd") == "Sunday")
 			{
-			<tr style="background-color: #f3f3f3">
-				<td>@dt.ToString("dddd") @day.Key</td>
-				<td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
-				<td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y + 1)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y + 2)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y + 3)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y + 4)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y + 5)"></td>
-			</tr>
+				<tr style="background-color: #f3f3f3">
+					<td>@dt.ToString("dddd") @day.Key</td>
+					<td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
+					<td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y + 1)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y + 2)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y + 3)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y + 4)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y + 5)"></td>
+				</tr>
 			}
 			else
-			{		
-			<tr>
-				<td>@dt.ToString("dddd") @day.Key</td>
-				<td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
-				<td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y + 1)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y + 2)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y + 3)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y + 4)"></td>
-				<td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y + 5)"></td>
-			</tr>
+			{
+				<tr>
+					<td>@dt.ToString("dddd") @day.Key</td>
+					<td><input type="text" class="form-control" value="@day.Value["projecthours"]" id="@x@y"></td>
+					<td><input type="text" class="form-control" value="@day.Value["overwork"]" id="@x@(y + 1)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["sick"]" id="@x@(y + 2)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["absence"]" id="@x@(y + 3)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["training"]" id="@x@(y + 4)"></td>
+					<td><input type="text" class="form-control" value="@day.Value["other"]" id="@x@(y + 5)"></td>
+				</tr>
 			}
 			x++;
 		}

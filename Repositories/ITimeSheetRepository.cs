@@ -22,7 +22,7 @@ namespace QienUrenMachien.Repositories
         List<SelectListItem> GetYears();
         TimeSheet GetOneTimeSheet(string url);
 
-        Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month);
+        Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, int SheetID);
 
         Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url);
         Task<TimeSheet> GetTimeSheet(string id);

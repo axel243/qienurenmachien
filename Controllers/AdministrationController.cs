@@ -122,9 +122,9 @@ namespace QienUrenMachien.Controllers
         }
 
 
-        public async Task<IActionResult> ShowUserTimeSheet(string Id, string Month)
+        public async Task<IActionResult> ShowUserTimeSheet(string Id, int SheetID)
         {
-            var result = await repo.GetOneTimeSheetAsync(Id, Month);
+            var result = await repo.GetOneTimeSheetAsync(Id, SheetID);
             return View(result);
         }
 
