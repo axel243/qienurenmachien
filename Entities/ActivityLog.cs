@@ -10,9 +10,10 @@ namespace QienUrenMachien.Entities
     public class ActivityLog
     {
         [Key]
-        public int Id { get; set; }
-        [ForeignKey("UserId")]
+        public int LogId { get; set; }
+        [ForeignKey("Id")]
         public ApplicationUser applicationUser { get; set; }
+        public string Id {get; set;}
         public string Activity { get; set; }
         public string Comment { get; set; }
         public string Timestamp { get; set; }
