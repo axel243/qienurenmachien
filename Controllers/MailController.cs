@@ -47,5 +47,12 @@ namespace QienUrenMachien.Controllers
             return View();
 
         }
+
+        public IActionResult ConfirmationAccount()
+        {
+
+            return View();
+
+        }
     }
 }
