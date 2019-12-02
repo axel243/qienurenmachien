@@ -191,10 +191,11 @@ namespace QienUrenMachien.Controllers
         public async Task<IActionResult> SubmitTimeSheet(string url)
         {
             var _timeSheet = await repo.GetTimeSheetUrl(url);
-
+            var currentWerknemer = await userManager.FindByIdAsync(_timeSheet.Id);
+            var currentWerkgever = await userManager.FindByIdAsync(currentWerknemer.WerkgeverID);
             _timeSheet.Submitted = true;
             var result = await repo.UpdateTimeSheet(_timeSheet);
-            mailServer.SendConfirmationMail("m-adda@hotmail.nl", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
+            mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }
