@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 using System;
@@ -18,6 +20,7 @@ namespace QienUrenMachien.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ITimeSheetRepository repo;
+        private readonly MailServer mailServer = new MailServer();
 
         public AdministrationController(RoleManager<IdentityRole> roleManager,
                                         UserManager<ApplicationUser> userManager,
@@ -42,11 +45,22 @@ namespace QienUrenMachien.Controllers
 
         [Route("Administration/RegisterUser")]
         [HttpGet]
-        public async Task <IActionResult> RegisterUser()
+        public async Task<IActionResult> RegisterUser()
         {
-            var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");  
 
-            return View();
+            RegisterViewModel model = new RegisterViewModel();
+            await getAllWerkgevers(model);
+            return View(model);
+        }
+
+        public async Task<List<SelectListItem>> getAllWerkgevers(RegisterViewModel model){
+            var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");
+            model.Werkgevers = new List<SelectListItem>();
+            foreach (var users in usersAreWerkgevers)
+            {
+                model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " " + users.Lastname, Value = users.Id });
+            }
+            return model.Werkgevers;
         }
 
         [HttpPost]
@@ -61,12 +75,14 @@ namespace QienUrenMachien.Controllers
                 City = model.City,
                 Zipcode = model.Zipcode,
                 PhoneNumber = model.PhoneNumber,
-                Country = model.Country
-    };
+                Country = model.Country,
+                WerkgeverID = model.Werkgever
+                };
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
+                    mailServer.SendRegisterUserMail(user.UserName);
                     return RedirectToAction("AdminDashboard", "Administration");
                 }
 

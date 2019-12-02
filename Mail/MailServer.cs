@@ -82,5 +82,13 @@ namespace QienUrenMachien.Mail
             SendMail(recipient, subject, body);
         }
 
+        public void SendRegisterUserMail(string recipient)
+        {
+            string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
+            string subject = $"Nieuw Account";
+            string body = "<br/> <a href=" + verificatielink + ">Verifier Account</a>";
+            SendMail(recipient, subject, body);
+        }
+
     }
 }
