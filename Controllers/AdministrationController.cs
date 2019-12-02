@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
@@ -42,11 +43,21 @@ namespace QienUrenMachien.Controllers
 
         [Route("Administration/RegisterUser")]
         [HttpGet]
-        public /*async Task*/ IActionResult RegisterUser()
+        public async Task<IActionResult> RegisterUser()
         {
-            var usersAreWerkgevers = userManager.GetUsersInRoleAsync("Werkgever");  
+            RegisterViewModel model = new RegisterViewModel();
+            await getAllWerkgevers(model);
+            return View(model);
+        }
 
-            return View();
+        public async Task<List<SelectListItem>> getAllWerkgevers(RegisterViewModel model){
+            var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");
+            model.Werkgevers = new List<SelectListItem>();
+            foreach (var users in usersAreWerkgevers)
+            {
+                model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " " + users.Lastname, Value = users.Id });
+            }
+            return model.Werkgevers;
         }
 
         [HttpPost]

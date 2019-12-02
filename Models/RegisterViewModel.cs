@@ -11,6 +11,7 @@ namespace QienUrenMachien.Models
 {
     public class RegisterViewModel 
     {
+       
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -37,12 +38,7 @@ namespace QienUrenMachien.Models
         public string Role { get; set; }
         public string Werkgever { get; set; }
 
-        public List<SelectListItem> Werkgevers { get; set; } = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "MX", Text = "Mexico" },
-            new SelectListItem { Value = "CA", Text = "Canada" },
-            new SelectListItem { Value = "US", Text = "USA"  },
-        };
+        public List<SelectListItem> Werkgevers{ get; set; }
 
 
 
