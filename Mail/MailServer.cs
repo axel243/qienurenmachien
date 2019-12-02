@@ -36,9 +36,10 @@ namespace QienUrenMachien.Mail
             } 
         }
 
-        public void SendConfirmationMail(string recipient, string body)
+        public void SendConfirmationMail(string recipient, string body, string werknemer)
         {
-            string subject = "Nieuwe timesheet ingediend.";
+            string subject = $"{werknemer} urenformulier ingeleverd";
+            body += $"<br/> {werknemer} heeft zijn uren ingeleverd";
 
             SendMail(recipient, subject, body);
         }
