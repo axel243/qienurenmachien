@@ -390,21 +390,22 @@ namespace QienUrenMachien.Migrations
                         .WithMany()
                         .HasForeignKey("Id");
 
-            modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", "Werkgever")
-                        .WithMany("Werknemers")
-                        .HasForeignKey("WerkgeverID");
+                    modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
+                        {
+                            b.HasOne("QienUrenMachien.Entities.ApplicationUser", "Werkgever")
+                                .WithMany("Werknemers")
+                                .HasForeignKey("WerkgeverID");
 
-                });
+                        });
 
-            modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
-                {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
-                        .WithMany("TimeSheet")
-                        .HasForeignKey("Id");
-                });
+                    modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
+                        {
+                            b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
+                                .WithMany("TimeSheet")
+                                .HasForeignKey("Id");
+                        });
 #pragma warning restore 612, 618
+                });
         }
     }
 }
