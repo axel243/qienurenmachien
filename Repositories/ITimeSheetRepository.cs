@@ -19,6 +19,7 @@ namespace QienUrenMachien.Repositories
 
         Task<List<TimeSheet>> GetUserOverview(string id);
         List<SelectListItem> GetMonths();
+        List<SelectListItem> GetYears();
         TimeSheet GetOneTimeSheet(string url);
 
         Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month);

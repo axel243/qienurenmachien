@@ -50,6 +50,7 @@ namespace QienUrenMachien.Repositories
             _timeSheet.Data = data;
             _timeSheet.Url = Guid.NewGuid().ToString();
             _timeSheet.Comment = "";
+            _timeSheet.theDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
 
             var result = context.Add(_timeSheet);
@@ -83,8 +84,21 @@ namespace QienUrenMachien.Repositories
             {
                 dt = dt.AddMonths(-1);
                 var month = dt.ToString("MMMM");
-                //var year = dt.Year;
                 list.Add(new SelectListItem { Value = month, Text = month });
+            }
+            return list;
+        }
+
+        public List<SelectListItem> GetYears()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString(), Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString(), Selected = true });
+            DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            for (int i = 2019; i < DateTime.Now.Year; i++)
+            {
+                dt = dt.AddYears(-1);
+                var year = dt.ToString();
+                list.Add(new SelectListItem { Value = year, Text = year });
             }
             return list;
         }
@@ -96,8 +110,8 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
-                .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month))
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate == model.theDate)
                 .ToListAsync();
         }
 
@@ -108,8 +122,8 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
-                .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month))
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate == model.theDate)
                 .ToListAsync();
         }
 
@@ -237,9 +251,20 @@ namespace QienUrenMachien.Repositories
 
         public async Task<List<TimeSheet>> GetUserOverview(string id)
         {
-            var result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+            var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
+            bool current_month = false;
 
-            if (result.Count == 0)
+            foreach (TimeSheet _timeSheet in result)
+            {
+                DateTime dt = DateTime.Now;
+
+                if (_timeSheet.theDate.Year == dt.Year && _timeSheet.theDate.Month == dt.Month)
+                {
+                    current_month = true;
+                }
+            }
+
+            if (result.Count == 0 || current_month == false)
             {
                 DateTime dt = DateTime.Now;
 
@@ -258,7 +283,7 @@ namespace QienUrenMachien.Repositories
                 data += "}";
 
                 TimeSheet entity2 = AddTimeSheet(id, data);
-                result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+                result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
             }
 
             return result;
