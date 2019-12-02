@@ -92,13 +92,13 @@ namespace QienUrenMachien.Repositories
         public List<SelectListItem> GetYears()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString(), Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString(), Selected = true });
+            list.Add(new SelectListItem { Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString(), Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString("yyyy"), Selected = true });
             DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            for (int i = 2019; i < DateTime.Now.Year; i++)
+            for (int i = 2018; i < DateTime.Now.Year; i++)
             {
                 dt = dt.AddYears(-1);
                 var year = dt.ToString();
-                list.Add(new SelectListItem { Value = year, Text = year });
+                list.Add(new SelectListItem { Value = year, Text = dt.ToString("yyyy") });
             }
             return list;
         }
@@ -111,7 +111,7 @@ namespace QienUrenMachien.Repositories
 
             return await context.TimeSheets
                 .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
-                .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate == model.theDate)
+                .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate.Year == model.theDate.Year)
                 .ToListAsync();
         }
 
@@ -123,40 +123,40 @@ namespace QienUrenMachien.Repositories
 
             return await context.TimeSheets
                 .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
-                .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate == model.theDate)
+                .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate.Year == model.theDate.Year)
                 .ToListAsync();
         }
 
-        public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
-        {
+        //public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
+        //{
 
-            var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
+        //    var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
        
 
-            return new TimeSheetViewModel
-            {
-                SheetID = entity.SheetID,
-                Id = entity.Id,
-                Project = entity.Project,
-                Month = entity.Month,
-                ProjectHours = entity.ProjectHours,
-                Overwork = entity.Overwork,
-                Sick = entity.Sick,
-                Absence = entity.Absence,
-                Training = entity.Training,
-                Other = entity.Other,
-                Submitted = entity.Submitted,
-                Approved = entity.Approved,
-                Data = entity.Data,
-                Url = entity.Url
-            };
+        //    return new TimeSheetViewModel
+        //    {
+        //        SheetID = entity.SheetID,
+        //        Id = entity.Id,
+        //        Project = entity.Project,
+        //        Month = entity.Month,
+        //        ProjectHours = entity.ProjectHours,
+        //        Overwork = entity.Overwork,
+        //        Sick = entity.Sick,
+        //        Absence = entity.Absence,
+        //        Training = entity.Training,
+        //        Other = entity.Other,
+        //        Submitted = entity.Submitted,
+        //        Approved = entity.Approved,
+        //        Data = entity.Data,
+        //        Url = entity.Url
+        //    };
 
-        }
+        //}
 
-        public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, string Month)
+        public async Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, int SheetID)
         {
 
-            var entity = await context.TimeSheets.Where(t => t.Id == Id && t.Month == Month).FirstOrDefaultAsync<TimeSheet>();
+            var entity = await context.TimeSheets.Where(t => t.Id == Id && t.SheetID == SheetID).FirstOrDefaultAsync<TimeSheet>();
 
 
             return new TimeSheetViewModel
@@ -165,6 +165,7 @@ namespace QienUrenMachien.Repositories
                 Id = entity.Id,
                 Project = entity.Project,
                 Month = entity.Month,
+                theDate = entity.theDate,
                 ProjectHours = entity.ProjectHours,
                 Overwork = entity.Overwork,
                 Sick = entity.Sick,
