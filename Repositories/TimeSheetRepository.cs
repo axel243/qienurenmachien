@@ -251,9 +251,20 @@ namespace QienUrenMachien.Repositories
 
         public async Task<List<TimeSheet>> GetUserOverview(string id)
         {
-            var result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+            var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
+            bool current_month = false;
 
-            if (result.Count == 0)
+            foreach (TimeSheet _timeSheet in result)
+            {
+                DateTime dt = DateTime.Now;
+
+                if (_timeSheet.theDate.Year == dt.Year && _timeSheet.theDate.Month == dt.Month)
+                {
+                    current_month = true;
+                }
+            }
+
+            if (result.Count == 0 || current_month == false)
             {
                 DateTime dt = DateTime.Now;
 
