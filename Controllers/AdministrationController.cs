@@ -72,8 +72,9 @@ namespace QienUrenMachien.Controllers
                 City = model.City,
                 Zipcode = model.Zipcode,
                 PhoneNumber = model.PhoneNumber,
-                Country = model.Country
-    };
+                Country = model.Country,
+                WerkgeverID = model.Werkgever
+                };
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

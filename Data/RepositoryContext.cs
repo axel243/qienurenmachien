@@ -19,6 +19,11 @@ namespace QienUrenMachien.Data
         public DbSet<TimeSheet> TimeSheets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder){
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(au => au.Werkgever)
+                .WithMany(au => au.Werknemers)
+                .HasForeignKey(au => au.WerkgeverID);
             base.OnModelCreating(builder);
         }
     }
