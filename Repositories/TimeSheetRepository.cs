@@ -283,7 +283,7 @@ namespace QienUrenMachien.Repositories
                 data += "}";
 
                 TimeSheet entity2 = AddTimeSheet(id, data);
-                result = await context.TimeSheets.Where(c => c.Id == id).ToListAsync();
+                result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
             }
 
             return result;
