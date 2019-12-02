@@ -6,6 +6,7 @@ namespace QienUrenMachien.Entities
     public class ApplicationUser : IdentityUser
     {
         public virtual List<TimeSheet> TimeSheet { get; set; }
+        public virtual List<ActivityLog> ActivityLogs { get; set; }
         public virtual string Firstname { get; set; }
         public virtual string Lastname { get; set; }
         public virtual string Street { get; set; }
