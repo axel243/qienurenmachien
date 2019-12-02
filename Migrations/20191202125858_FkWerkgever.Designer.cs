@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QienUrenMachien.Data;
 
 namespace QienUrenMachien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191202125858_FkWerkgever")]
+    partial class FkWerkgever
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,32 +150,6 @@ namespace QienUrenMachien.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("QienUrenMachien.Entities.ActivityLog", b =>
-                {
-                    b.Property<int>("LogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Activity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Timestamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LogId");
-
-                    b.HasIndex("Id");
-
-                    b.ToTable("ActivityLogs");
                 });
 
             modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
@@ -383,19 +359,11 @@ namespace QienUrenMachien.Migrations
                         .IsRequired();
                 });
 
-
-            modelBuilder.Entity("QienUrenMachien.Entities.ActivityLog", b =>
-                {
-                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
-                        .WithMany()
-                        .HasForeignKey("Id");
-
             modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("QienUrenMachien.Entities.ApplicationUser", "Werkgever")
                         .WithMany("Werknemers")
                         .HasForeignKey("WerkgeverID");
-
                 });
 
             modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
