@@ -25,13 +25,14 @@ namespace QienUrenMachien.Controllers
         //public IActionResult Month();
 
         private readonly UserManager<ApplicationUser> userManager;
-
+        private readonly IActivityLogRepository repox;
         private readonly MailServer mailServer;
 
-        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager)
+        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager, IActivityLogRepository repox)
         {
             this.repo = repo;
             this.userManager = userManager;
+            this.repox = repox;
             this.mailServer = new MailServer();
         }
 
@@ -194,6 +195,9 @@ namespace QienUrenMachien.Controllers
 
             _timeSheet.Submitted = true;
             var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            repox.LogActivity(userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result, "SubmitTimeSheet", "Submitted");
+
             mailServer.SendConfirmationMail("m-adda@hotmail.nl", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
@@ -207,6 +211,8 @@ namespace QienUrenMachien.Controllers
 
             _timeSheet.Submitted = false;
             var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            repox.LogActivity(userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result, "UnSubmitTimeSheet", "UnSubmitted");
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }

@@ -192,7 +192,7 @@ namespace QienUrenMachien.Controllers
             if(ModelState.IsValid)
             {
                 var user = await userManager.FindByNameAsync(model.Email);
-                if (user != null)                           //&& await userManager.IsEmailConfirmedAsync(user)
+                if (user != null)                           
                 {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -200,8 +200,8 @@ namespace QienUrenMachien.Controllers
                     new { email = model.Email, token = token }, Request.Scheme);
 
                     // hier wordt de mail verzonden met de wachtwoord resetlink
-                    //mailServer.SendForgotPasswordMail(user.UserName, passwordResetLink);
-                    repo.LogActivity(user.Id, "ForgotPassword", "WW verzoek");
+                    mailServer.SendForgotPasswordMail(user.UserName, passwordResetLink);
+                    repo.LogActivity(user, "ForgotPassword", "WW verzoek");
 
                     return View("ForgotPasswordConfirmation", passwordResetLink);
             }
