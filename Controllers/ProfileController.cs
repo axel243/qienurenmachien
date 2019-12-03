@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Mail;
+using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
 {
@@ -16,12 +17,14 @@ namespace QienUrenMachien.Controllers
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IActivityLogRepository repox;
         private readonly MailServer mailServer;
 
-        public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogRepository repox)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.repox = repox;
             this.mailServer = new MailServer();
         }
         public IActionResult Index()
@@ -77,6 +80,9 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+                    repox.LogActivity(activeUser, "EditProfile", $"{activeUser.UserName} heeft profiel verzoek ingediend.");
+
                     mailServer.SendEditedProfileMail(currentUser.UserName, currentUser.Firstname);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
@@ -150,6 +156,8 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+                    repox.LogActivity(activeUser, "AcceptedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} goedgekeurd.");
                     mailServer.SendAcceptedProfileMail(currentUser.UserName, adminuser.UserName);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
@@ -180,6 +188,9 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+                    repox.LogActivity(activeUser, "DeniedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} afgewezen.");
+
                     mailServer.SendDeclinedProfileMail(currentUser.UserName, adminuser.UserName);
 
                     return View(@"~/Views/Account/Profile/DeniedProfile.cshtml");
