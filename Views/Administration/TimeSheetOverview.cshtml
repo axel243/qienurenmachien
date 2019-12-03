@@ -86,7 +86,7 @@
 	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected">
 	</select>
 	@*<input class="btn btn-default" style="" type="submit" value="Kies" />*@
-	<h2>Jaar: @Model.theDate</h2>
+	<h2>Jaar: @Model.theDate.ToString("yyyy")</h2>
 	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected">
 	</select>
 	<input class="btn btn-default" style="" type="submit" value="Kies" />
@@ -100,7 +100,6 @@
 <table style="width:100%;">
 	<tr>
 		<th>Gebruiker</th>
-		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
@@ -111,11 +110,10 @@
 		var details = new Dictionary<string, string>
 {
 		{ "Id", sheet.Id },
-		{ "Month", sheet.Month }
+		{ "SheetID", sheet.SheetID.ToString() }
 	};
 <tr>
 	<td>@sheet.applicationUser.UserName</td>
-	<td>@sheet.Id</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
 	<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet" asp-all-route-data="details">Bekijk</a></td>
@@ -131,7 +129,6 @@
 <table style="width:100%;">
 	<tr>
 		<th>Gebruiker</th>
-		<th>GebruikerID</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
@@ -142,11 +139,10 @@
 		var details = new Dictionary<string, string>
 {
 		{ "Id", sheet.Id },
-		{ "Month", sheet.Month }
+		{ "SheetID", sheet.SheetID.ToString() }
 	};
 <tr>
 	<td>@sheet.applicationUser.UserName</td>
-	<td>@sheet.Id</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
 	<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet" asp-all-route-data="details">Bekijk</a></td>

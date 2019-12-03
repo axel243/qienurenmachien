@@ -30,19 +30,26 @@ namespace QienUrenMachien.Controllers
 
 
         // GET: /<controller>/
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> TestMail()
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public async Task<IActionResult> TestMail()
+        //{
+        //    TimeSheet _timeSheet = await repo.GetTimeSheet(userManager.GetUserId(User));
+
+        //    _timeSheet.Url = Guid.NewGuid().ToString();
+        //    var result = await repo.UpdateTimeSheet(_timeSheet);
+
+        //    if (result != null)
+        //    {
+        //        mailServer.SendConfirmationMail("j.m.r.kramer@gmail.com", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
+        //    }
+
+        //    return View();
+
+        //}
+
+        public IActionResult ConfirmationAccount()
         {
-            TimeSheet _timeSheet = await repo.GetTimeSheet(userManager.GetUserId(User));
-
-            _timeSheet.Url = Guid.NewGuid().ToString();
-            var result = await repo.UpdateTimeSheet(_timeSheet);
-
-            if (result != null)
-            {
-                mailServer.SendConfirmationMail("j.m.r.kramer@gmail.com", "https://localhost:44398/sheet/confirmtimesheet/" + result.Url);
-            }
 
             return View();
 
