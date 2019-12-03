@@ -38,6 +38,18 @@ namespace QienUrenMachien.Repositories
             context.ActivityLogs.Add(log);
             context.SaveChanges();
         }
+
+        public List<ActivityLogViewModel> GetActivityLogs()
+        {
+            return context.ActivityLogs.Select(p => new ActivityLogViewModel
+            {
+                LogId = p.LogId,
+                applicationUser = p.applicationUser,
+                Id = p.Id,
+                Activity = p.Activity,
+                Comment = p.Comment,
+                Timestamp = p.Timestamp
+            }).ToList();
+        }
     }
 }
-
