@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QienUrenMachien.Data;
 using QienUrenMachien.Entities;
@@ -60,16 +61,68 @@ namespace QienUrenMachien.Repositories
             return _timeSheet;
         }
 
+        public async Task<string> TimeSheetData(){
+            var result = await context.TimeSheets.OrderBy(c => c.theDate).ToListAsync();
+            var dictionary = new Dictionary<String, double>();
+
+            foreach (TimeSheet _timeSheet in result)
+            {
+                if (dictionary.ContainsKey(_timeSheet.theDate.ToString("MMMM"))) {
+                    dictionary[_timeSheet.theDate.ToString("MMMM")] += _timeSheet.ProjectHours;
+                }
+                else {
+                    dictionary[_timeSheet.theDate.ToString("MMMM")] = _timeSheet.ProjectHours;
+                }
+                
+            }
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(dictionary));
+
+            List<string> x = new List<string>();
+            List<Double> y = new List<Double>();
+            List<Object> z = new List<Object>();
+
+
+            // Display the keys.
+            foreach (string date in dictionary.Keys) {
+                x.Add(date);
+                y.Add(dictionary[date]);
+            }
+
+            var DataSet = new {
+                label = "Project uren",
+                data = y
+            };
+
+            z.Add(DataSet);
+
+
+            var myAnonymousType = new {
+                labels = x, 
+                data = z
+            };
+
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType));
+           // Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(y));
+
+            // Convert the Dictionary's ValueCollection
+            // into an array and display the values.
+            // string[] values = Numbers.Values.ToArray();
+            // for (int i = 0; i < values.Length; i++)
+            //     lstValues.Items.Add(values[i]);
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType);
+        }
+
         public TimeSheet AddTimeSheetTemp()
         {
             
 
-            for (int i = 1; i < 12; i++)
+            for (int i = 7; i < 12; i++)
             {
                 DateTime dt = new DateTime(DateTime.Now.Year, i, 1);
 
                 TimeSheet _timeSheet = new TimeSheet();
-                _timeSheet.Id = "b5657e5e-f288-47e1-bce8-ce8c4a6c0f3a";
+                _timeSheet.Id = "de42b22a-18b0-4c95-b344-0b92dc83ca7b";
                 _timeSheet.Month = dt.ToString("MMMM");
                 _timeSheet.ProjectHours = 176;
                 _timeSheet.Overwork = 0;
@@ -313,7 +366,7 @@ namespace QienUrenMachien.Repositories
                 for (int i = 1; i <= nDays; i++)
                 {
                     DayJulian _day = new DayJulian();
-                    data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
+                    data += $"\"{i}\": " + System.Text.Json.JsonSerializer.Serialize<DayJulian>(_day);
                     if (i != nDays)
                     {
                         data += ", ";
