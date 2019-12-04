@@ -37,10 +37,10 @@ namespace QienUrenMachien.Controllers
             this.mailServer = new MailServer();
         }
 
-        public IActionResult Index()
-        {
-            return View("Month");
-        }
+        //public IActionResult Index()
+        //{
+        //    return View("Month");
+        //}
 
         [Route("Sheet/ConfirmTimeSheet/{url}")]
         [HttpGet]
@@ -173,7 +173,7 @@ namespace QienUrenMachien.Controllers
 
         //}
 
-        [Route("Sheet/Overview/")]
+        [Route("Sheet/Overview")]
         [HttpGet]
         public async Task<IActionResult> Overview()
         {

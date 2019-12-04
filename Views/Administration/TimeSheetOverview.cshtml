@@ -97,7 +97,8 @@
 
 <table style="width:100%;">
 	<tr>
-		<th>Gebruiker</th>
+		<th>Naam</th>
+		<th>Mail</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
@@ -111,6 +112,7 @@
 		{ "SheetID", sheet.SheetID.ToString() }
 	};
 <tr>
+	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
@@ -126,7 +128,8 @@
 
 <table style="width:100%;">
 	<tr>
-		<th>Gebruiker</th>
+		<th>Naam</th>
+		<th>Mail</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
@@ -140,6 +143,7 @@
 		{ "SheetID", sheet.SheetID.ToString() }
 	};
 <tr>
+	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>

@@ -21,7 +21,6 @@ namespace QienUrenMachien.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-
             return View();
         }
 

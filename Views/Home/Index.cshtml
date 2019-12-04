@@ -9,15 +9,15 @@
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-<div class="text-center">
-	<h1 class="display-4">Admin Dashboard</h1>
-</div>
+	<div class="text-center">
+		<h1 class="display-4">Admin Dashboard</h1>
+	</div>
 }
 @if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
 {
-<div class="text-center">
-	<h1 class="display-4">User Dashboard</h1>
-</div>
+	<div class="text-center">
+		<h1 class="display-4">User Dashboard</h1>
+	</div>
 }
 
 <div class="text-center">
@@ -26,29 +26,29 @@
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-    <canvas id="line-chart" width="800" height="300"></canvas>
+	<canvas id="line-chart" width="800" height="300"></canvas>
 
 	<nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
 		<div class="container">
 			<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
-                <ul class="navbar-nav flex-xl-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Rollen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Urenformulieren</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="RegisterUser">Gebruiker aanmaken</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
-                    </li>
-                </ul>
+				<ul class="navbar-nav flex-xl-grow-1">
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Users</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Rollen</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Urenformulieren</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="RegisterUser">Gebruiker aanmaken</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
+					</li>
+				</ul>
 
 				<ul class="navbar-nav ml-auto">
 				</ul>
