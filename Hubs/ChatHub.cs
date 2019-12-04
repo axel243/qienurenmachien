@@ -15,8 +15,10 @@ namespace QienUrenMachien.Hubs
     {
         private readonly ITimeSheetRepository repo;
         private readonly IActivityLogRepository repox;
-   
-        public ChatHub(ITimeSheetRepository repo, IActivityLogRepository repox){
+
+
+        public ChatHub(ITimeSheetRepository repo, IActivityLogRepository repox)
+        {
             this.repo = repo;
             this.repox = repox;
         }
@@ -81,11 +83,17 @@ namespace QienUrenMachien.Hubs
 
         }
 
-        public  async Task SendMessage1(string message)
+        public async Task SendActivity()
         {
-            var logs = repox.GetActivityLogs();
-            await Clients.All.SendAsync("ReceiveMessage1", logs, null);
+            await Clients.All.SendAsync("ReceiveMessage1", "teststring");
         }
+
+
+        //public  async Task SendMessage1(string message)
+        //{
+         
+        //    await Clients.All.SendAsync("ReceiveMessage1", message);
+        //}
 
     }
 }

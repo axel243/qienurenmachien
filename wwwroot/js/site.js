@@ -123,6 +123,14 @@ connection.on("ReceiveMessage", function (jsonObject) {
 
 });
 
+connection.on("ReceiveMessage1", function (string, string2) {
+    console.log(string);
+});
+
+function receive() {
+
+}
+
 
 
 
