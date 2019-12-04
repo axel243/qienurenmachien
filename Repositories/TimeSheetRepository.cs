@@ -179,6 +179,16 @@ namespace QienUrenMachien.Repositories
 
         }
 
+        public async Task<List<TimeSheetWithUser>> GetTimeSheetAndUser()
+        {
+            var timesheets = await context.TimeSheets.Include(ts => ts.applicationUser)
+                .Select(ts => new TimeSheetWithUser { FirstName = ts.applicationUser.Firstname, LastName = ts.applicationUser.Lastname, Status = ts.Submitted })
+                .ToListAsync();
+
+            return timesheets;
+
+        }
+
         public async Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url)
         {
 

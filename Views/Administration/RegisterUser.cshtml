@@ -14,7 +14,11 @@
   var x = document.getElementById("isWerknemer");
   
     x.style.display = "block";
-  }
+    }
+
+    function getSelectedOption(select) {
+   return select.options[select.selectedIndex];
+}
 
 </script>
 
@@ -26,7 +30,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Role"> Rol</label>
-                <select asp-for="Role">
+                <select asp-for="Role" onchange='getSelectedOption(this).click(); count()'>
                     <option onclick="hideWerkgevers()" value="Trainee">Trainee</option>
                     <option onclick="hideWerkgevers()" value="Werkgever">Werkgever</option>
                     <option onclick="hideWerkgevers()" value="Admin">Admin</option>
@@ -35,7 +39,7 @@
             </div>
                 <div style="display: none" class="form-group" id="isWerknemer">
                     <label asp-for="Werkgever"> Werkgever</label>
-                    <select asp-for="Werkgever" asp-items="Model.Werkgevers">
+                    <select asp-for="Werkgever" asp-items="Model.Werkgevers" onchange='getSelectedOption(this).click(); count()'>
                         <option></option>
                     </select>
                 </div>
