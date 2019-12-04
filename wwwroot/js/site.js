@@ -85,9 +85,15 @@ function TableToString() {
 
 
 // Whenever the input table get changed create new data string
-$(("input", "textarea")).change(function() {
+$(("textarea")).change(function () {
     TableToString();
 });
+
+// Whenever the input table get changed create new data string
+$(("input")).change(function () {
+    TableToString();
+});
+
 
 //Websocket
 var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44398/chatHub").build();

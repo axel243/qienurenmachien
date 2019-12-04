@@ -14,9 +14,11 @@ namespace QienUrenMachien.Hubs
     public class ChatHub : Hub
     {
         private readonly ITimeSheetRepository repo;
-
-        public ChatHub(ITimeSheetRepository repo){
+        private readonly IActivityLogRepository repox;
+   
+        public ChatHub(ITimeSheetRepository repo, IActivityLogRepository repox){
             this.repo = repo;
+            this.repox = repox;
         }
 
         public async Task SendMessage(int SheetID, string data, string comment)
@@ -77,6 +79,12 @@ namespace QienUrenMachien.Hubs
 
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
+        }
+
+        public  async Task SendMessage1(string message)
+        {
+            var logs = repox.GetActivityLogs();
+            await Clients.All.SendAsync("ReceiveMessage1", logs, null);
         }
 
     }

@@ -41,6 +41,7 @@ namespace QienUrenMachien
 
             services.AddControllersWithViews();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+            services.AddScoped<IActivityLogRepository, ActivityLogRepository>();
             services.AddRazorPages();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
@@ -85,6 +86,7 @@ namespace QienUrenMachien
 
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/chatHub");
+                //endpoints.MapHub<ActivityHub>("/activityHub");
             });
         }
     }

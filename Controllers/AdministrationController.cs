@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Mail;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 using System;
@@ -19,6 +20,7 @@ namespace QienUrenMachien.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ITimeSheetRepository repo;
+        private readonly MailServer mailServer = new MailServer();
 
         public AdministrationController(RoleManager<IdentityRole> roleManager,
                                         UserManager<ApplicationUser> userManager,
@@ -80,6 +82,7 @@ namespace QienUrenMachien.Controllers
 
                 if (result.Succeeded)
                 {
+                    mailServer.SendRegisterUserMail(user.UserName);
                     return RedirectToAction("AdminDashboard", "Administration");
                 }
 
@@ -119,9 +122,9 @@ namespace QienUrenMachien.Controllers
         }
 
 
-        public async Task<IActionResult> ShowUserTimeSheet(string Id, string Month)
+        public async Task<IActionResult> ShowUserTimeSheet(string Id, int SheetID)
         {
-            var result = await repo.GetOneTimeSheetAsync(Id, Month);
+            var result = await repo.GetOneTimeSheetAsync(Id, SheetID);
             return View(result);
         }
 
