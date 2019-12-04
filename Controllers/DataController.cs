@@ -4,19 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Models;
+using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
 {
     [Route("api/[controller]")]
     public class DataController : Controller
     {
-        [HttpGet("")]
-        public IEnumerable<Note> List(string username)
+        private readonly ITimeSheetRepository repo;
+
+        public DataController(ITimeSheetRepository repo)
         {
-            return new List<Note>{
-                new Note{Title = "Shopping list", Contents="Some Apples"},
-                new Note{Title = "Thoughts on .NET Core", Contents="To follow..."}
-             };
+            this.repo = repo;
+        }
+        [HttpGet("")]
+        public async Task<string> List(string username)
+        {
+            return await repo.TimeSheetData();
         }
     }
 }
