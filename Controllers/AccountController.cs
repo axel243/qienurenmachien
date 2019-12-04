@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using QienUrenMachien.Entities;
 using Microsoft.Extensions.Logging;
 using QienUrenMachien.Mail;
+using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
 {
@@ -21,12 +22,14 @@ namespace QienUrenMachien.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly MailServer mailServer;
+        private readonly IActivityLogRepository repo;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogRepository repo)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.mailServer = new MailServer();
+            this.repo = repo;
         }
 
         public IActionResult Index()
@@ -189,7 +192,7 @@ namespace QienUrenMachien.Controllers
             if(ModelState.IsValid)
             {
                 var user = await userManager.FindByNameAsync(model.Email);
-                if (user != null)                           //&& await userManager.IsEmailConfirmedAsync(user)
+                if (user != null)                           
                 {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -198,6 +201,8 @@ namespace QienUrenMachien.Controllers
 
                     // hier wordt de mail verzonden met de wachtwoord resetlink
                     mailServer.SendForgotPasswordMail(user.UserName, passwordResetLink);
+                    repo.LogActivity(user, "ForgotPassword", "WW verzoek");
+
                     return View("ForgotPasswordConfirmation", passwordResetLink);
             }
             return View("ForgotPasswordConfirmation", passwordResetLink);

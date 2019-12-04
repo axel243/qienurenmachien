@@ -13,7 +13,6 @@ namespace QienUrenMachien.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
@@ -385,27 +384,27 @@ namespace QienUrenMachien.Migrations
 
 
             modelBuilder.Entity("QienUrenMachien.Entities.ActivityLog", b =>
+            {
+                b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
+                    .WithMany()
+                    .HasForeignKey("Id");
+
+                modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("QienUrenMachien.Entities.ApplicationUser", "Werkgever")
+                        .WithMany("Werknemers")
+                        .HasForeignKey("WerkgeverID");
+
+                });
+
+                modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
                 {
                     b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
-                        .WithMany()
+                        .WithMany("TimeSheet")
                         .HasForeignKey("Id");
-
-                    modelBuilder.Entity("QienUrenMachien.Entities.ApplicationUser", b =>
-                        {
-                            b.HasOne("QienUrenMachien.Entities.ApplicationUser", "Werkgever")
-                                .WithMany("Werknemers")
-                                .HasForeignKey("WerkgeverID");
-
-                        });
-
-                    modelBuilder.Entity("QienUrenMachien.Entities.TimeSheet", b =>
-                        {
-                            b.HasOne("QienUrenMachien.Entities.ApplicationUser", "applicationUser")
-                                .WithMany("TimeSheet")
-                                .HasForeignKey("Id");
-                        });
-#pragma warning restore 612, 618
                 });
+
+            });
         }
     }
 }
