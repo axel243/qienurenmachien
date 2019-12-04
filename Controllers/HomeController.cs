@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 
@@ -13,26 +15,77 @@ namespace QienUrenMachien.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IActivityLogRepository repox;
 
-        public HomeController(ILogger<HomeController> logger, IActivityLogRepository repox)
+
+        private readonly ITimeSheetRepository repo;
+
+
+        private readonly UserManager<ApplicationUser> userManager;
+
+
+
+        public HomeController(SignInManager<ApplicationUser> signInManager, ILogger<HomeController> logger, IActivityLogRepository repox, UserManager<ApplicationUser> userManager , ITimeSheetRepository repo)
         {
+            this.signInManager = signInManager;
             _logger = logger;
+            this.userManager = userManager;
+            this.repo = repo;
             this.repox = repox;
         }
-        [AllowAnonymous]
-        public IActionResult Index()
+        //[AllowAnonymous]
+        //public IActionResult Index()
+        //{
+            
+        //    return View();
+        //}
+
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
+
+            if (User.IsInRole("Admin"))
+            {
+                var table = new List<TimeSheetWithUser>();
+               
+                var users = await repo.GetTimeSheetAndUser();
+                
+                foreach (var user in users)
+                {
+                    var newTimeSheet = new TimeSheetWithUser();
+                    newTimeSheet.FirstName = user.FirstName;
+                    newTimeSheet.LastName = user.LastName;
+                    newTimeSheet.Status = user.Status;
+                    newTimeSheet.url = user.url;
+                    //newTimeSheet.WerkgeverId = user.WerkgeverId;
+
+                    table.Add(newTimeSheet);
+                }
+                
+                return View(table);
+            }
+            else
+            {
+                return View();
+            }
+
             var logs = repox.GetActivityLogs();
             logs.Reverse();
 
             var model = new DashboardViewModel();
             model.activityLogViewModels = logs;
 
-           
+        if (signInManager.IsSignedIn(User) && User.IsInRole("Werknemer"))
+            {
+                return RedirectToAction("overview", "sheet");
+            }
+
+
 
             return View(model);
+
         }
 
         public IActionResult Privacy()

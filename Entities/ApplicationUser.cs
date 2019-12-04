@@ -19,7 +19,6 @@ namespace QienUrenMachien.Entities
         public virtual string BankNumber { get; set; }
         public virtual string NewProfile { get; set; }
         public virtual string WerkgeverID { get; set; }
-        public virtual ApplicationUser Werkgever { get; set; }
-        public virtual List<ApplicationUser> Werknemers { get; set; }
+  
     }
 }

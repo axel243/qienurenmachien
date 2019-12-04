@@ -4,6 +4,7 @@
 @model DashboardViewModel
 @inject SignInManager<ApplicationUser> signInManager;
 @inject UserManager<ApplicationUser> userManager;
+@model List<TimeSheetWithUser>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -13,6 +14,22 @@
 {
     <div class="text-center">
         <h1 class="display-4">Admin Dashboard</h1>
+        <table style="width:20%; height:30%; overflow:scroll;">
+            <tr>
+                <th>Werknemer</th>
+                <th>Status Timesheet</th>
+
+            </tr>
+            @foreach (var row in Model)
+            {
+                <tr>
+                    <td>@(row.FirstName + " " + row.LastName)</td>
+                    <td>@row.Status</td>
+                    <td><a asp-route-url="@row.url">Bekijk</a></td>
+                </tr>
+            }
+        </table>
+
     </div>
 }
 @if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
@@ -21,11 +38,13 @@
         <h1 class="display-4">User Dashboard</h1>
     </div>
 }
-
+@if (!signInManager.IsSignedIn(User))
+{
 <div class="text-center">
     <img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
 </div>
-
+}
+@*
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
     <canvas id="line-chart" width="800" height="300"></canvas>
@@ -51,6 +70,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
                     </li>
                 </ul>
+
 
                 <ul class="navbar-nav ml-auto">
                 </ul>
@@ -82,3 +102,4 @@
         }
     </table>
 }
+
