@@ -182,6 +182,7 @@ namespace QienUrenMachien.Controllers
         {
 
             var result = await repo.GetUserOverview(userManager.GetUserId(User));
+            //repo.AddTimeSheetTemp();
 
             return View(result);
 

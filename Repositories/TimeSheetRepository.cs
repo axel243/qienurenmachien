@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QienUrenMachien.Data;
 using QienUrenMachien.Entities;
@@ -58,6 +59,160 @@ namespace QienUrenMachien.Repositories
 
 
             return _timeSheet;
+        }
+
+        public async Task<string> TimeSheetData(){
+            var result = await context.TimeSheets.OrderBy(c => c.theDate).ToListAsync();
+            var dictionary = new Dictionary<String, DataModel>();
+
+            foreach (TimeSheet _timeSheet in result)
+            {
+                if (dictionary.ContainsKey(_timeSheet.theDate.ToString("MMMM"))) {
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].ProjectHours += _timeSheet.ProjectHours;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Overwork += _timeSheet.Overwork;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Sick += _timeSheet.Sick;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Absence += _timeSheet.Absence;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Training += _timeSheet.Training;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Other += _timeSheet.Other;
+                }
+                else {
+                    dictionary[_timeSheet.theDate.ToString("MMMM")] = new DataModel {
+                        ProjectHours = _timeSheet.ProjectHours,
+                        Overwork = _timeSheet.Overwork,
+                        Sick = _timeSheet.Sick,
+                        Absence = _timeSheet.Absence,
+                        Training = _timeSheet.Training,
+                        Other = _timeSheet.Other
+
+                    } ;
+                }
+                
+            }
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(dictionary));
+
+            List<string> x = new List<string>();
+            List<Double> ProjectHours = new List<Double>();
+            List<Double> Overwork = new List<Double>();
+            List<Double> Sick = new List<Double>();
+            List<Double> Absence = new List<Double>();
+            List<Double> Training = new List<Double>();
+            List<Double> Other = new List<Double>();
+
+            List<Object> z = new List<Object>();
+
+
+            // Display the keys.
+            foreach (string date in dictionary.Keys) {
+                x.Add(date);
+                ProjectHours.Add(dictionary[date].ProjectHours);
+                Overwork.Add(dictionary[date].Overwork);
+                Sick.Add(dictionary[date].Sick);
+                Absence.Add(dictionary[date].Absence);
+                Training.Add(dictionary[date].Training);
+                Other.Add(dictionary[date].Other);
+            }
+
+            var DataSet = new {
+                label = "Project",
+                data = ProjectHours,
+                borderColor = "#3e95cd",
+                fill = false
+            };
+
+            var DataSet2 = new {
+                label = "Overwerk",
+                data = Overwork,
+                borderColor = "#8e5ea2",
+                fill = false
+            };
+
+            var DataSet3 = new {
+                label = "Ziek",
+                data = Sick,
+                borderColor = "#3cba9f",
+                fill = false
+            };
+
+            var DataSet4 = new {
+                label = "Afwezig",
+                data = Absence, 
+                borderColor = "#e8c3b9",
+                fill = false
+            };
+
+            var DataSet5 = new {
+                label = "Training",
+                data = Training,
+                borderColor = "#c45850",
+                fill = false
+            };
+
+            var DataSet6 = new {
+                label = "Overig",
+                data = Other,
+                fill = false
+            };
+
+            z.Add(DataSet);
+            z.Add(DataSet2);
+            z.Add(DataSet3);
+            z.Add(DataSet4);
+            z.Add(DataSet5);
+            z.Add(DataSet6);
+
+
+            var myAnonymousType = new {
+                labels = x, 
+                data = z
+            };
+
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType));
+           // Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(y));
+
+            // Convert the Dictionary's ValueCollection
+            // into an array and display the values.
+            // string[] values = Numbers.Values.ToArray();
+            // for (int i = 0; i < values.Length; i++)
+            //     lstValues.Items.Add(values[i]);
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType);
+        }
+
+        public TimeSheet AddTimeSheetTemp()
+        {
+            
+
+            for (int i = 7; i < 12; i++)
+            {
+                DateTime dt = new DateTime(DateTime.Now.Year, i, 1);
+
+                TimeSheet _timeSheet = new TimeSheet();
+                _timeSheet.Id = "de42b22a-18b0-4c95-b344-0b92dc83ca7b";
+                _timeSheet.Month = dt.ToString("MMMM");
+                _timeSheet.ProjectHours = 176;
+                _timeSheet.Overwork = 0;
+                _timeSheet.Sick = 0;
+                _timeSheet.Training = 0;
+                _timeSheet.Other = 0;
+                _timeSheet.Project = "Macaw";
+                _timeSheet.Submitted = true;
+                _timeSheet.Approved = "Approved";
+                _timeSheet.Data = "{\"1\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"2\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"3\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"4\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"5\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"6\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"7\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"8\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"9\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"10\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"11\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"12\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"13\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"14\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"15\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"16\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"17\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"18\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"19\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"20\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"21\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"22\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"23\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"24\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"25\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"26\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"27\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"28\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"29\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"30\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"31\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0}}";
+                _timeSheet.Url = Guid.NewGuid().ToString();
+                _timeSheet.Comment = "";
+                _timeSheet.theDate = dt;
+
+
+                var result = context.Add(_timeSheet);
+            }
+
+        
+
+
+            context.SaveChanges();
+
+
+            return  new TimeSheet();
         }
 
         public async Task<TimeSheet> GetTimeSheet(int id)
@@ -252,11 +407,12 @@ namespace QienUrenMachien.Repositories
 
         public async Task<List<TimeSheet>> GetUserOverview(string id)
         {
-            var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
+            var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(c => c.theDate).ToListAsync();
             bool current_month = false;
 
             foreach (TimeSheet _timeSheet in result)
             {
+                Console.WriteLine(_timeSheet.theDate);
                 DateTime dt = DateTime.Now;
 
                 if (_timeSheet.theDate.Year == dt.Year && _timeSheet.theDate.Month == dt.Month)
@@ -275,7 +431,7 @@ namespace QienUrenMachien.Repositories
                 for (int i = 1; i <= nDays; i++)
                 {
                     DayJulian _day = new DayJulian();
-                    data += $"\"{i}\": " + JsonSerializer.Serialize<DayJulian>(_day);
+                    data += $"\"{i}\": " + System.Text.Json.JsonSerializer.Serialize<DayJulian>(_day);
                     if (i != nDays)
                     {
                         data += ", ";
