@@ -7,22 +7,32 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QienUrenMachien.Models;
+using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IActivityLogRepository repox;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IActivityLogRepository repox)
         {
             _logger = logger;
+            this.repox = repox;
         }
         [AllowAnonymous]
         public IActionResult Index()
         {
+            var logs = repox.GetActivityLogs();
+            logs.Reverse();
 
-            return View();
+            var model = new DashboardViewModel();
+            model.activityLogViewModels = logs;
+
+           
+
+            return View(model);
         }
 
         public IActionResult Privacy()
