@@ -1,55 +1,53 @@
 ﻿@using QienUrenMachien.Models
 @model List<ActivityLogViewModel>
 
-@*<script src="~/js/activity.js" asp-append-version="true"></script>
+<h1 style="text-align: center;">Activity Tracker</h1>
+<input type="button" id="sendBtn" value="Send Message" />
+<table id="ActivityTable" style="width:100%;">
+    <tr>
+        <th>LogId</th>
+        <th>Id</th>
+        <th>Activity</th>
+        <th>Comment</th>
+        <th>Timestamp</th>
 
-    <h1 style="text-align: center;">Activity Tracker</h1>
+    </tr>
+    @foreach (var i in Model)
+    {
 
-    <table id="ActivityTable" style="width:100%;">
+
         <tr>
-            <th>LogId</th>
-            <th>Id</th>
-            <th>Activity</th>
-            <th>Comment</th>
-            <th>Timestamp</th>
-
+            <td>@i.LogId</td>
+            <td>@i.Id</td>
+            <td>@i.Activity</td>
+            <td>@i.Comment</td>
+            <td>@i.Timestamp</td>
         </tr>
-        @foreach (var i in Model)
-        {
+    }
+</table>
 
-
-            <tr>
-                <td>@i.LogId</td>
-                <td>@i.Id</td>
-                <td>@i.Activity</td>
-                <td>@i.Comment</td>
-                <td>@i.Timestamp</td>
-            </tr>
-        }
-    </table>*@
-
-<div class="container">
-    <div class="row"></div>
-    <div class="row">
-        <div class="col-md-12"></div>
-        <div class="col-md-12">
-            User Name: <input type="text" id="userName" />
-            User Message: <input type="text" id="userMessage" />
-            <input type="button" id="sendBtn" value="Send Message" />
+@*<div class="container">
+        <div class="row"></div>
+        <div class="row">
+            <div class="col-md-12"></div>
+            <div class="col-md-12">
+                User Name: <input type="text" id="userName" />
+                User Message: <input type="text" id="userMessage" />
+                <input type="button" id="sendBtn" value="Send Message" />
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <hr />
+        <div class="row">
+            <div class="col-12">
+                <hr />
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-6"></div>
-        <div class="col-6">
-            <ul id="messagesList"></ul>
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <ul id="messagesList"></ul>
+            </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/activity.js"></script>

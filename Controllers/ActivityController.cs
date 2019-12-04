@@ -16,7 +16,7 @@ namespace QienUrenMachien.Controllers
             this.repox = repox;
         }
 
-  
+        [HttpGet]
         public IActionResult Index()
         {
             var logs = repox.GetActivityLogs();

@@ -15,6 +15,7 @@ using System.Net;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Mail;
 using System.Text.Json;
+using QienUrenMachien.Hubs;
 
 namespace QienUrenMachien.Controllers
 {
@@ -206,6 +207,8 @@ namespace QienUrenMachien.Controllers
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
             repox.LogActivity(activeUser, "SubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingediend.");
+
+
             //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
