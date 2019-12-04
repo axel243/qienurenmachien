@@ -11,6 +11,7 @@ namespace QienUrenMachien.Models
     {
         public List<TimeSheet> Trainees { get; set; }
         public List<TimeSheet> Employees { get; set; }
+        public List<TimeSheet> sheets { get; set; }
         public string Month { get; set; }
         public List<SelectListItem> Months { get; set; }
         public List<SelectListItem> Years { get; set; }

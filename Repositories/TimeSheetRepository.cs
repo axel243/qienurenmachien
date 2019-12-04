@@ -8,6 +8,7 @@ using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -331,6 +332,17 @@ namespace QienUrenMachien.Repositories
                 Data = entity.Data,
                 Url = entity.Url,
             };
+
+        }
+
+        public async Task<List<TimeSheetWithUser>> GetTimeSheetAndUser()
+        {
+            DateTime _dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var timesheets = await context.TimeSheets.Include(ts => ts.applicationUser).Where(t =>  t.theDate < _dt && t.Approved == "Not submitted")
+                .Select(ts => new TimeSheetWithUser { FirstName = ts.applicationUser.Firstname, LastName = ts.applicationUser.Lastname, Status = ts.Approved, WerkgeverId = ts.applicationUser.WerkgeverID, url = ts.Url })
+                .ToListAsync();
+
+            return timesheets;
 
         }
 
