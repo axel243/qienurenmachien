@@ -12,7 +12,7 @@
 {
     <div class="text-center">
         <h1 class="display-4">Admin Dashboard</h1>
-        <table style="width:100%;">
+        <table style="width:20%; height:30%; overflow:scroll;">
             <tr>
                 <th>Werknemer</th>
                 <th>Status Timesheet</th>
@@ -22,7 +22,8 @@
             {
                 <tr>
                     <td>@(row.FirstName + " " + row.LastName)</td>
-
+                    <td>@row.Status</td>
+                    <td><a asp-route-url="@row.url">Bekijk</a></td>
                 </tr>
             }
         </table>

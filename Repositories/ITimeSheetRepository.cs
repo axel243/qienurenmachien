@@ -11,7 +11,6 @@ namespace QienUrenMachien.Repositories
     {
 
         Task<TimeSheet> UpdateTimeSheet(TimeSheet _timeSheet);
-
         Task<TimeSheet> GetTimeSheet(int Id);
 
         Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model);

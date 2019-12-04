@@ -35,20 +35,33 @@ namespace QienUrenMachien.Controllers
         //    return View();
         //}
 
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index(TimeSheetWithUser timesheets)
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
-            var users = await repo.GetTimeSheetAndUser();
-            var table = new List<TimeSheetWithUser>();
-            
-            foreach (var user in users)
+            if (User.IsInRole("Admin"))
             {
-                timesheets.FirstName = user.FirstName;
-                timesheets.LastName = user.LastName;
-                timesheets.Status = user.Status;
-                table.Add(timesheets);
+                var table = new List<TimeSheetWithUser>();
+               
+                var users = await repo.GetTimeSheetAndUser();
+                
+                foreach (var user in users)
+                {
+                    var newTimeSheet = new TimeSheetWithUser();
+                    newTimeSheet.FirstName = user.FirstName;
+                    newTimeSheet.LastName = user.LastName;
+                    newTimeSheet.Status = user.Status;
+                    newTimeSheet.url = user.url;
+                    //newTimeSheet.WerkgeverId = user.WerkgeverId;
+
+                    table.Add(newTimeSheet);
+                }
+                
+                return View(table);
             }
-            return View(table);
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult Privacy()
