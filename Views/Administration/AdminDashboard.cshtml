@@ -2,33 +2,79 @@
 @using QienUrenMachien.Entities;
 @inject UserManager<ApplicationUser> userManager;
 
-@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+@model QienUrenMachien.Models.UsersViewModel
 @{
 	ViewData["Title"] = "Admin Dashboard";
 }
-	<div class="text-center">
-		<h1 class="display-4">Overzicht Gebruikers</h1>
-		<p>Overzicht van alle accounts.</p>
-	</div>
+<div class="text-center">
+	<h1 class="display-4">Overzicht Gebruikers</h1>
+	<p>Overzicht van alle accounts.</p>
+</div>
 
-	<form asp-controller="Administration" asp-action="AdminDashboard">
-		<p>
-			Zoek: <input type="text" name="SearchString" style="border-radius: 5px; background-color: #e6e6e6; border: none;"/>
-		</p>
-	</form>
+<form asp-controller="Administration" asp-action="AdminDashboard" id="searchUsers">
+	<p>
+		Zoek: <input type="text" name="SearchString" oninput="$('#searchUsers').submit();" style="border-radius: 5px; background-color: #e6e6e6; border: none;" />
+	</p>
+</form>
 
-	<table style="width:100%;">
+<div class="text-center">
+	<h2>Trainees</h2>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th style="text-align: left;">Naam</th>
+		<th style="text-align: left;">Mail</th>
+		<th style="text-align: left;">Bekijk</th>
+	</tr>
+	@foreach (var role in Model.Trainees)
+	{
 		<tr>
-			<th style="text-align: left;">Naam</th>
-			<th style="text-align: left;">ID</th>
-			<th style="text-align: left;">Bekijk</th>
+			<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname @role.Lastname</td>
+			<td style="text-align: left;">@role.UserName</td>
+			<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
 		</tr>
-		@foreach (var role in Model)
-		{
-			<tr>
-				<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.UserName</td>
-				<td style="text-align: left;">@role.Id</td>
-				<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
-			</tr>
-		}
-	</table>
+	}
+</table>
+
+<br />
+<div class="text-center">
+	<h2>Werknemers</h2>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th style="text-align: left;">Naam</th>
+		<th style="text-align: left;">Mail</th>
+		<th style="text-align: left;">Bekijk</th>
+	</tr>
+	@foreach (var role in Model.Employees)
+	{
+		<tr>
+			<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname @role.Lastname</td>
+			<td style="text-align: left;">@role.UserName</td>
+			<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
+		</tr>
+	}
+</table>
+
+<br />
+<div class="text-center">
+	<h2>Werkgevers</h2>
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th style="text-align: left;">Naam</th>
+		<th style="text-align: left;">Mail</th>
+		<th style="text-align: left;">Bekijk</th>
+	</tr>
+	@foreach (var role in Model.Employers)
+	{
+		<tr>
+			<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname @role.Lastname</td>
+			<td style="text-align: left;">@role.UserName</td>
+			<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
+		</tr>
+	}
+</table>

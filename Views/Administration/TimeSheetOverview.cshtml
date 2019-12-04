@@ -82,14 +82,12 @@
 </table>
 
 <h2>Maand: @Model.Month</h2>
-<form asp-controller="Administration" asp-action="TimeSheetOverview" method="post">
-	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected">
+<form asp-controller="Administration" asp-action="TimeSheetOverview" id="searchForm" method="post">
+	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected" onchange="$('#searchForm').submit();">
 	</select>
-	@*<input class="btn btn-default" style="" type="submit" value="Kies" />*@
 	<h2>Jaar: @Model.theDate.ToString("yyyy")</h2>
-	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected">
+	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected" onchange="$('#searchForm').submit();">
 	</select>
-	<input class="btn btn-default" style="" type="submit" value="Kies" />
 </form>
 
 <div class="text-center">

@@ -33,14 +33,25 @@ namespace QienUrenMachien.Controllers
 
         public async Task<IActionResult> AdminDashboard(string searchString)
         {
-            var userlist = userManager.Users;
+            UsersViewModel model = new UsersViewModel();
+            model.Employees = await userManager.GetUsersInRoleAsync("Werknemer");
+            var employeesqueryable = model.Employees.AsQueryable();
+            model.Trainees = await userManager.GetUsersInRoleAsync("Trainee");
+            var traineesqueryable = model.Trainees.AsQueryable();
+            model.Employers = await userManager.GetUsersInRoleAsync("Werkgever");
+            var employersqueryable = model.Employers.AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                userlist = userlist.Where(u => u.UserName.Contains(searchString));
+                employeesqueryable = employeesqueryable.Where(u => u.UserName.Contains(searchString));
+                model.Employees = employeesqueryable.ToList();
+                traineesqueryable = traineesqueryable.Where(u => u.UserName.Contains(searchString));
+                model.Trainees = traineesqueryable.ToList();
+                employersqueryable = employersqueryable.Where(u => u.UserName.Contains(searchString));
+                model.Employers = employersqueryable.ToList();
             }
 
-            return View(await userlist.ToListAsync());
+            return View(model);
         }
 
         [Route("Administration/RegisterUser")]
@@ -76,7 +87,8 @@ namespace QienUrenMachien.Controllers
                 Zipcode = model.Zipcode,
                 PhoneNumber = model.PhoneNumber,
                 Country = model.Country,
-                WerkgeverID = model.Werkgever
+                WerkgeverID = model.Werkgever,
+                ProfileImageUrl = "http://www.naijaticketshop.com/images/default_profile.jpg"
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
 
