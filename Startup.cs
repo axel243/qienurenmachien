@@ -86,6 +86,7 @@ namespace QienUrenMachien
 
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/chatHub");
+                //endpoints.MapHub<ActivityHub>("/activityHub");
             });
         }
     }
