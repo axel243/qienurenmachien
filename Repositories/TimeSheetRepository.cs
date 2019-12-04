@@ -60,6 +60,43 @@ namespace QienUrenMachien.Repositories
             return _timeSheet;
         }
 
+        public TimeSheet AddTimeSheetTemp()
+        {
+            
+
+            for (int i = 1; i < 12; i++)
+            {
+                DateTime dt = new DateTime(DateTime.Now.Year, i, 1);
+
+                TimeSheet _timeSheet = new TimeSheet();
+                _timeSheet.Id = "b5657e5e-f288-47e1-bce8-ce8c4a6c0f3a";
+                _timeSheet.Month = dt.ToString("MMMM");
+                _timeSheet.ProjectHours = 176;
+                _timeSheet.Overwork = 0;
+                _timeSheet.Sick = 0;
+                _timeSheet.Training = 0;
+                _timeSheet.Other = 0;
+                _timeSheet.Project = "Macaw";
+                _timeSheet.Submitted = true;
+                _timeSheet.Approved = "Approved";
+                _timeSheet.Data = "{\"1\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"2\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"3\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"4\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"5\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"6\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"7\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"8\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"9\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"10\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"11\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"12\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"13\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"14\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"15\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"16\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"17\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"18\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"19\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"20\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"21\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"22\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"23\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"24\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"25\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"26\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"27\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"28\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"29\":{\"projecthours\":0,\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"30\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0},\"31\":{\"projecthours\":\"8\",\"overwork\":0,\"sick\":0,\"absence\":0,\"training\":0,\"other\":0}}";
+                _timeSheet.Url = Guid.NewGuid().ToString();
+                _timeSheet.Comment = "";
+                _timeSheet.theDate = dt;
+
+
+                var result = context.Add(_timeSheet);
+            }
+
+        
+
+
+            context.SaveChanges();
+
+
+            return  new TimeSheet();
+        }
+
         public async Task<TimeSheet> GetTimeSheet(int id)
         {
             return await context.TimeSheets.FindAsync(id);
@@ -252,11 +289,12 @@ namespace QienUrenMachien.Repositories
 
         public async Task<List<TimeSheet>> GetUserOverview(string id)
         {
-            var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
+            var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(c => c.theDate).ToListAsync();
             bool current_month = false;
 
             foreach (TimeSheet _timeSheet in result)
             {
+                Console.WriteLine(_timeSheet.theDate);
                 DateTime dt = DateTime.Now;
 
                 if (_timeSheet.theDate.Year == dt.Year && _timeSheet.theDate.Month == dt.Month)
