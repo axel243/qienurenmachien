@@ -38,8 +38,6 @@ namespace QienUrenMachien.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(TimeSheetWithUser timesheets)
         {
-            TimeSheet timesheet = new TimeSheet();
-            timesheet.applicationUser = new ApplicationUser();
             var users = await repo.GetTimeSheetAndUser();
             var table = new List<TimeSheetWithUser>();
             
@@ -47,6 +45,7 @@ namespace QienUrenMachien.Controllers
             {
                 timesheets.FirstName = user.FirstName;
                 timesheets.LastName = user.LastName;
+                timesheets.Status = user.Status;
                 table.Add(timesheets);
             }
             return View(table);

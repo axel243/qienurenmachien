@@ -78,12 +78,18 @@ namespace QienUrenMachien.Controllers
                 Country = model.Country,
                 WerkgeverID = model.Werkgever
                 };
+                IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
+                var role = await roleManager.FindByNameAsync(model.Role);
+                resultt = await userManager.AddToRoleAsync(user, role.Name);
 
                 if (result.Succeeded)
                 {
-                    mailServer.SendRegisterUserMail(user.UserName);
-                    return RedirectToAction("AdminDashboard", "Administration");
+                    if (resultt.Succeeded)
+                    {
+                        mailServer.SendRegisterUserMail(user.UserName);
+                        return RedirectToAction("AdminDashboard", "Administration");
+                    }
                 }
 
                 foreach (var error in result.Errors)

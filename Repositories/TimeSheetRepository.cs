@@ -182,7 +182,7 @@ namespace QienUrenMachien.Repositories
         public async Task<List<TimeSheetWithUser>> GetTimeSheetAndUser()
         {
             var timesheets = await context.TimeSheets.Include(ts => ts.applicationUser)
-                .Select(ts => new TimeSheetWithUser { FirstName = ts.applicationUser.Firstname, LastName = ts.applicationUser.Lastname, Status = ts.Submitted })
+                .Select(ts => new TimeSheetWithUser { FirstName = ts.applicationUser.Firstname, LastName = ts.applicationUser.Lastname, Status = ts.Approved })
                 .ToListAsync();
 
             return timesheets;
