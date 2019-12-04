@@ -44,7 +44,9 @@ namespace QienUrenMachien.Repositories
 
         public List<ActivityLogViewModel> GetActivityLogs()
         {
-            return context.ActivityLogs.Select(p => new ActivityLogViewModel
+            var numberOfLogs = context.ActivityLogs.Count();
+            var logs = context.ActivityLogs.Skip(numberOfLogs - 10)
+               .Select(p => new ActivityLogViewModel
             {
                 LogId = p.LogId,
                 applicationUser = p.applicationUser,
@@ -53,6 +55,8 @@ namespace QienUrenMachien.Repositories
                 Comment = p.Comment,
                 Timestamp = p.Timestamp
             }).ToList();
+
+            return logs;
         }
     }
 }
