@@ -27,7 +27,15 @@ namespace QienUrenMachien.Repositories
         Task<TimeSheet> GetTimeSheet(string id);
 
         Task<TimeSheet> GetTimeSheetUrl(string url);
+
         List<TimeSheet> GetTimeSheets();
+
+
+        Task<string> TimeSheetData();
+
+        TimeSheet AddTimeSheetTemp();
+
+
         TimeSheet AddTimeSheet(string userId, string data);
     }
 }

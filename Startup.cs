@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,7 @@ namespace QienUrenMachien
 
             services.AddControllersWithViews();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+            services.AddScoped<IActivityLogRepository, ActivityLogRepository>();
             services.AddRazorPages();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
@@ -53,6 +55,7 @@ namespace QienUrenMachien
             }));
 
             services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

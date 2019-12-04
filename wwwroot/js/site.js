@@ -85,9 +85,15 @@ function TableToString() {
 
 
 // Whenever the input table get changed create new data string
-$(("input", "textarea")).change(function() {
+$(("textarea")).change(function () {
     TableToString();
 });
+
+// Whenever the input table get changed create new data string
+$(("input")).change(function () {
+    TableToString();
+});
+
 
 //Websocket
 var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44398/chatHub").build();
@@ -117,8 +123,46 @@ connection.on("ReceiveMessage", function (jsonObject) {
 
 });
 
+connection.on("ReceiveMessage1", function (string, string2) {
+    console.log(string);
+});
+
+function receive() {
+
+}
 
 
 
-    //var table = document.getElementById("myTable");
-    
+
+$(document).ready(function () {
+    var endpoint = 'https://localhost:44398/api/data'
+
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function (api_data) {
+            var data = JSON.parse(api_data);
+            var ctx = document.getElementById("line-chart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: data.data
+                },
+                options: {
+                    reponsive: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        },
+        error: function (error_data) {
+            console.log(error_data)
+        }
+    })
+});

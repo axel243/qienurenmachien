@@ -15,6 +15,8 @@ using System.Net;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Mail;
 using System.Text.Json;
+using QienUrenMachien.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace QienUrenMachien.Controllers
 {
@@ -25,13 +27,16 @@ namespace QienUrenMachien.Controllers
         //public IActionResult Month();
 
         private readonly UserManager<ApplicationUser> userManager;
-
+        private readonly IActivityLogRepository repox;
+        private readonly IHubContext<ChatHub> hub;
         private readonly MailServer mailServer;
 
-        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager)
+        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager, IActivityLogRepository repox, IHubContext<ChatHub> hub)
         {
             this.repo = repo;
             this.userManager = userManager;
+            this.repox = repox;
+            this.hub = hub;
             this.mailServer = new MailServer();
         }
 
@@ -67,6 +72,9 @@ namespace QienUrenMachien.Controllers
 
             ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
 
+            var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+            repox.LogActivity(activeUser, "ApproveTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} van {user.UserName} goedgekeurd.");
+
             mailServer.SendApprovalMail(user.UserName, "Approved");
 
             return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
@@ -82,6 +90,10 @@ namespace QienUrenMachien.Controllers
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
             ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+
+            var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+            repox.LogActivity(activeUser, "RejectTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} van {user.UserName} afgewezen.");
 
             mailServer.SendApprovalMail(user.UserName, "Rejected");
 
@@ -170,6 +182,7 @@ namespace QienUrenMachien.Controllers
         {
 
             var result = await repo.GetUserOverview(userManager.GetUserId(User));
+            //repo.AddTimeSheetTemp();
 
             return View(result);
 
@@ -195,7 +208,15 @@ namespace QienUrenMachien.Controllers
             var currentWerkgever = await userManager.FindByIdAsync(currentWerknemer.WerkgeverID);
             _timeSheet.Submitted = true;
             var result = await repo.UpdateTimeSheet(_timeSheet);
-            mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
+
+            var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+            repox.LogActivity(activeUser, "SubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingediend.");
+
+            //call hub
+            await hub.Clients.All.SendAsync("ReceiveMessage1", "teststring", "teststing2");
+
+
+            //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }
@@ -208,6 +229,9 @@ namespace QienUrenMachien.Controllers
 
             _timeSheet.Submitted = false;
             var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+            repox.LogActivity(activeUser, "UnSubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingetrokken.");
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }

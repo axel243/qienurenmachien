@@ -24,71 +24,53 @@
                         GetCurrentUserAsync() => userManager.GetUserAsync(User);
                     var user = await GetCurrentUserAsync();
                     //------------------------------------------------------------------------------------
-                    
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
-                    
+
+                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
+
                 }
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QienUrenMachien</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QienUrenMachien</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex">
 
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                            @if (signInManager.IsSignedIn(User))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Sheet" asp-action="Overview">Urenformulier</a>
-                                </li>
-                            }
-                            @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                            {
 
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Users</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="ListRoles">Rollen</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Urenformulieren</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="RegisterUser">Gebruiker aanmaken</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
-                                                </li>
-                            }
-                            </ul>
-						<ul class="navbar-nav ml-auto">
-							@if (signInManager.IsSignedIn(User))
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        @if (signInManager.IsSignedIn(User))
 							{
-								<li class="nav-item">
-									<form method="post" asp-action="logout" asp-controller="account">
-										<button class="btn btn-light" style="font-size: 16px; background-color: #9d3ff3; color: #e0e0e0; border-color: #f8f9fa61" type="submit">
-											Logout @User.Identity.Name
-										</button>
-									</form>
-								</li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Sheet" asp-action="Overview">Urenformulier</a>
+                        </li>
+							}
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (signInManager.IsSignedIn(User))
+							{
+                        <li class="nav-item">
+                            <form method="post" asp-action="logout" asp-controller="account">
+                                <button class="btn btn-light" style="font-size: 16px; background-color: #9d3ff3; color: #e0e0e0; border-color: #f8f9fa61" type="submit">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
 							}
 							else
 							{
-								<li class="nav-item">
-									<a asp-action="register" asp-controller="account" class="nav-link" style="color: #cbd3da">Register</a>
-								</li>
-								<li class="nav-item">
-									<a asp-action="login" asp-controller="account" class="nav-link" style="color: #cbd3da">Login</a>
-								</li>
+                        <li class="nav-item">
+                            <a asp-action="register" asp-controller="account" class="nav-link" style="color: #cbd3da">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="login" asp-controller="account" class="nav-link" style="color: #cbd3da">Login</a>
+                        </li>
 							}
-						</ul> 
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -107,8 +89,10 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
