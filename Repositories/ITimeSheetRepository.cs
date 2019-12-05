@@ -11,7 +11,6 @@ namespace QienUrenMachien.Repositories
     {
 
         Task<TimeSheet> UpdateTimeSheet(TimeSheet _timeSheet);
-
         Task<TimeSheet> GetTimeSheet(int Id);
 
         Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model);
@@ -23,15 +22,19 @@ namespace QienUrenMachien.Repositories
         TimeSheet GetOneTimeSheet(string url);
 
         Task<TimeSheetViewModel> GetOneTimeSheetAsync(string Id, int SheetID);
-
+        Task<List<TimeSheetWithUser>> GetTimeSheetAndUser();
         Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url);
         Task<TimeSheet> GetTimeSheet(string id);
 
         Task<TimeSheet> GetTimeSheetUrl(string url);
 
+        List<TimeSheet> GetTimeSheets();
+
+
         Task<string> TimeSheetData();
 
         TimeSheet AddTimeSheetTemp();
+
 
         TimeSheet AddTimeSheet(string userId, string data);
     }

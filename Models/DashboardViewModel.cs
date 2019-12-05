@@ -8,5 +8,6 @@ namespace QienUrenMachien.Models
     public class DashboardViewModel
     {
         public List<ActivityLogViewModel> activityLogViewModels { get; set; }
+        public List<TimeSheetWithUser> timeSheetWithUsers { get; set; }
     }
 }
