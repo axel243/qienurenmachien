@@ -4,101 +4,148 @@
     ViewBag.Title = "User Registration";
 }
 <script>
-    function hideWerkgevers() {
-  var x = document.getElementById("isWerknemer");
+
+	function hideWerkgevers() {
+		var x = document.getElementById("isWerknemer");
+		var a = document.getElementById("isWerkgever1");
+		var b = document.getElementById("isWerkgever2");
   
-    x.style.display = "none";
+		x.style.display = "none";
+		a.style.display = "block";
+		b.style.display = "block";
+
+		document.getElementById("passwordField").value = null;
+		document.getElementById("passwordField2").value = null;
+
+		document.getElementById("plaatsLabel").innerText = "Straat + huisnr";
+		document.getElementById("woonLabel").innerText = "Woonplaats";
+		document.getElementById("naamLabel1").innerText = "Voornaam";
+		document.getElementById("naamLabel2").innerText = "Achternaam";
     };
 
-     function showWerkgevers() {
-  var x = document.getElementById("isWerknemer");
+	function showWerkgevers() {
+		var x = document.getElementById("isWerknemer");
+		var a = document.getElementById("isWerkgever1");
+		var b = document.getElementById("isWerkgever2");
   
-    x.style.display = "block";
-    }
+		x.style.display = "block";
+		a.style.display = "block";
+		b.style.display = "block";
+
+		document.getElementById("passwordField").value = null;
+		document.getElementById("passwordField2").value = null;
+
+		document.getElementById("plaatsLabel").innerText = "Straat + huisnr";
+		document.getElementById("woonLabel").innerText = "Woonplaats";
+		document.getElementById("naamLabel1").innerText = "Voornaam";
+		document.getElementById("naamLabel2").innerText = "Achternaam";
+	}
+
+	function hideWerkgeversAndSomeOptions() {
+		var x = document.getElementById("isWerknemer");
+		var a = document.getElementById("isWerkgever1");
+		var b = document.getElementById("isWerkgever2");
+
+	    x.style.display = "none";
+		a.style.display = "none";
+		b.style.display = "none";
+
+		document.getElementById("passwordField").value = "Test1234!";
+		document.getElementById("passwordField2").value = "Test1234!";
+
+		document.getElementById("plaatsLabel").innerText = "Straat + nr";
+		document.getElementById("woonLabel").innerText = "Plaats";
+		document.getElementById("naamLabel1").innerText = "Naam contactpersoon";
+		document.getElementById("naamLabel2").innerText = "Naam bedrijf";
+
+	};
 
     function getSelectedOption(select) {
-        return select.options[select.selectedIndex];
+		return select.options[select.selectedIndex];
 
 }
 
 </script>
 
-<h1>User Registration</h1>
+<h1>Gebruiker Registreren</h1>
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" runat="server">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Role"> Rol</label>
-                <select asp-for="Role" onchange='getSelectedOption(this).click(); count()'>
-                    <option onclick="hideWerkgevers()" value="Trainee">Trainee</option>
-                    <option onclick="hideWerkgevers()" value="Werkgever">Werkgever</option>
-                    <option onclick="hideWerkgevers()" value="Admin">Admin</option>
-                    <option onclick="showWerkgevers()" value="Werknemer">Werknemer</option>
-                </select>
-            </div>
-                <div style="display: none" class="form-group" id="isWerknemer">
-                    <label asp-for="Werkgever"> Werkgever</label>
-                    <select asp-for="Werkgever" asp-items="Model.Werkgevers" onchange='getSelectedOption(this).click(); count()'>
-                        <option></option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Firstname">Voornaam</label>
-                    <input asp-for="Firstname" class="form-control" />
-                </div>
+		<form method="post" runat="server">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Role"> Rol</label>
+				<select asp-for="Role" onchange='getSelectedOption(this).click(); count()'>
+					<option onclick="hideWerkgevers()" value="Trainee">Trainee</option>
+					<option onclick="hideWerkgeversAndSomeOptions()" value="Werkgever">Werkgever</option>
+					<option onclick="hideWerkgevers()" value="Admin">Admin</option>
+					<option onclick="showWerkgevers()" value="Werknemer">Werknemer</option>
+				</select>
+			</div>
+			<div style="display: none;" class="form-group" id="isWerknemer">
+				<label asp-for="Werkgever"> Werkgever</label>
+				<select asp-for="Werkgever" asp-items="Model.Werkgevers" onchange='getSelectedOption(this).click(); count()'>
+					<option></option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			@if (Model.Role != "Werkgever")
+			{
+				<div class="form-group" id="isWerkgever1">
+					<label asp-for="Password">Wachtwoord</label>
+					<input asp-for="Password" class="form-control" id="passwordField" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+				<div class="form-group" id="isWerkgever2">
+					<label asp-for="ConfirmPassword">Bevestig wachtwoord</label>
+					<input asp-for="ConfirmPassword" class="form-control" id="passwordField2" />
+					<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+				</div>
+			}
+			<div class="form-group">
+				<label id="naamLabel1" asp-for="Firstname">Voornaam</label>
+				<input asp-for="Firstname" class="form-control" />
+			</div>
 
-                <div class="form-group">
-                    <label asp-for="Lastname">Achternaam</label>
-                    <input asp-for="Lastname" class="form-control" />
-                </div>
+			<div class="form-group">
+				<label id="naamLabel2" asp-for="Lastname">Achternaam</label>
+				<input asp-for="Lastname" class="form-control" />
+			</div>
 
-                <div class="form-group">
-                    <label asp-for="PhoneNumber">Telefoon</label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>
+			<div class="form-group">
+				<label asp-for="PhoneNumber">Telefoon</label>
+				<input asp-for="PhoneNumber" class="form-control" />
+				<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+			</div>
 
-                <div class="form-group">
-                    <label asp-for="Street">Straat + huisnr</label>
-                    <input asp-for="Street" class="form-control" />
-                    <span asp-validation-for="Street" class="text-danger"></span>
-                </div>
+			<div class="form-group">
+				<label id="plaatsLabel" asp-for="Street">Straat + huisnr</label>
+				<input asp-for="Street" class="form-control" />
+				<span asp-validation-for="Street" class="text-danger"></span>
+			</div>
 
-                <div class="form-group">
-                    <label asp-for="Zipcode">Postcode</label>
-                    <input asp-for="Zipcode" class="form-control" />
-                    <span asp-validation-for="Zipcode" class="text-danger"></span>
-                </div>
+			<div class="form-group">
+				<label asp-for="Zipcode">Postcode</label>
+				<input asp-for="Zipcode" class="form-control" />
+				<span asp-validation-for="Zipcode" class="text-danger"></span>
+			</div>
 
-                <div class="form-group">
-                    <label asp-for="City">Woonplaats</label>
-                    <input asp-for="City" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-                </div>
+			<div class="form-group">
+				<label id="woonLabel" asp-for="City">Woonplaats</label>
+				<input asp-for="City" class="form-control" />
+				<span asp-validation-for="City" class="text-danger"></span>
+			</div>
 
-                <div class="form-group">
-                    <label asp-for="Country">Land</label>
-                    <input asp-for="Country" class="form-control" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+			<div class="form-group">
+				<label asp-for="Country">Land</label>
+				<input asp-for="Country" class="form-control" />
+				<span asp-validation-for="Country" class="text-danger"></span>
+			</div>
+			<button type="submit" class="btn btn-primary">Register</button>
+		</form>
     </div>
 </div>

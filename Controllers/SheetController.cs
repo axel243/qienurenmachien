@@ -16,6 +16,7 @@ using QienUrenMachien.Entities;
 using QienUrenMachien.Mail;
 using System.Text.Json;
 using QienUrenMachien.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace QienUrenMachien.Controllers
 {
@@ -27,13 +28,15 @@ namespace QienUrenMachien.Controllers
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IActivityLogRepository repox;
+        private readonly IHubContext<ChatHub> hub;
         private readonly MailServer mailServer;
 
-        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager, IActivityLogRepository repox)
+        public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager, IActivityLogRepository repox, IHubContext<ChatHub> hub)
         {
             this.repo = repo;
             this.userManager = userManager;
             this.repox = repox;
+            this.hub = hub;
             this.mailServer = new MailServer();
         }
 
@@ -208,6 +211,9 @@ namespace QienUrenMachien.Controllers
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
             repox.LogActivity(activeUser, "SubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingediend.");
+
+            //call hub
+            await hub.Clients.All.SendAsync("ReceiveMessage1", "teststring", "teststing2");
 
 
             //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );

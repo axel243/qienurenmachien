@@ -1,10 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using QienUrenMachien.Entities;
+@using QienUrenMachien.Models
+@model DashboardViewModel
 @inject SignInManager<ApplicationUser> signInManager;
 @inject UserManager<ApplicationUser> userManager;
 
 @{
-	ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page";
 }
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -13,24 +15,18 @@
 		<h1 class="display-4">Admin Dashboard</h1>
 	</div>
 }
-@if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
-{
-	<div class="text-center">
-		<h1 class="display-4">User Dashboard</h1>
-	</div>
-}
 
 <div class="text-center">
-	<img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
+    <img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
 </div>
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
 	<canvas id="line-chart" width="800" height="300"></canvas>
 
-	<nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
-		<div class="container">
-			<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+    <nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
 				<ul class="navbar-nav flex-xl-grow-1">
 					<li class="nav-item">
@@ -50,9 +46,33 @@
 					</li>
 				</ul>
 
-				<ul class="navbar-nav ml-auto">
-				</ul>
-			</div>
-		</div>
-	</nav>
+                <ul class="navbar-nav ml-auto">
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <table class="col-md-6" id="ActivityTable" style="width:100%;">
+        <tr><th>Laatste activiteiten</th><th></th></tr>
+        <tr>
+            @*<th>LogId</th>
+                <th>Id</th>
+                <th>Activity</th>*@
+            <th>Comment</th>
+            <th>Timestamp</th>
+
+        </tr>
+        @foreach (var i in Model.activityLogViewModels)
+        {
+
+
+            <tr>
+                @*<td>@i.LogId</td>
+                    <td>@i.Id</td>
+                    <td>@i.Activity</td>*@
+                <td>@i.Comment</td>
+                <td>@i.Timestamp</td>
+            </tr>
+        }
+    </table>
 }

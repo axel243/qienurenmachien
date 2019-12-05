@@ -63,37 +63,102 @@ namespace QienUrenMachien.Repositories
 
         public async Task<string> TimeSheetData(){
             var result = await context.TimeSheets.OrderBy(c => c.theDate).ToListAsync();
-            var dictionary = new Dictionary<String, double>();
+            var dictionary = new Dictionary<String, DataModel>();
 
             foreach (TimeSheet _timeSheet in result)
             {
                 if (dictionary.ContainsKey(_timeSheet.theDate.ToString("MMMM"))) {
-                    dictionary[_timeSheet.theDate.ToString("MMMM")] += _timeSheet.ProjectHours;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].ProjectHours += _timeSheet.ProjectHours;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Overwork += _timeSheet.Overwork;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Sick += _timeSheet.Sick;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Absence += _timeSheet.Absence;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Training += _timeSheet.Training;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Other += _timeSheet.Other;
                 }
                 else {
-                    dictionary[_timeSheet.theDate.ToString("MMMM")] = _timeSheet.ProjectHours;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")] = new DataModel {
+                        ProjectHours = _timeSheet.ProjectHours,
+                        Overwork = _timeSheet.Overwork,
+                        Sick = _timeSheet.Sick,
+                        Absence = _timeSheet.Absence,
+                        Training = _timeSheet.Training,
+                        Other = _timeSheet.Other
+
+                    } ;
                 }
                 
             }
-            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(dictionary));
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(dictionary));
 
             List<string> x = new List<string>();
-            List<Double> y = new List<Double>();
+            List<Double> ProjectHours = new List<Double>();
+            List<Double> Overwork = new List<Double>();
+            List<Double> Sick = new List<Double>();
+            List<Double> Absence = new List<Double>();
+            List<Double> Training = new List<Double>();
+            List<Double> Other = new List<Double>();
+
             List<Object> z = new List<Object>();
 
 
             // Display the keys.
             foreach (string date in dictionary.Keys) {
                 x.Add(date);
-                y.Add(dictionary[date]);
+                ProjectHours.Add(dictionary[date].ProjectHours);
+                Overwork.Add(dictionary[date].Overwork);
+                Sick.Add(dictionary[date].Sick);
+                Absence.Add(dictionary[date].Absence);
+                Training.Add(dictionary[date].Training);
+                Other.Add(dictionary[date].Other);
             }
 
             var DataSet = new {
-                label = "Project uren",
-                data = y
+                label = "Project",
+                data = ProjectHours,
+                borderColor = "#3e95cd",
+                fill = false
+            };
+
+            var DataSet2 = new {
+                label = "Overwerk",
+                data = Overwork,
+                borderColor = "#8e5ea2",
+                fill = false
+            };
+
+            var DataSet3 = new {
+                label = "Ziek",
+                data = Sick,
+                borderColor = "#3cba9f",
+                fill = false
+            };
+
+            var DataSet4 = new {
+                label = "Afwezig",
+                data = Absence, 
+                borderColor = "#e8c3b9",
+                fill = false
+            };
+
+            var DataSet5 = new {
+                label = "Training",
+                data = Training,
+                borderColor = "#c45850",
+                fill = false
+            };
+
+            var DataSet6 = new {
+                label = "Overig",
+                data = Other,
+                fill = false
             };
 
             z.Add(DataSet);
+            z.Add(DataSet2);
+            z.Add(DataSet3);
+            z.Add(DataSet4);
+            z.Add(DataSet5);
+            z.Add(DataSet6);
 
 
             var myAnonymousType = new {

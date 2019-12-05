@@ -25,12 +25,21 @@ namespace QienUrenMachien.Models
         [Compare("Password",
             ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(30)]
         public virtual string Firstname { get; set; }
+        [Required]
         public virtual string Lastname { get; set; }
+        [StringLength(40)]
         public virtual string Street { get; set; }
+        [StringLength(40)]
         public virtual string City { get; set; }
+        [Phone]
         public virtual string PhoneNumber { get; set; }
+        [StringLength(8)]
         public virtual string Zipcode { get; set; }
+        [StringLength(40)]
         public virtual string Country { get; set; }
         public virtual string ProfileImageUrl { get; set; }
         public virtual string BankNumber { get; set; }

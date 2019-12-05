@@ -42,12 +42,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (signInManager.IsSignedIn(User))
-							{
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Sheet" asp-action="Overview">Urenformulier</a>
-                        </li>
-							}
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
@@ -62,9 +56,6 @@
 							}
 							else
 							{
-                        <li class="nav-item">
-                            <a asp-action="register" asp-controller="account" class="nav-link" style="color: #cbd3da">Register</a>
-                        </li>
                         <li class="nav-item">
                             <a asp-action="login" asp-controller="account" class="nav-link" style="color: #cbd3da">Login</a>
                         </li>
