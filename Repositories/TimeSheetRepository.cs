@@ -331,6 +331,9 @@ namespace QienUrenMachien.Repositories
                 Submitted = entity.Submitted,
                 Data = entity.Data,
                 Url = entity.Url,
+                Approved = entity.Approved,
+                Comment = entity.Comment
+                
             };
 
         }

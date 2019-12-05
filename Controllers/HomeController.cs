@@ -41,7 +41,6 @@ namespace QienUrenMachien.Controllers
 
         //    return View();
         //}
-
         [Authorize]
         public async Task<IActionResult> Index()
         {

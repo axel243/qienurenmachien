@@ -119,6 +119,12 @@ namespace QienUrenMachien.Controllers
             return View(singleuser);
         }
 
+        public IActionResult ViewEmployer(string Id)
+        {
+            var singleuser = userManager.Users.Single(u => u.Id == Id);
+            return View(singleuser);
+        }
+
         public async Task<IActionResult> TimeSheetOverview()
         {
             TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM"), theDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1) };
