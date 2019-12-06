@@ -7,11 +7,12 @@
 	var user = userManager.FindByIdAsync(Model.Id);
 }
 
-<h1 style="text-align: center;">Urenformulier van @user.Result.UserName</h1>
+<h1 style="text-align: center;">Urenformulier van @user.Result.Firstname @user.Result.Lastname</h1>
 
 <table style="width:100%;">
 	<tr>
-		<th>Gebruiker</th>
+		<th>Naam</th>
+		<th>Mail</th>
 		<th>Maand</th>
 		<th>Jaar</th>
 		<th>Projecturen</th>
@@ -22,9 +23,14 @@
 		<th>Overige</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
+		@if (@Model.Comment != "")
+		{
+		<th>Opmerking</th>
+		}
 	</tr>
 	<tr>
-		<td>@user.Result.Firstname</td>
+		<td>@user.Result.Firstname @user.Result.Lastname</td>
+		<td>@user.Result.UserName</td>
 		<td>@Model.Month</td>
 		<td>@Model.theDate.Year</td>
 		<td>@Model.ProjectHours</td>
@@ -35,6 +41,10 @@
 		<td>@Model.Other</td>
 		<td>@Model.Submitted</td>
 		<td>@Model.Approved</td>
+		@if (@Model.Comment != "")
+		{
+		<td>@Model.Comment</td>
+		}
 	</tr>
 </table>
 

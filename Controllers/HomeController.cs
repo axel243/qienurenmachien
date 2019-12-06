@@ -38,20 +38,24 @@ namespace QienUrenMachien.Controllers
         //[AllowAnonymous]
         //public IActionResult Index()
         //{
-            
+
         //    return View();
         //}
-
         [Authorize]
         public async Task<IActionResult> Index()
         {
 
             if (User.IsInRole("Admin"))
             {
-                var table = new List<TimeSheetWithUser>();
-               
-                var users = await repo.GetTimeSheetAndUser();
                 
+                var logs = repox.GetActivityLogs();
+                logs.Reverse();
+
+                var model = new DashboardViewModel();
+                model.timeSheetWithUsers = new List<TimeSheetWithUser>();
+                model.activityLogViewModels = logs;
+                var users = await repo.GetTimeSheetAndUser();
+
                 foreach (var user in users)
                 {
                     var newTimeSheet = new TimeSheetWithUser();
@@ -61,31 +65,19 @@ namespace QienUrenMachien.Controllers
                     newTimeSheet.url = user.url;
                     //newTimeSheet.WerkgeverId = user.WerkgeverId;
 
-                    table.Add(newTimeSheet);
+                    model.timeSheetWithUsers.Add(newTimeSheet);
                 }
-                
-                return View(table);
+
+                return View(model);
             }
             else
             {
-                return View();
-            }
-
-            var logs = repox.GetActivityLogs();
-            logs.Reverse();
-
-            var model = new DashboardViewModel();
-            model.activityLogViewModels = logs;
-
-        if (signInManager.IsSignedIn(User) && User.IsInRole("Werknemer"))
-            {
+                //if (signInManager.IsSignedIn(User) && User.IsInRole("Werknemer"))
+                //{
+                //    return RedirectToAction("overview", "sheet");
+                //}
                 return RedirectToAction("overview", "sheet");
             }
-
-
-
-            return View(model);
-
         }
 
         public IActionResult Privacy()
