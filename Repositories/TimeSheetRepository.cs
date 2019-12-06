@@ -370,7 +370,8 @@ namespace QienUrenMachien.Repositories
                 Approved = entity.Approved,
                 Data = entity.Data,
                 Url = entity.Url,
-                Comment = entity.Comment
+                Comment = entity.Comment,
+                theDate = entity.theDate
             };
 
         }

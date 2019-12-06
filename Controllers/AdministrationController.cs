@@ -43,11 +43,11 @@ namespace QienUrenMachien.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                employeesqueryable = employeesqueryable.Where(u => u.UserName.Contains(searchString));
+                employeesqueryable = employeesqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Employees = employeesqueryable.ToList();
-                traineesqueryable = traineesqueryable.Where(u => u.UserName.Contains(searchString));
+                traineesqueryable = traineesqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Trainees = traineesqueryable.ToList();
-                employersqueryable = employersqueryable.Where(u => u.UserName.Contains(searchString));
+                employersqueryable = employersqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Employers = employersqueryable.ToList();
             }
 
