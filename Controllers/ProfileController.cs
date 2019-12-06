@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Hubs;
 using QienUrenMachien.Mail;
 using QienUrenMachien.Repositories;
 
@@ -18,13 +20,15 @@ namespace QienUrenMachien.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IActivityLogRepository repox;
+        private readonly IHubContext<ChatHub> hub;
         private readonly MailServer mailServer;
 
-        public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogRepository repox)
+        public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogRepository repox, IHubContext<ChatHub> hub)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.repox = repox;
+            this.hub = hub;
             this.mailServer = new MailServer();
         }
         public IActionResult Index()
@@ -82,6 +86,10 @@ namespace QienUrenMachien.Controllers
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                     repox.LogActivity(activeUser, "EditProfile", $"{activeUser.UserName} heeft profiel verzoek ingediend.");
+
+                    //call hub
+                    var lastActivity = repox.GetLastLog();
+                    await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
                     mailServer.SendEditedProfileMail(currentUser.UserName, currentUser.Firstname);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");

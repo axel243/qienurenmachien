@@ -20,13 +20,13 @@ namespace QienUrenMachien.Repositories
     {
         private readonly RepositoryContext context;
         private readonly UserManager<ApplicationUser> userManager;
-        
+
 
         public ActivityLogRepository(RepositoryContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.userManager = userManager;
-            
+
         }
 
         public void LogActivity(ApplicationUser user, string activity, string comment)
@@ -47,16 +47,30 @@ namespace QienUrenMachien.Repositories
             var numberOfLogs = context.ActivityLogs.Count();
             var logs = context.ActivityLogs.Skip(numberOfLogs - 10)
                .Select(p => new ActivityLogViewModel
-            {
-                LogId = p.LogId,
-                applicationUser = p.applicationUser,
-                Id = p.Id,
-                Activity = p.Activity,
-                Comment = p.Comment,
-                Timestamp = p.Timestamp
-            }).ToList();
+               {
+                   LogId = p.LogId,
+                   applicationUser = p.applicationUser,
+                   Id = p.Id,
+                   Activity = p.Activity,
+                   Comment = p.Comment,
+                   Timestamp = p.Timestamp
+               }).ToList();
 
             return logs;
+        }
+
+        public ActivityLogViewModel GetLastLog()
+        {
+            var numberOfLogs = context.ActivityLogs.Count();
+            var logs = context.ActivityLogs.Skip(numberOfLogs - 10)
+               .Select(p => new ActivityLogViewModel
+               {
+                   Activity = p.Activity,
+                   Comment = p.Comment,
+                   Timestamp = p.Timestamp
+               }).ToList();
+
+            return logs[9];
         }
     }
 }
