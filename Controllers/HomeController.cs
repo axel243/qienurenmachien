@@ -76,7 +76,7 @@ namespace QienUrenMachien.Controllers
                 //{
                 //    return RedirectToAction("overview", "sheet");
                 //}
-                return View();
+                return RedirectToAction("overview", "sheet");
             }
         }
 
