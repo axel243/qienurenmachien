@@ -152,6 +152,12 @@ namespace QienUrenMachien.Controllers
             return View(result);
         }
 
+        public async Task<IActionResult> ShowUserTimeSheetByUrl(string url)
+        {
+            var result = await repo.GetOneTimeSheetByUrl(url);
+            return View(result);
+        }
+
 
         [HttpGet]
         public IActionResult CreateRole()
