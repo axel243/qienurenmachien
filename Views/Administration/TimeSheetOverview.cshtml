@@ -90,6 +90,7 @@
 	</select>
 </form>
 
+<br />
 <div class="text-center">
 	<h2>Trainees</h2>
 </div>
@@ -97,7 +98,8 @@
 
 <table style="width:100%;">
 	<tr>
-		<th>Gebruiker</th>
+		<th>Naam</th>
+		<th>Mail</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
@@ -111,6 +113,7 @@
 		{ "SheetID", sheet.SheetID.ToString() }
 	};
 <tr>
+	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
@@ -119,14 +122,15 @@
 }
 </table>
 
-
+<br />
 <div class="text-center">
 	<h2>Werknemers</h2>
 </div>
 
 <table style="width:100%;">
 	<tr>
-		<th>Gebruiker</th>
+		<th>Naam</th>
+		<th>Mail</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th>Toon urenformulier</th>
@@ -140,6 +144,7 @@
 		{ "SheetID", sheet.SheetID.ToString() }
 	};
 <tr>
+	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 	<td>@sheet.applicationUser.UserName</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>

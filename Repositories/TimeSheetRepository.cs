@@ -331,6 +331,9 @@ namespace QienUrenMachien.Repositories
                 Submitted = entity.Submitted,
                 Data = entity.Data,
                 Url = entity.Url,
+                Approved = entity.Approved,
+                Comment = entity.Comment
+                
             };
 
         }
@@ -367,7 +370,8 @@ namespace QienUrenMachien.Repositories
                 Approved = entity.Approved,
                 Data = entity.Data,
                 Url = entity.Url,
-                Comment = entity.Comment
+                Comment = entity.Comment,
+                theDate = entity.theDate
             };
 
         }
