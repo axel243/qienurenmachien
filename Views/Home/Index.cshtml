@@ -90,7 +90,7 @@
                 <tr>
                     <td>@(row.FirstName + " " + row.LastName)</td>
                     <td>@row.Status</td>
-                    <td><a asp-route-url="@row.url">Bekijk</a></td>
+                    <td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
                 </tr>
             }
         </table>
