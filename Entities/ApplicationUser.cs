@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace QienUrenMachien.Entities
@@ -13,7 +12,7 @@ namespace QienUrenMachien.Entities
         public virtual string Street { get; set; }
         public virtual string City { get; set; }
         public virtual string Zipcode { get; set; }
-        public virtual string PhoneNumber { get; set; }
+        //public virtual string PhoneNumber { get; set; }            //deze property heeft de identityuser al en wordt overgeerfd
         public virtual string Country { get; set; }
         public virtual string ProfileImageUrl { get; set; }
         public virtual string BankNumber { get; set; }

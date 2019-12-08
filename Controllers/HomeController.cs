@@ -41,7 +41,6 @@ namespace QienUrenMachien.Controllers
 
         //    return View();
         //}
-
         [Authorize]
         public async Task<IActionResult> Index()
         {
@@ -77,7 +76,7 @@ namespace QienUrenMachien.Controllers
                 //{
                 //    return RedirectToAction("overview", "sheet");
                 //}
-                return View();
+                return RedirectToAction("overview", "sheet");
             }
         }
 

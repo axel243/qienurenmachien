@@ -17,6 +17,7 @@ using QienUrenMachien.Mail;
 using System.Text.Json;
 using QienUrenMachien.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace QienUrenMachien.Controllers
 {
@@ -40,10 +41,10 @@ namespace QienUrenMachien.Controllers
             this.mailServer = new MailServer();
         }
 
-        public IActionResult Index()
-        {
-            return View("Month");
-        }
+        //public IActionResult Index()
+        //{
+        //    return View("Month");
+        //}
 
         [Route("Sheet/ConfirmTimeSheet/{url}")]
         [HttpGet]
@@ -176,7 +177,7 @@ namespace QienUrenMachien.Controllers
 
         //}
 
-        [Route("Sheet/Overview/")]
+        [Route("Sheet/Overview")]
         [HttpGet]
         public async Task<IActionResult> Overview()
         {
@@ -213,7 +214,8 @@ namespace QienUrenMachien.Controllers
             repox.LogActivity(activeUser, "SubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingediend.");
 
             //call hub
-            await hub.Clients.All.SendAsync("ReceiveMessage1", "teststring", "teststing2");
+            var lastActivity = repox.GetLastLog();
+            await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
 
             //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
@@ -232,6 +234,11 @@ namespace QienUrenMachien.Controllers
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
             repox.LogActivity(activeUser, "UnSubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingetrokken.");
+
+
+            //call hub
+            var lastActivity = repox.GetLastLog();
+            await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }

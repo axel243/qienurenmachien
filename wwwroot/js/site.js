@@ -123,14 +123,29 @@ connection.on("ReceiveMessage", function (jsonObject) {
 
 });
 
-connection.on("ReceiveMessage1", function (string, string2) {
-    console.log(string);
+
+
+//***********************activiteiten tabel*****************************
+connection.on("ReceiveActivity", function (jsonObject) {
+
+    console.log(jsonObject);
+    var newActivity = jsonObject;
+    var comment = newActivity.comment;
+    var timestamp = newActivity.timestamp;
+
+    var table = document.getElementById("ActivityTable");
+
+    var row = table.insertRow(1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+
+    cell1.innerHTML = comment;
+    cell2.innerHTML = timestamp;
+
+    table.deleteRow(-1);
+
 });
-
-function receive() {
-
-}
-
+//*****************************************************
 
 
 
