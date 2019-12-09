@@ -64,10 +64,30 @@ namespace QienUrenMachien.Controllers
                 var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
+            var adminlist = await userManager.GetUsersInRoleAsync("Admin");
+
             if (currentUser == null)
             {
                 ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
                 return View("NotFound");
+            } else if (adminlist.Contains(currentUser))
+            {
+                currentUser.Street = model.Street;
+                currentUser.PhoneNumber = model.PhoneNumber;
+                currentUser.Zipcode = model.Zipcode;
+                currentUser.City = model.City;
+                currentUser.Country = model.Country;
+                currentUser.BankNumber = model.BankNumber;
+                currentUser.ProfileImageUrl = model.ProfileImageUrl;
+                currentUser.NewProfile = null;
+
+                var resultt = await userManager.UpdateAsync(currentUser);
+
+                if (resultt.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(currentUser);
             }
             else
             {
