@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Hubs;
 using QienUrenMachien.Mail;
+using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
@@ -59,18 +60,34 @@ namespace QienUrenMachien.Controllers
                 ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
             }
-            return View(@"~/Views/Account/Profile/EditProfile.cshtml", currentUser);
+
+            var currentUserModel = new ProfileViewModel
+            {
+                Id = currentUser.Id,
+                UserName = currentUser.UserName,
+                FirstName = currentUser.Firstname,
+                LastName = currentUser.Lastname,
+                PhoneNumber = currentUser.PhoneNumber,
+                Street = currentUser.Street,
+                Zipcode = currentUser.Zipcode,
+                City = currentUser.City,
+                Country = currentUser.Country,
+                BankNumber = currentUser.BankNumber,
+                ProfileImageUrl = currentUser.ProfileImageUrl
+    };
+
+            return View(@"~/Views/Account/Profile/EditProfile.cshtml", currentUserModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(ApplicationUser model)
+        public async Task<IActionResult> EditProfile(ProfileViewModel model)
         {
                 var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
             if (currentUser == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
             }
             else
@@ -94,7 +111,7 @@ namespace QienUrenMachien.Controllers
                     mailServer.SendEditedProfileMail(currentUser.UserName, currentUser.Firstname);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
-                return View(currentUser);
+                return View();
             }
         }
 
