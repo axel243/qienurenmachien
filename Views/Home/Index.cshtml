@@ -49,31 +49,31 @@
             </div>
         </div>
     </nav>
-
-    <table class="col-md-6" id="ActivityTable" style="width:60%; float: left;">
-        @*<tr><th>Laatste activiteiten</th><th></th></tr>*@
-        <tr>
-            @*<th>LogId</th>
-            <th>Id</th>
-            <th>Activity</th>*@
-            <th>Comment</th>
-            <th>Timestamp</th>
-
-        </tr>
-        @foreach (var i in Model.activityLogViewModels)
-        {
-
-
+    <div>
+        <table class="col-md-6" id="ActivityTable" style="width:60%; float: left;">
+            @*<tr><th>Laatste activiteiten</th><th></th></tr>*@
             <tr>
-                @*<td>@i.LogId</td>
-                <td>@i.Id</td>
-                <td>@i.Activity</td>*@
-                <td>@i.Comment</td>
-                <td>@i.Timestamp</td>
+                @*<th>LogId</th>
+                <th>Id</th>
+                <th>Activity</th>*@
+                <th>Comment</th>
+                <th>Timestamp</th>
+
             </tr>
-        }
-    </table>
-    
+            @foreach (var i in Model.activityLogViewModels)
+            {
+
+
+                <tr>
+                    @*<td>@i.LogId</td>
+                    <td>@i.Id</td>
+                    <td>@i.Activity</td>*@
+                    <td>@i.Comment</td>
+                    <td>@i.Timestamp</td>
+                </tr>
+            }
+        </table>
+
         <table style="width:40%; height:30%; float: right;">
             <tr>
                 <th>Werknemer</th>
@@ -85,11 +85,11 @@
                 <tr>
                     <td>@(row.FirstName + " " + row.LastName)</td>
                     <td>@row.Status</td>
-                    <td><a asp-route-url="@row.url">Bekijk</a></td>
+                    <td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
                 </tr>
             }
         </table>
-
+    </div>
 
 }
 

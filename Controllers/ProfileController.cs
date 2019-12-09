@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QienUrenMachien.Entities;
+using QienUrenMachien.Hubs;
 using QienUrenMachien.Mail;
+using QienUrenMachien.Models;
 using QienUrenMachien.Repositories;
 
 namespace QienUrenMachien.Controllers
@@ -18,13 +23,17 @@ namespace QienUrenMachien.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IActivityLogRepository repox;
+        private readonly IHubContext<ChatHub> hub;
+        private readonly IWebHostEnvironment env;
         private readonly MailServer mailServer;
 
-        public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogRepository repox)
+        public ProfileController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IActivityLogRepository repox, IHubContext<ChatHub> hub, IWebHostEnvironment env)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.repox = repox;
+            this.hub = hub;
+            this.env = env;
             this.mailServer = new MailServer();
         }
         public IActionResult Index()
@@ -55,11 +64,27 @@ namespace QienUrenMachien.Controllers
                 ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
             }
-            return View(@"~/Views/Account/Profile/EditProfile.cshtml", currentUser);
+
+            var currentUserModel = new ProfileViewModel
+            {
+                Id = currentUser.Id,
+                UserName = currentUser.UserName,
+                FirstName = currentUser.Firstname,
+                LastName = currentUser.Lastname,
+                PhoneNumber = currentUser.PhoneNumber,
+                Street = currentUser.Street,
+                Zipcode = currentUser.Zipcode,
+                City = currentUser.City,
+                Country = currentUser.Country,
+                BankNumber = currentUser.BankNumber,
+                ProfileImageUrl = currentUser.ProfileImageUrl
+    };
+
+            return View(@"~/Views/Account/Profile/EditProfile.cshtml", currentUserModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(ApplicationUser model)
+        public async Task<IActionResult> EditProfile(ProfileViewModel model)
         {
                 var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
@@ -68,7 +93,7 @@ namespace QienUrenMachien.Controllers
 
             if (currentUser == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
             } else if (adminlist.Contains(currentUser))
             {
@@ -91,6 +116,11 @@ namespace QienUrenMachien.Controllers
             }
             else
             {
+                if (model.ProfileImage != null)
+                {
+                    UploadImage();
+                }
+
                 var jsonProfile = JsonConvert.SerializeObject(model);
 
                 currentUser.NewProfile = jsonProfile;
@@ -103,10 +133,33 @@ namespace QienUrenMachien.Controllers
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                     repox.LogActivity(activeUser, "EditProfile", $"{activeUser.UserName} heeft profiel verzoek ingediend.");
 
+                    //call hub
+                    var lastActivity = repox.GetLastLog();
+                    await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
+
                     mailServer.SendEditedProfileMail(currentUser.UserName, currentUser.Firstname);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
-                return View(currentUser);
+
+                //methode om profiel foto te uploaden
+                void UploadImage()
+                {
+                    var dir = env.ContentRootPath;
+                    var file = model.ProfileImage;
+                    var uploadPath = dir + $@"\Uploads\Images\{currentUser.UserName}";
+
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+
+
+                    using (var fileStream = new FileStream(Path.Combine(uploadPath, model.ProfileImage.FileName), FileMode.Create, FileAccess.Write))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                }
+                return View();
             }
         }
 
@@ -128,30 +181,50 @@ namespace QienUrenMachien.Controllers
 
             var jsonProfile = currentUser.NewProfile;
 
-            ViewBag.User = currentUser;
+            
+            var currentProfile = new ProfileViewModel
+            {
+                Id = currentUser.Id,
+                Street = currentUser.Street,
+                PhoneNumber = currentUser.PhoneNumber,
+                Zipcode = currentUser.Zipcode,
+                City = currentUser.City,
+                Country = currentUser.Country,
+                BankNumber = currentUser.BankNumber,
+                ProfileImageUrl = currentUser.ProfileImageUrl
+            };
 
             var x = JsonConvert.DeserializeObject<ApplicationUser>(jsonProfile);
-            ApplicationUser tempUser = new ApplicationUser();
-            tempUser.Id = userid;
-            tempUser.Street = x.Street;
-            tempUser.PhoneNumber = x.PhoneNumber;
-            tempUser.Zipcode = x.Zipcode;
-            tempUser.City = x.City;
-            tempUser.Country = x.Country;
-            tempUser.BankNumber = x.BankNumber;
-            tempUser.ProfileImageUrl = x.ProfileImageUrl;
+            var tempProfile = new ProfileViewModel {
+            Id = userid,
+            Street = x.Street,
+            PhoneNumber = x.PhoneNumber,
+            Zipcode = x.Zipcode,
+            City = x.City,
+            Country = x.Country,
+            BankNumber = x.BankNumber,
+            ProfileImageUrl = x.ProfileImageUrl
+            };
 
-            return View(@"~/Views/Account/Profile/ConfirmProfile.cshtml", tempUser);
+            var profiles = new ConfirmProfileViewModel();
+            
+            profiles.Profiles.Add(tempProfile);         //index 0
+            profiles.Profiles.Add(currentProfile);      //index 1
+            
+            
+
+
+            return View(@"~/Views/Account/Profile/ConfirmProfile.cshtml", profiles);
         }
 
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> AcceptedProfile(ApplicationUser model)
+        public async Task<IActionResult> AcceptedProfile(ConfirmProfileViewModel model)
         {
             var adminid = userManager.GetUserId(HttpContext.User);
             var adminuser = await userManager.FindByIdAsync(adminid);
-            var userid = model.Id;
+            var userid = model.Profiles[0].Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
             if (currentUser == null)
@@ -162,13 +235,13 @@ namespace QienUrenMachien.Controllers
             else
             {
 
-                currentUser.Street = model.Street;
-                currentUser.PhoneNumber = model.PhoneNumber;
-                currentUser.Zipcode = model.Zipcode;
-                currentUser.City = model.City;
-                currentUser.Country = model.Country;
-                currentUser.BankNumber = model.BankNumber;
-                currentUser.ProfileImageUrl = model.ProfileImageUrl;
+                currentUser.Street = model.Profiles[0].Street;
+                currentUser.PhoneNumber = model.Profiles[0].PhoneNumber;
+                currentUser.Zipcode = model.Profiles[0].Zipcode;
+                currentUser.City = model.Profiles[0].City;
+                currentUser.Country = model.Profiles[0].Country;
+                currentUser.BankNumber = model.Profiles[0].BankNumber;
+                currentUser.ProfileImageUrl = model.Profiles[0].ProfileImageUrl;
                 currentUser.NewProfile = null;
 
                 // Update the user using UpdateAsync
@@ -186,12 +259,12 @@ namespace QienUrenMachien.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> DeniedProfile(ApplicationUser model)
+        public async Task<IActionResult> DeniedProfile(ConfirmProfileViewModel model)
         {
             var adminid = userManager.GetUserId(HttpContext.User);
             var adminuser = await userManager.FindByIdAsync(adminid);
 
-            var userid = model.Id;
+            var userid = model.Profiles[0].Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
             if (currentUser == null)
