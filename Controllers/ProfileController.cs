@@ -89,10 +89,33 @@ namespace QienUrenMachien.Controllers
                 var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
+            var adminlist = await userManager.GetUsersInRoleAsync("Admin");
+
             if (currentUser == null)
             {
                 ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
+            } else if (adminlist.Contains(currentUser))
+            {
+                currentUser.UserName = model.UserName;
+                currentUser.Firstname = model.FirstName;
+                currentUser.Lastname = model.LastName;
+                currentUser.Street = model.Street;
+                currentUser.PhoneNumber = model.PhoneNumber;
+                currentUser.Zipcode = model.Zipcode;
+                currentUser.City = model.City;
+                currentUser.Country = model.Country;
+                currentUser.BankNumber = model.BankNumber;
+                currentUser.ProfileImageUrl = model.ProfileImageUrl;
+                currentUser.NewProfile = null;
+
+                var resultt = await userManager.UpdateAsync(currentUser);
+
+                if (resultt.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(currentUser);
             }
             else
             {
@@ -167,6 +190,9 @@ namespace QienUrenMachien.Controllers
             var currentProfile = new ProfileViewModel
             {
                 Id = currentUser.Id,
+                UserName = currentUser.UserName,
+                FirstName = currentUser.Firstname,
+                LastName = currentUser.Lastname,
                 Street = currentUser.Street,
                 PhoneNumber = currentUser.PhoneNumber,
                 Zipcode = currentUser.Zipcode,
@@ -179,6 +205,9 @@ namespace QienUrenMachien.Controllers
             var x = JsonConvert.DeserializeObject<ApplicationUser>(jsonProfile);
             var tempProfile = new ProfileViewModel {
             Id = userid,
+            UserName = currentUser.UserName,
+            FirstName = currentUser.Firstname,
+            LastName = currentUser.Lastname,
             Street = x.Street,
             PhoneNumber = x.PhoneNumber,
             Zipcode = x.Zipcode,
