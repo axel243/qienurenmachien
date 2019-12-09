@@ -78,7 +78,7 @@ namespace QienUrenMachien.Controllers
                 Country = currentUser.Country,
                 BankNumber = currentUser.BankNumber,
                 ProfileImageUrl = currentUser.ProfileImageUrl
-    };
+            };
 
             return View(@"~/Views/Account/Profile/EditProfile.cshtml", currentUserModel);
         }
@@ -100,7 +100,8 @@ namespace QienUrenMachien.Controllers
                 {
                     UploadImage();
                 }
-
+                //test mo 
+                model.ProfileImageUrl = $@"~/Uploads/Images/{currentUser.UserName}/" + model.ProfileImage.FileName;
                 var jsonProfile = JsonConvert.SerializeObject(model);
 
                 currentUser.NewProfile = jsonProfile;
@@ -126,7 +127,8 @@ namespace QienUrenMachien.Controllers
                 {
                     var dir = env.ContentRootPath;
                     var file = model.ProfileImage;
-                    var uploadPath = dir + $@"\Uploads\Images\{currentUser.UserName}";
+                    
+                    var uploadPath = $@"wwwroot/Uploads/Images/{currentUser.UserName}";
 
                     if (!Directory.Exists(uploadPath))
                     {
