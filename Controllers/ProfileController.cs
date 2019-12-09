@@ -97,6 +97,9 @@ namespace QienUrenMachien.Controllers
                 return View("NotFound");
             } else if (adminlist.Contains(currentUser))
             {
+                currentUser.UserName = model.UserName;
+                currentUser.Firstname = model.FirstName;
+                currentUser.Lastname = model.LastName;
                 currentUser.Street = model.Street;
                 currentUser.PhoneNumber = model.PhoneNumber;
                 currentUser.Zipcode = model.Zipcode;
@@ -185,6 +188,9 @@ namespace QienUrenMachien.Controllers
             var currentProfile = new ProfileViewModel
             {
                 Id = currentUser.Id,
+                UserName = currentUser.UserName,
+                FirstName = currentUser.Firstname,
+                LastName = currentUser.Lastname,
                 Street = currentUser.Street,
                 PhoneNumber = currentUser.PhoneNumber,
                 Zipcode = currentUser.Zipcode,
@@ -197,6 +203,9 @@ namespace QienUrenMachien.Controllers
             var x = JsonConvert.DeserializeObject<ApplicationUser>(jsonProfile);
             var tempProfile = new ProfileViewModel {
             Id = userid,
+            UserName = currentUser.UserName,
+            FirstName = currentUser.Firstname,
+            LastName = currentUser.Lastname,
             Street = x.Street,
             PhoneNumber = x.PhoneNumber,
             Zipcode = x.Zipcode,
