@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace QienUrenMachien.Models
@@ -15,5 +16,6 @@ namespace QienUrenMachien.Models
         public string Country { get; set; }
         public string BankNumber { get; set; }
         public string ProfileImageUrl { get; set; }
+        public IFormFile ProfileImage { get; set; }
     }
 }
