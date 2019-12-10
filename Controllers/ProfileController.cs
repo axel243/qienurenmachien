@@ -65,7 +65,7 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(ApplicationUser model)
         {
-                var userid = model.Id;
+              var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
             if (currentUser == null)
