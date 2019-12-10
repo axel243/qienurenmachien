@@ -61,7 +61,15 @@ namespace QienUrenMachien.Controllers
                     var newTimeSheet = new TimeSheetWithUser();
                     newTimeSheet.FirstName = user.FirstName;
                     newTimeSheet.LastName = user.LastName;
-                    newTimeSheet.Status = "Niet ingeleverd";
+                    if(user.Status =="Not Submitted" || user.Status == "Not submitted")
+                    {
+                        newTimeSheet.Status = "Niet ingeleverd";
+                    }
+                    else
+                    {
+                        newTimeSheet.Status = "Afgewezen timesheet";
+                    }
+                    
                     newTimeSheet.url = user.url;
                     //newTimeSheet.WerkgeverId = user.WerkgeverId;
 
