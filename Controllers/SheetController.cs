@@ -130,7 +130,7 @@ namespace QienUrenMachien.Controllers
         {
             var _timeSheet = repo.GetOneTimeSheet(url);
 
-            _timeSheet.Approved = "Not Submitted";
+            _timeSheet.Approved = "Not submitted";
             _timeSheet.Submitted = false;
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
