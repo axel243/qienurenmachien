@@ -49,6 +49,7 @@
 					</div>
 				</div>
 
+
                 <ul class="navbar-nav ml-auto">
                 </ul>
             </div>
@@ -141,22 +142,35 @@
 			}
 		</table>
 
-		<table style="width:40%; height:30%; float: right;">
-			<tr>
-				<th>Werknemer</th>
-				<th>Status Timesheet</th>
-				<th></th>
+        <table style="width:40%; height:30%; float: right;">
+            <tr>
+                <th>Naam</th>
+                <th>Actie</th>
+            </tr>
+           
+            @foreach (var row in Model.timeSheetWithUsers)
+            {
+        <tr>
+            <td>@(row.FirstName + " " + row.LastName)</td>
+            <td>@row.Status</td>
+            @if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
+            {
+                <td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
 
-			</tr>
-			@foreach (var row in Model.timeSheetWithUsers)
-			{
-				<tr>
-					<td>@(row.FirstName + " " + row.LastName)</td>
-					<td>@row.Status</td>
-					<td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
-				</tr>
-			}
-		</table>
-	</div>
+            }
+            else if (row.Status == "Afgewezen timesheet")
+            {
+                <td><a asp-controller="Sheet" asp-action="RejectedTimeSheet" asp-route-url="@row.url">Bekijk</a></td>
+            }
+            else
+            {
+                <td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
+            }
+
+        </tr>
+            }
+        </table>
+    </div>
+
 }
 
