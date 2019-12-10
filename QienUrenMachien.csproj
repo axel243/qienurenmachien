@@ -23,12 +23,7 @@
 
 
   <ItemGroup>
-    <Folder Include="wwwroot\Uploads\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Include="wwwroot\Uploads\Images\testmo%40testmo.com\legopop.jfif" />
+    <Folder Include="wwwroot\Uploads\Images\" />
   </ItemGroup>
 
 </Project>

@@ -349,6 +349,14 @@ namespace QienUrenMachien.Repositories
 
         }
 
+        public async Task<List<TimeSheetWithUser>> GetLastMonthProfileEdits()
+        {
+            var timesheets = await context.Users.Where(s => s.NewProfile != null).Select(t => new TimeSheetWithUser { Status = t.NewProfile, FirstName = t.Firstname, LastName = t.Lastname, userId = t.Id }).ToListAsync();
+
+            return timesheets;
+
+        }
+
         public async Task<TimeSheetViewModel> GetOneTimeSheetByUrl(string url)
         {
 
