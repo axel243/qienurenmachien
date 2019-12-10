@@ -20,28 +20,34 @@
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
 	<canvas id="line-chart" width="800" height="300"></canvas>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <a class="btn btn-primary" asp-action="DownloadCSV"
+               asp-controller="Home">Export naar CSV</a>
+        </div>
+    </div>
 
     <nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
-				<ul class="navbar-nav flex-xl-grow-1">
-					<li class="nav-item">
+				<div class="navbar-nav flex-xl-grow-1" style="height: 100px; align-items: center;">
+					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Users</a>
-					</li>
-					<li class="nav-item">
+					</div>
+					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Rollen</a>
-					</li>
-					<li class="nav-item">
+					</div>
+					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Urenformulieren</a>
-					</li>
-					<li class="nav-item">
+					</div>
+					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="RegisterUser">Gebruiker aanmaken</a>
-					</li>
-					<li class="nav-item">
+					</div>
+					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
-					</li>
-				</ul>
+					</div>
+				</div>
 
 
                 <ul class="navbar-nav ml-auto">
@@ -49,30 +55,92 @@
             </div>
         </div>
     </nav>
-    <div>
-        <table class="col-md-6" id="ActivityTable" style="width:60%; float: left;">
-            @*<tr><th>Laatste activiteiten</th><th></th></tr>*@
-            <tr>
-                @*<th>LogId</th>
-                <th>Id</th>
-                <th>Activity</th>*@
-                <th>Comment</th>
-                <th>Timestamp</th>
 
-            </tr>
-            @foreach (var i in Model.activityLogViewModels)
-            {
+	<div>
 
 
-                <tr>
-                    @*<td>@i.LogId</td>
-                    <td>@i.Id</td>
-                    <td>@i.Activity</td>*@
-                    <td>@i.Comment</td>
-                    <td>@i.Timestamp</td>
-                </tr>
-            }
-        </table>
+		@*<div class="row">
+			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">
+				<div class="card m-b-30">
+					<div class="card body">
+							<div class="col-6 text-center align-self-center">
+								<div class="m-1-10">
+									<img src="https://image.flaticon.com/icons/svg/33/33308.svg" height="40" width="40" class="img-fluid-" />
+									<p class="mb-0 text-muted">Gebruikers</p>
+								</div>
+							</div>
+					</div>
+				</div>
+			</a>
+			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">
+				<div class="card m-b-30">
+					<div class="card body">
+							<div class="col-6 text-center align-self-center">
+								<div class="m-1-10">
+									<img src="https://image.flaticon.com/icons/svg/0/156.svg" height="40" width="40" class="img-fluid-" />
+									<p class="mb-0 text-muted">Urenformulieren</p>
+								</div>
+							</div>
+					</div>
+				</div>
+			</a>
+			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="RegisterUser">
+				<div class="card m-b-30">
+					<div class="card body">
+						<div class="d-flex flex-row">
+							<div class="col-3 align-self-center">
+								<div class="round">
+									<img src="https://image.flaticon.com/icons/svg/359/359858.svg" height="40" width="40" class="img-fluid-" />
+								</div>
+							</div>
+							<div class="col-6 text-center align-self-center">
+								<div class="m-1-10">
+									<h5 class="mt-0 round-inner">@userManager.Users.Count()</h5>
+									<p class="mb-0 text-muted">Gebruiker Toevoegen</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Profile" asp-action="Overzicht">
+				<div class="card m-b-30">
+					<div class="card body">
+							<div class="col-6 text-center align-self-center">
+								<div class="m-1-10">
+									<img src="https://image.flaticon.com/icons/svg/121/121703.svg" height="40" width="40" class="img-fluid-" />
+									<p class="mb-0 text-muted">Profielverzoeken</p>
+								</div>
+							</div>
+					</div>
+				</div>
+			</a>
+		</div>*@
+
+
+		<table class="col-md-6" id="ActivityTable" style="width:60%; float: left;">
+			@*<tr><th>Laatste activiteiten</th><th></th></tr>*@
+			<tr>
+				@*<th>LogId</th>
+				<th>Id</th>
+				<th>Activity</th>*@
+				<th>Comment</th>
+				<th>Timestamp</th>
+
+			</tr>
+			@foreach (var i in Model.activityLogViewModels)
+			{
+
+
+				<tr>
+					@*<td>@i.LogId</td>
+					<td>@i.Id</td>
+					<td>@i.Activity</td>*@
+					<td>@i.Comment</td>
+					<td>@i.Timestamp</td>
+				</tr>
+			}
+		</table>
 
         <table style="width:40%; height:30%; float: right;">
             <tr>

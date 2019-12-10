@@ -15,7 +15,11 @@
 	double totaalTraining2 = 0;
 	double totaalOverige2 = 0;
 
+	//var orderSelection = Model.orderSelection;
+	//var orderInfo = typeof(QienUrenMachien.Entities.TimeSheet).GetProperty(orderSelection);
+
 }
+
 <div class="text-center">
 	<h1 class="display-4">Timesheet overzicht</h1>
 	<p>De timesheet-statuses van trainees en werknemers.</p>
@@ -81,11 +85,12 @@
 	</tr>
 </table>
 
-<h2>Maand: @Model.Month</h2>
+<br />
 <form asp-controller="Administration" asp-action="TimeSheetOverview" id="searchForm" method="post">
+	<h4>Maand:</h4>
 	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected" onchange="$('#searchForm').submit();">
 	</select>
-	<h2>Jaar: @Model.theDate.ToString("yyyy")</h2>
+	<h4>Jaar:</h4>
 	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected" onchange="$('#searchForm').submit();">
 	</select>
 </form>
@@ -96,28 +101,43 @@
 </div>
 
 
-<table style="width:100%;">
+<table class="traineeTable" data-sorting="true" style="width:100%;">
+	<thead>
 	<tr>
 		<th>Naam</th>
+		@*<th>Email</th>*@
+		<th data-breakpoints="xs" data-type="number">Projecturen</th>
+		<th data-breakpoints="xs" data-type="number">Overwerk</th>
+		<th data-breakpoints="xs" data-type="number">Ziek</th>
+		<th data-breakpoints="xs" data-type="number">Afwezig</th>
+		<th data-breakpoints="xs" data-type="number">Training</th>
+		<th data-breakpoints="xs" data-type="number">Overige</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
-		<th>Toon urenformulier</th>
+		<th></th>
 	</tr>
+	</thead>
+	<tbody>
 	@foreach (var sheet in Model.Trainees)
 	{
-
-		var details = new Dictionary<string, string>
-{
-		{ "Id", sheet.Id },
-		{ "SheetID", sheet.SheetID.ToString() }
-	};
 <tr>
-	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
+	<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+	@*<td>@sheet.applicationUser.UserName</td>*@
+	<td>@sheet.ProjectHours</td>
+	<td>@sheet.Overwork</td>
+	<td>@sheet.Sick</td>
+	<td>@sheet.Absence</td>
+	<td>@sheet.Training</td>
+	<td>@sheet.Other</td>
 	<td>@sheet.Submitted</td>
 	<td>@sheet.Approved</td>
-	<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet" asp-all-route-data="details">Bekijk</a></td>
+	@if (@sheet.Comment != "")
+	{
+	<td>@sheet.Comment</td>
+	}
 </tr>
 }
+	</tbody>
 </table>
 
 <br />
@@ -125,27 +145,42 @@
 	<h2>Werknemers</h2>
 </div>
 
-<table style="width:100%;">
-	<tr>
-		<th>Naam</th>
-		<th>Ingeleverd</th>
-		<th>Goedgekeurd</th>
-		<th>Toon urenformulier</th>
-	</tr>
-	@foreach (var sheet in Model.Employees)
-	{
-
-		var details = new Dictionary<string, string>
-{
-		{ "Id", sheet.Id },
-		{ "SheetID", sheet.SheetID.ToString() }
-	};
-<tr>
-	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
-	<td>@sheet.Submitted</td>
-	<td>@sheet.Approved</td>
-	<td><a asp-controller="Administration" asp-action="ShowUserTimeSheet" asp-all-route-data="details">Bekijk</a></td>
-</tr>
-}
+<table class="traineeTable" data-sorting="true" style="width:100%;">
+	<thead>
+		<tr>
+			<th>Naam</th>
+			@*<th>Email</th>*@
+			<th data-breakpoints="xs" data-type="number">Projecturen</th>
+			@*<th data-type="html" data-sort-use="text" data-sorted="true" data-direction="ASC">Code</th>*@
+			<th data-breakpoints="xs" data-type="number">Overwerk</th>
+			<th data-breakpoints="xs" data-type="number">Ziek</th>
+			<th data-breakpoints="xs" data-type="number">Afwezig</th>
+			<th data-breakpoints="xs" data-type="number">Training</th>
+			<th data-breakpoints="xs" data-type="number">Overige</th>
+			<th>Ingeleverd</th>
+			<th>Goedgekeurd</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var sheet in Model.Employees)
+		{
+			<tr>
+				<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+				@*<td>@sheet.applicationUser.UserName</td>*@
+				<td>@sheet.ProjectHours</td>
+				<td>@sheet.Overwork</td>
+				<td>@sheet.Sick</td>
+				<td>@sheet.Absence</td>
+				<td>@sheet.Training</td>
+				<td>@sheet.Other</td>
+				<td>@sheet.Submitted</td>
+				<td>@sheet.Approved</td>
+				@if (@sheet.Comment != "")
+				{
+					<td>@sheet.Comment</td>
+				}
+			</tr>
+		}
+	</tbody>
 </table>
-
