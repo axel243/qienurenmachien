@@ -107,5 +107,10 @@ namespace QienUrenMachien.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public async Task<FileContentResult> DownloadCSV()
+        {
+            string csv = await repo.TimeSheetDataCSV();
+            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Report123.csv");
+        }
     }
 }
