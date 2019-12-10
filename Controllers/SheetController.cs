@@ -62,6 +62,22 @@ namespace QienUrenMachien.Controllers
             return View(result);
         }
 
+        [Route("Sheet/RejectedTimeSheet/{url}")]
+        [HttpGet]
+        public IActionResult RejectedTimeSheet(string url)
+        {
+            ViewBag.url = url;
+
+            if (url == null)
+            {
+                ViewBag.ErrorMessage = $"Sheet with Id = {url} cannot be found";
+                return View("NotFound");
+            };
+
+            var result = repo.GetOneTimeSheet(url);
+            return View(result);
+        }
+
         [Route("Sheet/ApproveTimeSheet/{id}")]
         [HttpGet]
         public async Task<IActionResult> ApproveTimeSheet(int id)
@@ -94,11 +110,41 @@ namespace QienUrenMachien.Controllers
 
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-            repox.LogActivity(activeUser, "RejectTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} van {user.UserName} afgewezen.");
+            repox.LogActivity(activeUser, "RejectTimeSheet", $"{activeUser.Firstname + " " + activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.UserName} afgewezen.");
 
             mailServer.SendApprovalMail(user.UserName, "Rejected");
 
+            var admins = await userManager.GetUsersInRoleAsync("Admin");
+
+            foreach (ApplicationUser admin in admins)
+            {
+                mailServer.AdminRejectedTimeSheet(admin.UserName, _timeSheet.Url, user.Firstname + " " + user.Lastname, admin.Firstname + " " + admin.Lastname, _timeSheet.Month);
+            }
+
             return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
+        }
+
+        [Route("Sheet/OpenTimeSheet/{url}")]
+        [HttpGet]
+        public async Task<IActionResult> OpenTimeSheet(string url)
+        {
+            var _timeSheet = repo.GetOneTimeSheet(url);
+
+            _timeSheet.Approved = "Not Submitted";
+            _timeSheet.Submitted = false;
+            var result = await repo.UpdateTimeSheet(_timeSheet);
+
+            ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+
+            var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+            repox.LogActivity(activeUser, "OpenTimeSheet", $"{activeUser.Firstname + " " + activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.UserName} geopend.");
+
+            mailServer.OpenTimeSheetMail(user.UserName, user.Firstname + " " + user.Lastname , _timeSheet.Month, _timeSheet.Url);
+
+            var admins = await userManager.GetUsersInRoleAsync("Admin");
+
+            return RedirectToAction("rejectedtimesheet", "sheet", new { url = _timeSheet.Url });
         }
 
         //public IActionResult TimeSheet(int Year, int Month)

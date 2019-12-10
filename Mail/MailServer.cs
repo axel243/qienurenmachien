@@ -51,6 +51,24 @@ namespace QienUrenMachien.Mail
             SendMail(recipient, subject, body);
         }
 
+        public void OpenTimeSheetMail(string recipient, string username, string month, string url)
+        {
+            string subject = $"Timesheet Heropend";
+            string body = $"Beste {username},<br><br>Je timesheet voor {month} is opnieuw geopend.<br>https://localhost:44398/Sheet/Overview/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+
+            SendMail(recipient, subject, body);
+        }
+
+        public void AdminRejectedTimeSheet(string recipient, string url, string username, string adminname, string month)
+        {
+            string subject = $"Timesheet voor {username} is afgewezen";
+            string body = $"Beste {adminname},<br><br>De timesheet van {username} voor {month} is afgezwen.<br>https://localhost:44398/Sheet/RejectedTimeSheet/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+
+            SendMail(recipient, subject, body);
+        }
+
+
+
         public void SendForgotPasswordMail(string recipient, string resetlink)
         {
             string subject = $"Link om het wachtwoord te resetten"; 
