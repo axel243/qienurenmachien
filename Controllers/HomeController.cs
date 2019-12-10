@@ -55,17 +55,26 @@ namespace QienUrenMachien.Controllers
                 model.timeSheetWithUsers = new List<TimeSheetWithUser>();
                 model.activityLogViewModels = logs;
                 var users = await repo.GetTimeSheetAndUser();
-
+                var profileEdits = await repo.GetLastMonthProfileEdits();
                 foreach (var user in users)
                 {
                     var newTimeSheet = new TimeSheetWithUser();
                     newTimeSheet.FirstName = user.FirstName;
                     newTimeSheet.LastName = user.LastName;
-                    newTimeSheet.Status = user.Status;
+                    newTimeSheet.Status = "Niet ingeleverd";
                     newTimeSheet.url = user.url;
                     //newTimeSheet.WerkgeverId = user.WerkgeverId;
 
                     model.timeSheetWithUsers.Add(newTimeSheet);
+                }
+                foreach(var profile in profileEdits)
+                {
+                    var newProfile = new TimeSheetWithUser();
+                        newProfile.FirstName = profile.FirstName;
+                        newProfile.LastName = profile.LastName;
+                        newProfile.Status = "Heeft een verzoek van profielwijziging ingediend";
+                        newProfile.url = profile.userId;
+                        model.timeSheetWithUsers.Add(newProfile);                                  
                 }
 
                 return View(model);
