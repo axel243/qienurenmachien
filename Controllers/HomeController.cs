@@ -110,7 +110,8 @@ namespace QienUrenMachien.Controllers
         public async Task<FileContentResult> DownloadCSV()
         {
             string csv = await repo.TimeSheetDataCSV();
-            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Report123.csv");
+            string date = DateTime.Now.ToString("yyyyMMddTHHmmss");
+            return File(new System.Text.UTF8Encoding().GetBytes(csv), "txt/csv", $"jaaroverzicht_{date}.csv");
         }
     }
 }
