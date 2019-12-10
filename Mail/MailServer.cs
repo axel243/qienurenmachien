@@ -36,6 +36,59 @@ namespace QienUrenMachien.Mail
             } 
         }
 
+        public string Convert(string month)
+        {
+            if (month == "January"){
+                return "januari";
+            }
+            else if (month == "February")
+            {
+                return "februari";
+            }
+            else if (month == "March")
+            {
+                return "maart";
+            }
+            else if (month == "April")
+            {
+                return "april";
+            }
+            else if (month == "May")
+            {
+                return "mei";
+            }
+            else if (month == "June")
+            {
+                return "juni";
+            }
+            else if (month == "July")
+            {
+                return "juli";
+            }
+            else if (month == "August")
+            {
+                return "augustus";
+            }
+            else if (month == "September")
+            {
+                return "september";
+            }
+            else if (month == "October")
+            {
+                return "oktober";
+            }
+            else if (month == "November")
+            {
+                return "november";
+            }
+            else if (month == "December")
+            {
+                return "december";
+            }
+            else return "";
+
+        }
+
         public void SendConfirmationMail(string recipient, string body, string werknemer)
         {
             string subject = $"{werknemer} urenformulier ingeleverd";
@@ -54,7 +107,7 @@ namespace QienUrenMachien.Mail
         public void OpenTimeSheetMail(string recipient, string username, string month, string url)
         {
             string subject = $"Timesheet Heropend";
-            string body = $"Beste {username},<br><br>Je timesheet voor {month} is opnieuw geopend.<br>https://localhost:44398/Sheet/Overview/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+            string body = $"Beste {username},<br><br>Je timesheet voor {Convert(month)} is opnieuw geopend.<br>https://localhost:44398/Sheet/Overview/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
@@ -62,7 +115,7 @@ namespace QienUrenMachien.Mail
         public void AdminRejectedTimeSheet(string recipient, string url, string username, string adminname, string month)
         {
             string subject = $"Timesheet voor {username} is afgewezen";
-            string body = $"Beste {adminname},<br><br>De timesheet van {username} voor {month} is afgewezen.<br>https://localhost:44398/Sheet/RejectedTimeSheet/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+            string body = $"Beste {adminname},<br><br>De timesheet van {username} voor {Convert(month)} is afgewezen.<br>https://localhost:44398/Sheet/RejectedTimeSheet/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
