@@ -76,17 +76,26 @@
 
         <table style="width:40%; height:30%; float: right;">
             <tr>
-                <th>Werknemer</th>
-                <th>Status Timesheet</th>
-
+                <th>Naam</th>
+                <th>Actie</th>
             </tr>
+           
             @foreach (var row in Model.timeSheetWithUsers)
             {
-                <tr>
-                    <td>@(row.FirstName + " " + row.LastName)</td>
-                    <td>@row.Status</td>
-                    <td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
-                </tr>
+        <tr>
+            <td>@(row.FirstName + " " + row.LastName)</td>
+            <td>@row.Status</td>
+            @if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
+            {
+            <td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
+
+            }
+            else
+            {
+                <td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
+            }
+
+        </tr>
             }
         </table>
     </div>
