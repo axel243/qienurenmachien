@@ -38,5 +38,7 @@ namespace QienUrenMachien.Repositories
 
 
         TimeSheet AddTimeSheet(string userId, string data);
+
+        Task<string> TimeSheetDataCSV();
     }
 }

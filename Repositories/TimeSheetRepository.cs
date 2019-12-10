@@ -179,6 +179,45 @@ namespace QienUrenMachien.Repositories
             return Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType);
         }
 
+        public async Task<string> TimeSheetDataCSV(){
+            var result = await context.TimeSheets.OrderBy(c => c.theDate).ToListAsync();
+            var dictionary = new Dictionary<String, DataModel>();
+
+            foreach (TimeSheet _timeSheet in result)
+            {
+                if (dictionary.ContainsKey(_timeSheet.theDate.ToString("MMMM"))) {
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].ProjectHours += _timeSheet.ProjectHours;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Overwork += _timeSheet.Overwork;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Sick += _timeSheet.Sick;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Absence += _timeSheet.Absence;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Training += _timeSheet.Training;
+                    dictionary[_timeSheet.theDate.ToString("MMMM")].Other += _timeSheet.Other;
+                }
+                else {
+                    dictionary[_timeSheet.theDate.ToString("MMMM")] = new DataModel {
+                        ProjectHours = _timeSheet.ProjectHours,
+                        Overwork = _timeSheet.Overwork,
+                        Sick = _timeSheet.Sick,
+                        Absence = _timeSheet.Absence,
+                        Training = _timeSheet.Training,
+                        Other = _timeSheet.Other
+
+                    } ;
+                }
+                
+            }
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(dictionary));
+
+            string csv = "Month, Project, Overwerk, Ziek, Afwezig, Training, Overig\n";
+
+            foreach(KeyValuePair<string, DataModel> entry in dictionary)
+            {
+                csv += $"{entry.Key}, {entry.Value.ProjectHours}, {entry.Value.Overwork}, {entry.Value.Sick}, {entry.Value.Absence}, {entry.Value.Training}, {entry.Value.Other}\n";
+            }
+
+            return csv;
+        }
+
         public TimeSheet AddTimeSheetTemp()
         {
             
@@ -283,11 +322,12 @@ namespace QienUrenMachien.Repositories
                 .ToListAsync();
         }
 
+
         //public TimeSheetViewModel GetOneTimeSheet(string Id, string Month)
         //{
 
         //    var entity = context.TimeSheets.Single(t => t.Id == Id && t.Month == Month);
-       
+
 
         //    return new TimeSheetViewModel
         //    {
@@ -341,9 +381,15 @@ namespace QienUrenMachien.Repositories
         public async Task<List<TimeSheetWithUser>> GetTimeSheetAndUser()
         {
             DateTime _dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var timesheets = await context.TimeSheets.Include(ts => ts.applicationUser).Where(t =>  t.theDate < _dt && t.Approved == "Not submitted")
+            var timesheets = await context.TimeSheets.Include(ts => ts.applicationUser).Where(t =>  t.theDate < _dt && t.Approved == "Not submitted" )
                 .Select(ts => new TimeSheetWithUser { FirstName = ts.applicationUser.Firstname, LastName = ts.applicationUser.Lastname, Status = ts.Approved, WerkgeverId = ts.applicationUser.WerkgeverID, url = ts.Url })
                 .ToListAsync();
+
+            var timesheetsRejected = await context.TimeSheets.Include(ts => ts.applicationUser).Where(t => t.theDate < _dt && t.Approved == "Rejected")
+               .Select(ts => new TimeSheetWithUser { FirstName = ts.applicationUser.Firstname, LastName = ts.applicationUser.Lastname, Status = ts.Approved, WerkgeverId = ts.applicationUser.WerkgeverID, url = ts.Url })
+               .ToListAsync();
+
+            timesheets.AddRange(timesheetsRejected);
 
             return timesheets;
 
