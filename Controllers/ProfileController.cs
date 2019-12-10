@@ -78,7 +78,7 @@ namespace QienUrenMachien.Controllers
                 Country = currentUser.Country,
                 BankNumber = currentUser.BankNumber,
                 ProfileImageUrl = currentUser.ProfileImageUrl
-    };
+            };
 
             return View(@"~/Views/Account/Profile/EditProfile.cshtml", currentUserModel);
         }
@@ -86,7 +86,7 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(ProfileViewModel model)
         {
-                var userid = model.Id;
+              var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
             var adminlist = await userManager.GetUsersInRoleAsync("Admin");
@@ -119,11 +119,15 @@ namespace QienUrenMachien.Controllers
             }
             else
             {
+                var fileNameHash = "";
+
                 if (model.ProfileImage != null)
                 {
                     UploadImage();
                 }
-
+                //test mo //////////////////////////
+                model.ProfileImageUrl = $@"~/Uploads/Images/" + fileNameHash;
+                
                 var jsonProfile = JsonConvert.SerializeObject(model);
 
                 currentUser.NewProfile = jsonProfile;
@@ -147,9 +151,9 @@ namespace QienUrenMachien.Controllers
                 //methode om profiel foto te uploaden
                 void UploadImage()
                 {
-                    var dir = env.ContentRootPath;
                     var file = model.ProfileImage;
-                    var uploadPath = dir + $@"\Uploads\Images\{currentUser.UserName}";
+                    /////////////////////
+                    var uploadPath = $@"wwwroot/Uploads/Images/";
 
                     if (!Directory.Exists(uploadPath))
                     {
@@ -157,7 +161,14 @@ namespace QienUrenMachien.Controllers
                     }
 
 
-                    using (var fileStream = new FileStream(Path.Combine(uploadPath, model.ProfileImage.FileName), FileMode.Create, FileAccess.Write))
+                    //uploaded file renamen met een hash
+                    var fileExtension = Path.GetExtension(file.FileName);
+                    var fileHash = Guid.NewGuid().ToString();
+                    fileNameHash = fileHash + fileExtension;
+                    
+
+
+                    using (var fileStream = new FileStream(Path.Combine(uploadPath, fileNameHash), FileMode.Create, FileAccess.Write))
                     {
                         file.CopyTo(fileStream);
                     }
@@ -219,9 +230,6 @@ namespace QienUrenMachien.Controllers
             
             profiles.Profiles.Add(tempProfile);         //index 0
             profiles.Profiles.Add(currentProfile);      //index 1
-            
-            
-
 
             return View(@"~/Views/Account/Profile/ConfirmProfile.cshtml", profiles);
         }

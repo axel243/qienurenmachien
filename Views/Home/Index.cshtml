@@ -20,6 +20,12 @@
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
 	<canvas id="line-chart" width="800" height="300"></canvas>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <a class="btn btn-primary" asp-action="DownloadCSV"
+               asp-controller="Home">Export naar CSV</a>
+        </div>
+    </div>
 
     <nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
@@ -48,6 +54,7 @@
             </div>
         </div>
     </nav>
+
 	<div>
 
 
@@ -151,6 +158,5 @@
 			}
 		</table>
 	</div>
-
 }
 

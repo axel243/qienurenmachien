@@ -51,11 +51,18 @@
                     <input asp-for="Profiles[1].BankNumber" class="form-control" readonly />
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label asp-for="Profiles[1].ProfileImageUrl">Link profielfoto</label>
                     <input asp-for="Profiles[1].ProfileImageUrl" class="form-control" readonly />
                 </div>
-              </form>
+                <div class="form-group">
+                    <label asp-for="Profiles[1].ProfileImage">Link profielfoto</label>
+                    <input asp-for="Profiles[1].ProfileImage" class="form-control" readonly />
+                </div>*@
+                <div class="form-group">
+                    <img class="profilepictureChanged" src="@Url.Content(@Model.Profiles[1].ProfileImageUrl)">
+                </div>
+            </form>
         </div>
 
         <div class="col-sm-6">
@@ -108,9 +115,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Profiles[0].ProfileImageUrl">Link profielfoto</label>
-                    <input asp-for="Profiles[0].ProfileImageUrl" class="form-control" readonly />
+                <input type="hidden" asp-for="Profiles[0].ProfileImageUrl" class="form-control" readonly />
                 </div>
+
+                <div class="form-group">
+                    <img class="profilepictureChanged"  src="@Url.Content(@Model.Profiles[0].ProfileImageUrl)">
+                </div>
+
+
+
                 <button type="submit" class="btn btn-primary" asp-controller="Profile" asp-action="AcceptedProfile">Accepteren</button>
                 <button type="submit" class="btn btn-primary" asp-controller="Profile" asp-action="DeniedProfile">Weigeren</button>
             </form>
