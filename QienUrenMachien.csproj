@@ -21,4 +21,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\Uploads\Images\testmo%40testmo.com\legopop.jfif" />
+  </ItemGroup>
+
 </Project>

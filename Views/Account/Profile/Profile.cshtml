@@ -55,9 +55,14 @@
         </div>
 
         <div class="form-group">
+            <label asp-for="ProfileImageUrl">Huidige profielfoto</label>
+            <img class="profilepictureChanged" src="@Url.Content(@Model.ProfileImageUrl)">
+        </div>
+
+        @*<div class="form-group">
             <label asp-for="ProfileImageUrl">Link profielfoto</label>
             <input asp-for="ProfileImageUrl" class="form-control" readonly />
-        </div>
+        </div>*@
         @Html.ActionLink("Edit", "EditProfile", "Profile")
     </form>
 </div>
