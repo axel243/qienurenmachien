@@ -181,3 +181,15 @@ $(document).ready(function () {
         }
     })
 });
+
+
+$(document).ready(function () {
+
+	jQuery(function ($) {
+		$('.traineeTable').footable({
+			"sorting": {
+				"enabled": true
+			}
+		});
+	});
+});
