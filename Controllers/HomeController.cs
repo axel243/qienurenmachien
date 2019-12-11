@@ -44,7 +44,6 @@ namespace QienUrenMachien.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-
             if (User.IsInRole("Admin"))
             {
                 
@@ -69,10 +68,7 @@ namespace QienUrenMachien.Controllers
                     {
                         newTimeSheet.Status = "Afgewezen timesheet";
                     }
-                    
                     newTimeSheet.url = user.url;
-                    //newTimeSheet.WerkgeverId = user.WerkgeverId;
-
                     model.timeSheetWithUsers.Add(newTimeSheet);
                 }
                 foreach(var profile in profileEdits)
@@ -112,6 +108,13 @@ namespace QienUrenMachien.Controllers
             string csv = await repo.TimeSheetDataCSV();
             string date = DateTime.Now.ToString("yyyyMMddTHHmmss");
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "txt/csv", $"jaaroverzicht_{date}.csv");
+        }
+
+        public IActionResult Test()
+        {
+
+            return View();
+
         }
     }
 }

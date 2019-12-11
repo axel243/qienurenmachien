@@ -18,6 +18,7 @@ using System.Text.Json;
 using QienUrenMachien.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace QienUrenMachien.Controllers
 {
@@ -266,7 +267,8 @@ namespace QienUrenMachien.Controllers
 
             //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
-            return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
+            //return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
+            return RedirectToAction("index", "upload", null);
         }
 
         [Route("Sheet/UnSubmitTimeSheet/{url}")]
@@ -288,7 +290,6 @@ namespace QienUrenMachien.Controllers
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
         }
-
 
     }
 }

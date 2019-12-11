@@ -6,32 +6,43 @@
 @inject UserManager<ApplicationUser> userManager;
 
 @{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-	<div class="text-center">
-		<h1 class="display-4">Admin Dashboard</h1>
-	</div>
+<style>
+	.my-custom-scrollbar {
+		position: relative;
+		height: 400px;
+		overflow: auto;
+	}
 
-    <div class="text-center">
-        <img src="~/Uploads/Images/qienlogo.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
-    </div>
+	.table-wrapper-scroll-y {
+		display: inline-block;
+	}
+</style>
+
+<div class="text-center">
+	<h1 class="display-4">Admin Dashboard</h1>
+</div>
+
+<div class="text-center">
+	<img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
+</div>
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-	<canvas id="line-chart" width="800" height="300"></canvas>
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <a class="btn btn-primary" asp-action="DownloadCSV"
-               asp-controller="Home">Export naar CSV</a>
-        </div>
-    </div>
-
 	<div>
+		<canvas id="line-chart" width="800" height="300"></canvas>
+		<div class="col-sm-10">
+			<a class="btn btn-primary" asp-action="DownloadCSV"
+			   asp-controller="Home">Export naar CSV</a>
+		</div>
+	</div>
 
 
-		<div class="row">
-			<a style="text-decoration:none;" class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">
+
+	<div class="row">
+			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">
 				<div class="card m-b-30">
 					<div class="card body">
 						<div class="m-1-10">
@@ -73,49 +84,65 @@
 			</a>
 		</div>
 
-		<br />
-		<h2 style="text-align:center;">Activiteit:</h2>
 
-		<table class="col-md-6" id="ActivityTable" style="width:60%; float: left; font-size: 0.9rem;">
-			@*<tr><th>Laatste activiteiten</th><th></th></tr>*@
-			<tr>
-				@*<th>LogId</th>
-				<th>Id</th>
-				<th>Activity</th>*@
-				<th>Comment</th>
-				<th>Timestamp</th>
-
-			</tr>
-			@foreach (var i in Model.activityLogViewModels)
-			{
-
-
+<div class="row">
+	<div class="col-md-6">
+		<h1 class="text-center mb-5">Recente activiteiten</h1>
+		@*<span class="display-4">second heading</span>*@
+		@*<h1 class="display-4">Recente activiteiten</h1>*@
+		<div class="table-wrapper-scroll-y my-custom-scrollbar">
+			<table>
 				<tr>
-					@*<td>@i.LogId</td>
-					<td>@i.Id</td>
-					<td>@i.Activity</td>*@
-					<td>@i.Comment</td>
-					<td>@i.Timestamp</td>
+					<th>Comment</th>
+					<th>Timestamp</th>
+
 				</tr>
-			}
-		</table>
-
-		<table style="width:40%; height:30%; float: right; font-size: 0.9rem;">
+				@foreach (var i in Model.activityLogViewModels)
+				{
+					<tr>
+						<td>@i.Comment</td>
+						<td>@i.Timestamp</td>
+					</tr>
+				}
+			</table>
+		</div>
+	</div>
+	@*<h1 class="display-4">To-Do List</h1>*@
+<div class="col-md-5 offset-1">
+	<h1 class="text-center mb-5">To-Do</h1>
+	<div class="table-wrapper-scroll-y my-custom-scrollbar">
+		<table>
 			<tr>
-				<th>Werknemer</th>
-				<th>Status</th>
-				<th></th>
-
+				<th>Naam</th>
+				<th>Actie</th>
 			</tr>
+
 			@foreach (var row in Model.timeSheetWithUsers)
 			{
 				<tr>
 					<td>@(row.FirstName + " " + row.LastName)</td>
 					<td>@row.Status</td>
-					<td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
+					@if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
+					{
+						<td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
+
+					}
+					else if (row.Status == "Afgewezen timesheet")
+					{
+						<td><a asp-controller="Sheet" asp-action="RejectedTimeSheet" asp-route-url="@row.url">Bekijk</a></td>
+					}
+					else
+					{
+						<td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
+					}
 				</tr>
 			}
 		</table>
 	</div>
-}
+</div>
+</div>
+
+	}
+
+	<script src="~/js/table.js"></script>
 

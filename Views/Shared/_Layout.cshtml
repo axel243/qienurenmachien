@@ -39,41 +39,47 @@
 				<div class="navbar-collapse collapse d-sm-inline-flex">
 
 
-					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-						</li>
-					</ul>
-					<ul class="navbar-nav ml-auto">
-						@if (signInManager.IsSignedIn(User))
-						{
-							<li class="nav-item">
-								<form method="post" asp-action="logout" asp-controller="account">
-									<button class="btn btn-light" style="font-size: 16px; background-color: #9d3ff3; color: #e0e0e0; border-color: #f8f9fa61" type="submit">
-										Logout @User.Identity.Name
-									</button>
-								</form>
-							</li>
-						}
-						else
-						{
-							<li class="nav-item">
-								<a asp-action="login" asp-controller="account" class="nav-link" style="color: #cbd3da">Login</a>
-							</li>
-						}
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
-	<div class="container">
-		<main role="main" class="pb-3">
-			@RenderBody()
-		</main>
-	</div>
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Upload" asp-action="Index">Uploaden</a>
+                            </li>
+                        }
+                        </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (signInManager.IsSignedIn(User))
+							{
+                        <li class="nav-item">
+                            <form method="post" asp-action="logout" asp-controller="account">
+                                <button class="btn btn-light" style="font-size: 16px; background-color: #9d3ff3; color: #e0e0e0; border-color: #f8f9fa61" type="submit">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+							}
+							else
+							{
+                        <li class="nav-item">
+                            <a asp-action="login" asp-controller="account" class="nav-link" style="color: #cbd3da">Login</a>
+                        </li>
+							}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
