@@ -1,7 +1,7 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
 
 	jQuery(function ($) {
-		$('.traineeTable').footable({
+		$('.sortableTable').footable({
 			"sorting": {
 				"enabled": true
 			}
