@@ -88,7 +88,7 @@ namespace QienUrenMachien.Controllers
                 PhoneNumber = model.PhoneNumber,
                 Country = model.Country,
                 WerkgeverID = model.Werkgever,
-                ProfileImageUrl = "http://www.naijaticketshop.com/images/default_profile.jpg",
+                ProfileImageUrl = @"~/Uploads/Images/default_profile.jpg",
                 ActiveFrom = DateTime.Now
                 };
                 IdentityResult resultt = null;
