@@ -9,34 +9,35 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"] - QienUrenMachien</title>
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 	<link rel="stylesheet" href="~/css/footable.bootstrap.min.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" />
 	<link href="https://fonts.googleapis.com/css?family=Titillium+Web:700&display=swap" rel="stylesheet">
-	@*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet">*@
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" id="mainNav">
-            <div class="container">
-                @if (signInManager.IsSignedIn(User))
-                {
-                    //-----------------------------------------------------------------------------------
-                    Task<ApplicationUser>
-                        GetCurrentUserAsync() => userManager.GetUserAsync(User);
-                    var user = await GetCurrentUserAsync();
-                    //------------------------------------------------------------------------------------
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" id="mainNav">
+			<div class="container">
+				@if (signInManager.IsSignedIn(User))
+				{
+					//-----------------------------------------------------------------------------------
+					Task<ApplicationUser>
+						GetCurrentUserAsync() => userManager.GetUserAsync(User);
+					var user = await GetCurrentUserAsync();
+					//------------------------------------------------------------------------------------
 
-                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
+					<a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index"><img id="profilepicture" src="@Url.Content(user.ProfileImageUrl)"></a>
 
-                }
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QienUrenMachien</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex">
+				}
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QienUrenMachien</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex">
+
 
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -80,19 +81,19 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - QienUrenMachien - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2019 - QienUrenMachien - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
+	</footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<script src="~/js/signalr/dist/browser/signalr.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="~/js/footable.js"></script>
 
-    @RenderSection("Scripts", required: false)
+	@RenderSection("Scripts", required: false)
 </body>
 </html>
