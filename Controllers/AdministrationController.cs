@@ -80,15 +80,16 @@ namespace QienUrenMachien.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email,
-                Firstname = model.Firstname,
-                Lastname = model.Lastname,
-                Street = model.Street,
-                City = model.City,
-                Zipcode = model.Zipcode,
-                PhoneNumber = model.PhoneNumber,
-                Country = model.Country,
-                WerkgeverID = model.Werkgever,
-                ProfileImageUrl = "http://www.naijaticketshop.com/images/default_profile.jpg"
+                    Firstname = model.Firstname,
+                    Lastname = model.Lastname,
+                    Street = model.Street,
+                    City = model.City,
+                    Zipcode = model.Zipcode,
+                    PhoneNumber = model.PhoneNumber,
+                    Country = model.Country,
+                    WerkgeverID = model.Werkgever,
+                    ProfileImageUrl = "http://www.naijaticketshop.com/images/default_profile.jpg",
+                    BankNumber = model.Iban
                 };
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -108,6 +109,11 @@ namespace QienUrenMachien.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
+            }
+            else
+            {
+                await getAllWerkgevers(model);
+                model.Role = "Trainee";
             }
             return View(model);
         }
