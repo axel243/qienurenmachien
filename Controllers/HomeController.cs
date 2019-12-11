@@ -109,5 +109,12 @@ namespace QienUrenMachien.Controllers
             string date = DateTime.Now.ToString("yyyyMMddTHHmmss");
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "txt/csv", $"jaaroverzicht_{date}.csv");
         }
+
+        public IActionResult Test()
+        {
+
+            return View();
+
+        }
     }
 }

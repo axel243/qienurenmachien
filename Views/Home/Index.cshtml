@@ -6,31 +6,41 @@
 @inject UserManager<ApplicationUser> userManager;
 
 @{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
+<style>
+	.my-custom-scrollbar {
+		position: relative;
+		height: 400px;
+		overflow: auto;
+	}
 
-	<div class="text-center">
-		<h1 class="display-4">Admin Dashboard</h1>
-	</div>
+	.table-wrapper-scroll-y {
+		display: inline-block;
+	}
+</style>
 
-    <div class="text-center">
-        <img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
-    </div>
+<div class="text-center">
+	<h1 class="display-4">Admin Dashboard</h1>
+</div>
+
+<div class="text-center">
+	<img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
+</div>
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-	<canvas id="line-chart" width="800" height="300"></canvas>
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <a class="btn btn-primary" asp-action="DownloadCSV"
-               asp-controller="Home">Export naar CSV</a>
-        </div>
-    </div>
+	<div>
+		<canvas id="line-chart" width="800" height="300"></canvas>
+		<div class="col-sm-10">
+			<a class="btn btn-primary" asp-action="DownloadCSV"
+			   asp-controller="Home">Export naar CSV</a>
+		</div>
+	</div>
 
-    <nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-
+	<div style="padding-top: 50px; padding-bottom: 50px;">
+		<nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 				<div class="navbar-nav flex-xl-grow-1" style="height: 100px; align-items: center;">
 					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Users</a>
@@ -47,19 +57,16 @@
 					<div class="nav-item">
 						<a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
 					</div>
+					<ul class="navbar-nav ml-auto">
+					</ul>
 				</div>
+			</div>
+		</nav>
+	</div>
 
 
-                <ul class="navbar-nav ml-auto">
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-	<div>
-
-
-		@*<div class="row">
+	@*<div class="row">
 			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">
 				<div class="card m-b-30">
 					<div class="card body">
@@ -117,62 +124,64 @@
 			</a>
 		</div>*@
 
-
-		<table class="col-md-6" id="ActivityTable" style="width:60%; float: left;">
-			@*<tr><th>Laatste activiteiten</th><th></th></tr>*@
-			<tr>
-				@*<th>LogId</th>
-				<th>Id</th>
-				<th>Activity</th>*@
-				<th>Comment</th>
-				<th>Timestamp</th>
-
-			</tr>
-			@foreach (var i in Model.activityLogViewModels)
-			{
-
-
+<div class="row">
+	<div class="col-md-6">
+		<h1 class="text-center mb-5">Recente activiteiten</h1>
+		@*<span class="display-4">second heading</span>*@
+		@*<h1 class="display-4">Recente activiteiten</h1>*@
+		<div class="table-wrapper-scroll-y my-custom-scrollbar">
+			<table>
 				<tr>
-					@*<td>@i.LogId</td>
-					<td>@i.Id</td>
-					<td>@i.Activity</td>*@
-					<td>@i.Comment</td>
-					<td>@i.Timestamp</td>
+					<th>Comment</th>
+					<th>Timestamp</th>
+
+				</tr>
+				@foreach (var i in Model.activityLogViewModels)
+				{
+					<tr>
+						<td>@i.Comment</td>
+						<td>@i.Timestamp</td>
+					</tr>
+				}
+			</table>
+		</div>
+	</div>
+	@*<h1 class="display-4">To-Do List</h1>*@
+<div class="col-md-5 offset-1">
+	<h1 class="text-center mb-5">To-Do</h1>
+	<div class="table-wrapper-scroll-y my-custom-scrollbar">
+		<table>
+			<tr>
+				<th>Naam</th>
+				<th>Actie</th>
+			</tr>
+
+			@foreach (var row in Model.timeSheetWithUsers)
+			{
+				<tr>
+					<td>@(row.FirstName + " " + row.LastName)</td>
+					<td>@row.Status</td>
+					@if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
+					{
+						<td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
+
+					}
+					else if (row.Status == "Afgewezen timesheet")
+					{
+						<td><a asp-controller="Sheet" asp-action="RejectedTimeSheet" asp-route-url="@row.url">Bekijk</a></td>
+					}
+					else
+					{
+						<td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
+					}
 				</tr>
 			}
 		</table>
+	</div>
+</div>
+</div>
 
-        <table style="width:40%; height:30%; float: right;">
-            <tr>
-                <th>Naam</th>
-                <th>Actie</th>
-            </tr>
-           
-            @foreach (var row in Model.timeSheetWithUsers)
-            {
-        <tr>
-            <td>@(row.FirstName + " " + row.LastName)</td>
-            <td>@row.Status</td>
-            @if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
-            {
-                <td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
+	}
 
-            }
-            else if (row.Status == "Afgewezen timesheet")
-            {
-                <td><a asp-controller="Sheet" asp-action="RejectedTimeSheet" asp-route-url="@row.url">Bekijk</a></td>
-            }
-            else
-            {
-                <td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
-            }
-
-        </tr>
-            }
-        </table>
-    </div>
-
-}
-
-<script src="~/js/table.js"></script>
+	<script src="~/js/table.js"></script>
 
