@@ -15,7 +15,7 @@ namespace QienUrenMachien.Data
 
         }
 
-
+        public DbSet<FileUpload> FileUploads { get; set; }
         public DbSet<TimeSheet> TimeSheets { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
 

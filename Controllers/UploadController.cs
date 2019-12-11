@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
+using QienUrenMachien.Repositories;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,28 +14,40 @@ namespace QienUrenMachien.Controllers
     public class UploadController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IFileUploadRepository fileRepo;
 
-        public UploadController(UserManager<ApplicationUser> userManager)
+        public UploadController(UserManager<ApplicationUser> userManager, IFileUploadRepository fileRepo)
         {
             this.userManager = userManager;
+            this.fileRepo = fileRepo;
         }
 
         public IActionResult Index()
         {
+            var files = fileRepo.GetFiles();
+            ViewBag.Files = files;
+
             return View(@"~/Views/Attachments/AddFiles.cshtml");
+            
         }
 
 
         [HttpPost]
         public async Task<IActionResult> SubmitFiles(FileViewModel model)
         {
-            var userid = userManager.GetUserId(HttpContext.User);
+            if (model.Files != null)
+            {
+                var userid = userManager.GetUserId(HttpContext.User);
 
-            var currentUser = await userManager.FindByIdAsync(userid);
+                var currentUser = await userManager.FindByIdAsync(userid);
 
-            UploadFile(currentUser, model);
-            
-            return View(@"~/Views/Attachments/Succes.cshtml");
+                UploadFile(currentUser, model);
+
+                return RedirectToAction("Index");
+            }
+
+
+            return RedirectToAction("Index");
         }
 
 
@@ -59,7 +72,28 @@ namespace QienUrenMachien.Controllers
                 {
                     file.CopyTo(fileStream);
                 }
+
+
+                var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
+
+                //referentie(pad) naar het bestand wordt opgeslagen in de database
+                fileRepo.UploadFile(user, filePath);
+
             }
+        }
+
+        public IActionResult DownloadDocument(string filePath)
+        {
+
+            var fileName = Path.GetFileName(filePath);
+
+            string fileRePath = filePath.Replace("~", "wwwroot");
+
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(fileRePath);
+
+            return File(fileBytes, "application/force-download", fileName);
+
         }
     }
 }

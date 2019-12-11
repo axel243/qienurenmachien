@@ -1,0 +1,28 @@
+﻿@model List<FileUploadModel>
+
+
+<div style="padding-top: 50px;">
+
+    <h1 class="mb-5">portfolio</h1>
+    <h5 class="mb-5">Hieronder zie je alle documenten in jouw portfolio.</h5>
+    <table>
+        <tr>
+            @*<th>FileId</th>
+            <th>UserId</th>
+            <th>SheetID</th>*@
+            <th>Document</th>
+            <th></th>
+
+        </tr>
+        @foreach (var file in ViewBag.Files)
+        {
+            <tr>
+                @*<td>@file.FileId</td>
+                <td>@file.Id</td>
+                <td>@file.SheetID</td>*@
+                <td>@System.IO.Path.GetFileName(@file.FilePath)</td>
+                <td>@Html.ActionLink("download","DownloadDocument", "Upload", new { FilePath = file.FilePath })</td>
+            </tr>
+        }
+    </table>
+</div>
