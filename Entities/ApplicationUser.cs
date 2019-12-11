@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,6 +20,8 @@ namespace QienUrenMachien.Entities
         public virtual string BankNumber { get; set; }
         public virtual string NewProfile { get; set; }
         public virtual string WerkgeverID { get; set; }
+        public DateTime ActiveFrom { get; set; }
+        public DateTime ActiveUntil { get; set; }
   
     }
 }
