@@ -14,7 +14,7 @@
 	</div>
 
     <div class="text-center">
-        <img src="https://pbs.twimg.com/profile_images/3054512762/ad69660aa12e6a8f5608f48e0e8eaa42_400x400.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
+        <img src="~/Uploads/Images/qienlogo.png" alt="Qien-logo" id="Qien-logo" height="100" width="100" class="img-fluid-" />
     </div>
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -27,97 +27,56 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-
-				<div class="navbar-nav flex-xl-grow-1" style="height: 100px; align-items: center;">
-					<div class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">Users</a>
-					</div>
-					<div class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Rollen</a>
-					</div>
-					<div class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">Urenformulieren</a>
-					</div>
-					<div class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="RegisterUser">Gebruiker aanmaken</a>
-					</div>
-					<div class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Overzicht">Profielverzoeken</a>
-					</div>
-				</div>
-
-                <ul class="navbar-nav ml-auto">
-                </ul>
-            </div>
-        </div>
-    </nav>
-
 	<div>
 
 
-		@*<div class="row">
-			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">
+		<div class="row">
+			<a style="text-decoration:none;" class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="AdminDashboard">
 				<div class="card m-b-30">
 					<div class="card body">
-							<div class="col-6 text-center align-self-center">
-								<div class="m-1-10">
-									<img src="https://image.flaticon.com/icons/svg/33/33308.svg" height="40" width="40" class="img-fluid-" />
-									<p class="mb-0 text-muted">Gebruikers</p>
-								</div>
-							</div>
-					</div>
-				</div>
-			</a>
-			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">
-				<div class="card m-b-30">
-					<div class="card body">
-							<div class="col-6 text-center align-self-center">
-								<div class="m-1-10">
-									<img src="https://image.flaticon.com/icons/svg/0/156.svg" height="40" width="40" class="img-fluid-" />
-									<p class="mb-0 text-muted">Urenformulieren</p>
-								</div>
-							</div>
-					</div>
-				</div>
-			</a>
-			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="RegisterUser">
-				<div class="card m-b-30">
-					<div class="card body">
-						<div class="d-flex flex-row">
-							<div class="col-3 align-self-center">
-								<div class="round">
-									<img src="https://image.flaticon.com/icons/svg/359/359858.svg" height="40" width="40" class="img-fluid-" />
-								</div>
-							</div>
-							<div class="col-6 text-center align-self-center">
-								<div class="m-1-10">
-									<h5 class="mt-0 round-inner">@userManager.Users.Count()</h5>
-									<p class="mb-0 text-muted">Gebruiker Toevoegen</p>
-								</div>
-							</div>
+						<div class="m-1-10">
+							<img style="margin-top: 5px;" src="~/Uploads/Images/users-solid.svg" height="40" width="40" class="img-fluid-" />
+							<p style="margin-bottom: 5px !important;" class="mb-0 text-muted">Gebruikers</p>
 						</div>
 					</div>
 				</div>
 			</a>
-			<a class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Profile" asp-action="Overzicht">
+			<a style="text-decoration:none;" class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="TimeSheetOverview">
 				<div class="card m-b-30">
 					<div class="card body">
-							<div class="col-6 text-center align-self-center">
-								<div class="m-1-10">
-									<img src="https://image.flaticon.com/icons/svg/121/121703.svg" height="40" width="40" class="img-fluid-" />
-									<p class="mb-0 text-muted">Profielverzoeken</p>
-								</div>
-							</div>
+						<div class="m-1-10">
+							<img style="margin-top: 5px;" src="~/Uploads/Images/file-alt-solid.svg" height="40" width="40" class="img-fluid-" />
+							<p style="margin-bottom: 5px !important;" class="mb-0 text-muted">Urenformulieren</p>
+						</div>
 					</div>
 				</div>
 			</a>
-		</div>*@
+			<a style="text-decoration:none;" class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="Administration" asp-action="RegisterUser">
+				<div class="card m-b-30">
+					<div class="card body">
+						<div class="m-1-10">
+							<img style="margin-top: 5px;" src="~/Uploads/Images/user-plus-solid.svg" height="40" width="40" class="img-fluid-" />
+							<p style="margin-bottom: 5px !important;" class="mb-0 text-muted">Gebruiker Toevoegen (@userManager.Users.Count())</p>
+						</div>
+					</div>
+				</div>
+			</a>
+			<a style="text-decoration:none;" class="col-md-6 col-lg-6 col-xl-3" asp-area="" asp-controller="" asp-action="">
+				<div class="card m-b-30">
+					<div class="card body">
+						<div class="m-1-10">
+							<img style="margin-top: 5px;" src="~/Uploads/Images/user-times-solid.svg" height="40" width="40" class="img-fluid-" />
+							<p style="margin-bottom: 5px !important;" class="mb-0 text-muted">Deactiveer Gebruiker</p>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
 
+		<br />
+		<h2 style="text-align:center;">Activiteit:</h2>
 
-		<table class="col-md-6" id="ActivityTable" style="width:60%; float: left;">
+		<table class="col-md-6" id="ActivityTable" style="width:60%; float: left; font-size: 0.9rem;">
 			@*<tr><th>Laatste activiteiten</th><th></th></tr>*@
 			<tr>
 				@*<th>LogId</th>
@@ -141,10 +100,10 @@
 			}
 		</table>
 
-		<table style="width:40%; height:30%; float: right;">
+		<table style="width:40%; height:30%; float: right; font-size: 0.9rem;">
 			<tr>
 				<th>Werknemer</th>
-				<th>Status Timesheet</th>
+				<th>Status</th>
 				<th></th>
 
 			</tr>

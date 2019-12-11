@@ -15,9 +15,6 @@
 	double totaalTraining2 = 0;
 	double totaalOverige2 = 0;
 
-	//var orderSelection = Model.orderSelection;
-	//var orderInfo = typeof(QienUrenMachien.Entities.TimeSheet).GetProperty(orderSelection);
-
 }
 
 <div class="text-center">
@@ -105,13 +102,12 @@
 	<thead>
 	<tr>
 		<th>Naam</th>
-		@*<th>Email</th>*@
-		<th data-breakpoints="xs" data-type="number">Projecturen</th>
-		<th data-breakpoints="xs" data-type="number">Overwerk</th>
-		<th data-breakpoints="xs" data-type="number">Ziek</th>
-		<th data-breakpoints="xs" data-type="number">Afwezig</th>
-		<th data-breakpoints="xs" data-type="number">Training</th>
-		<th data-breakpoints="xs" data-type="number">Overige</th>
+		<th data-sorted="true" data-direction="DESC">Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th></th>
@@ -122,18 +118,40 @@
 	{
 <tr>
 	<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
-	@*<td>@sheet.applicationUser.UserName</td>*@
 	<td>@sheet.ProjectHours</td>
 	<td>@sheet.Overwork</td>
 	<td>@sheet.Sick</td>
 	<td>@sheet.Absence</td>
 	<td>@sheet.Training</td>
 	<td>@sheet.Other</td>
-	<td>@sheet.Submitted</td>
-	<td>@sheet.Approved</td>
+	@if (@sheet.Submitted)
+	{
+	<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+	}
+	@if (!@sheet.Submitted)
+	{
+	<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+	}
+	@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && sheet.Submitted)
+	{
+	<td><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+	}
+	@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && !sheet.Submitted)
+	{
+		<td></td>
+	}
+	@if (@sheet.Approved == "Rejected")
+	{
+	<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+	}
+	@if (@sheet.Approved == "Approved")
+	{
+	<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+	}
+
 	@if (@sheet.Comment != "")
 	{
-	<td>@sheet.Comment</td>
+	<td style="font-size: 0.7rem;">Opmerking: @sheet.Comment</td>
 	}
 </tr>
 }
@@ -149,14 +167,12 @@
 	<thead>
 		<tr>
 			<th>Naam</th>
-			@*<th>Email</th>*@
-			<th data-breakpoints="xs" data-type="number">Projecturen</th>
-			@*<th data-type="html" data-sort-use="text" data-sorted="true" data-direction="ASC">Code</th>*@
-			<th data-breakpoints="xs" data-type="number">Overwerk</th>
-			<th data-breakpoints="xs" data-type="number">Ziek</th>
-			<th data-breakpoints="xs" data-type="number">Afwezig</th>
-			<th data-breakpoints="xs" data-type="number">Training</th>
-			<th data-breakpoints="xs" data-type="number">Overige</th>
+			<th data-sorted="true" data-direction="DESC">Projecturen</th>
+			<th>Overwerk</th>
+			<th>Ziek</th>
+			<th>Afwezig</th>
+			<th>Training</th>
+			<th>Overige</th>
 			<th>Ingeleverd</th>
 			<th>Goedgekeurd</th>
 			<th></th>
@@ -165,22 +181,45 @@
 	<tbody>
 		@foreach (var sheet in Model.Employees)
 		{
-			<tr>
-				<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
-				@*<td>@sheet.applicationUser.UserName</td>*@
-				<td>@sheet.ProjectHours</td>
-				<td>@sheet.Overwork</td>
-				<td>@sheet.Sick</td>
-				<td>@sheet.Absence</td>
-				<td>@sheet.Training</td>
-				<td>@sheet.Other</td>
-				<td>@sheet.Submitted</td>
-				<td>@sheet.Approved</td>
-				@if (@sheet.Comment != "")
-				{
-					<td>@sheet.Comment</td>
-				}
-			</tr>
+		<tr>
+			<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+			<td>@sheet.ProjectHours</td>
+			<td>@sheet.Overwork</td>
+			<td>@sheet.Sick</td>
+			<td>@sheet.Absence</td>
+			<td>@sheet.Training</td>
+			<td>@sheet.Other</td>
+			@if (@sheet.Submitted)
+			{
+				<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+			}
+			@if (!@sheet.Submitted)
+			{
+				<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+			}
+			@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && sheet.Submitted)
+			{
+				<td><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+			}
+			@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && !sheet.Submitted)
+			{
+				<td></td>
+			}
+			@if (@sheet.Approved == "Rejected")
+			{
+				<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+			}
+			@if (@sheet.Approved == "Approved")
+			{
+				<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+			}
+			@if (@sheet.Comment != "")
+			{
+				<td style="font-size: 0.7rem;">Opmerking: @sheet.Comment</td>
+			}
+		</tr>
 		}
 	</tbody>
 </table>
+
+<script src="~/js/timesheetOverview.js"></script>
