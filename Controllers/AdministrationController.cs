@@ -90,7 +90,6 @@ namespace QienUrenMachien.Controllers
                 WerkgeverID = model.Werkgever,
                 ProfileImageUrl = @"~/Uploads/Images/default_profile.jpg",
                 ActiveFrom = DateTime.Now
-
                 };
                 model.Password = GetRandomPasswordUsingGUID(14) + "!";
                 IdentityResult resultt = null;
