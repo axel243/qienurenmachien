@@ -249,6 +249,15 @@ namespace QienUrenMachien.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AdminViewSheet(string url)
+        {
+            var result = await repo.GetOneTimeSheetByUrl(url);
+
+            return View(result);
+
+        }
+
         [Route("Sheet/SubmitTimeSheet#{url}")]
         [HttpGet]
         public async Task<IActionResult> SubmitTimeSheet(string url)
