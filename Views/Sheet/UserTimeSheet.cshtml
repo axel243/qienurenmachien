@@ -9,8 +9,11 @@
 }
 
 <h1 style="text-align: center;">Urenformulier van gebruiker</h1>
-
+<div style="width: 500px; height: 500px; margin: 0 auto;">
+<canvas id="doughnut" ></canvas>
+    </div>
 <p hidden id="SheetID">@Model.SheetID</p>
+<p hidden id="Url">@Model.Url</p>
 
 
 <table id="OverViewTable" style="width:100%;">
@@ -136,8 +139,12 @@ else
 		<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
 		   asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
 		}
+		<a class="btn btn-primary" asp-action="DownloadCSV"
+		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
 	</div>
 </div>
+
+<script src="~/js/table.js" ></script>
 
 
 
