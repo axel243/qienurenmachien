@@ -28,9 +28,23 @@ namespace QienUrenMachien.Repositories
             FileUpload file = new FileUpload();
 
             file.Id = user.Id;
-            file.SheetID = 50;
+            file.SheetID = 50; //null
             file.FilePath = filePath;
             
+            context.FileUploads.Add(file);
+            context.SaveChanges();
+        }
+
+        public void UploadFile(ApplicationUser user, string filePath, int sheetID)
+        {
+
+
+            FileUpload file = new FileUpload();
+
+            file.Id = user.Id;
+            file.SheetID = sheetID;
+            file.FilePath = filePath;
+
             context.FileUploads.Add(file);
             context.SaveChanges();
         }
