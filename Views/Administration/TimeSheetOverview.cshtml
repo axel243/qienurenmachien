@@ -110,12 +110,14 @@
 		<th data-type="number">Overige</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
+		<td></td>
 		<th></th>
 	</tr>
 	</thead>
 	<tbody>
 	@foreach (var sheet in Model.Trainees)
 	{
+		var url = sheet.Url;
 <tr>
 	<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
 	<td>@sheet.ProjectHours</td>
@@ -149,6 +151,8 @@
 	<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 	}
 
+	<td><a asp-controller="Sheet" asp-action="AdminViewSheet" asp-route-url="@url">Bekijk</a></td>
+
 	@if (@sheet.Comment != "")
 	{
 	<td style="font-size: 0.7rem;">Opmerking: @sheet.Comment</td>
@@ -181,6 +185,7 @@
 	<tbody>
 		@foreach (var sheet in Model.Employees)
 		{
+		var url = sheet.Url;
 		<tr>
 			<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
 			<td>@sheet.ProjectHours</td>
@@ -213,6 +218,9 @@
 			{
 				<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 			}
+
+			<td><a asp-controller="Sheet" asp-action="AdminViewSheet" asp-route-url="@url">Bekijk</a></td>
+
 			@if (@sheet.Comment != "")
 			{
 				<td style="font-size: 0.7rem;">Opmerking: @sheet.Comment</td>
