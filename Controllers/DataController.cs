@@ -13,14 +13,21 @@ namespace QienUrenMachien.Controllers
     {
         private readonly ITimeSheetRepository repo;
 
+        
         public DataController(ITimeSheetRepository repo)
         {
             this.repo = repo;
         }
-        [HttpGet("")]
-        public async Task<string> List(string username)
+        [HttpGet("total")]
+        public async Task<string> List()
         {
             return await repo.TimeSheetData();
+        }
+        [HttpGet("days/{url}")]
+        public async Task<string> getDays(string url )
+        {
+            return await repo.DaysData(url);
+            
         }
     }
 }

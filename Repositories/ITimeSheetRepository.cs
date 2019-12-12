@@ -13,6 +13,7 @@ namespace QienUrenMachien.Repositories
         Task<TimeSheet> UpdateTimeSheet(TimeSheet _timeSheet);
         Task<TimeSheet> GetTimeSheet(int Id);
 
+        Task<string> DaysData(string url);
         Task<List<TimeSheetWithUser>> GetLastMonthProfileEdits();
         Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model);
         Task<List<TimeSheet>> GetAllEmployeeTimeSheets(TimeSheetsViewModel model);
