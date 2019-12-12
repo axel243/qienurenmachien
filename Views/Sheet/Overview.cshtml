@@ -1,5 +1,6 @@
 ﻿
 @model List<QienUrenMachien.Entities.TimeSheet>
+@using QienUrenMachien.Translation;
 @{
     ViewBag.Title = "TimeSheetOverview";
 }
@@ -26,7 +27,7 @@
         var url = sheet.Url;
 <tr>
     <td>@sheet.Project</td>
-    <td>@sheet.Month</td>
+    <td>@Translator.TranslateMonth(sheet.Month)</td>
     <td>@sheet.Submitted</td>
     <td>@sheet.Approved</td>
     <td><a asp-controller="Sheet" asp-action="UserTimeSheet" asp-route-url="@url">Bekijk</a></td>
