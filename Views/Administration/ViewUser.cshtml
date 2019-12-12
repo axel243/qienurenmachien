@@ -28,6 +28,7 @@
 			<th>Straat</th>
 			<th>Telefoon</th>
 			<th>Actief sinds</th>
+			<th></th>
 			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
 			{
 				<th>Werkgever</th>
@@ -41,6 +42,7 @@
 			<td>@Model.Street</td>
 			<td>@Model.PhoneNumber</td>
 			<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
+			<td>@Html.ActionLink("documenten","viewuserfiles","upload", new { userId = Model.Id })</td>
 			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
 			{
 		<td>@Html.ActionLink(werkgevernaam + werkgevernaam2, "ViewEmployer", "Administration", new { Id = Model.WerkgeverID }, null)</td>
