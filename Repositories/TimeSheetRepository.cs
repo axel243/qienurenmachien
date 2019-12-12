@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using QienUrenMachien.Data;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
+using QienUrenMachien.Translation;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -280,13 +281,13 @@ namespace QienUrenMachien.Repositories
         public List<SelectListItem> GetMonths()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = DateTime.Now.ToString("MMMM"), Selected = true });
+            list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = Translator.TranslateMonth(DateTime.Now.ToString("MMMM")), Selected = true });
             DateTime dt = DateTime.Now;
             for (int i = 1; i < DateTime.Now.Month; i++)
             {
                 dt = dt.AddMonths(-1);
                 var month = dt.ToString("MMMM");
-                list.Add(new SelectListItem { Value = month, Text = month });
+                list.Add(new SelectListItem { Value = month, Text = Translator.TranslateMonth(month) });
             }
             return list;
         }

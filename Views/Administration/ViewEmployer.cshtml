@@ -50,7 +50,7 @@
 		@foreach (var person in werknemers)
 		{
 			<tr>
-				<td>@Html.ActionLink(@person.Firstname + @person.Lastname, "ViewUser", "Administration", new { Id = person.Id }, null)</td>
+				<td>@Html.ActionLink(@person.Firstname + " " +  @person.Lastname, "ViewUser", "Administration", new { Id = person.Id }, null)</td>
 			</tr>
 		}
 	}
