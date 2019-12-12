@@ -8,5 +8,6 @@ namespace QienUrenMachien.Repositories
     {
         void UploadFile(ApplicationUser user, string filePath);
         List<FileUploadModel> GetFiles();
+        List<FileUploadModel> GetFilesByUserId(string userId);
     }
 }

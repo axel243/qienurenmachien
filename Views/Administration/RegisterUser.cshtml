@@ -4,6 +4,25 @@
     ViewBag.Title = "User Registration";
 }
 <script>
+    window.onload = function () {
+        //wat is de waarde van de rol
+        var role = document.getElementById("Role");
+        var showWerkgevers = document.getElementById("isWerknemer");
+        console.log(role.value + "asda");
+        if (role.value == "Werknemer") {
+            showWerkgevers.style.display = "block"
+        } else if (role.value == "Trainee") {
+            showWerkgevers.style.display = "block"
+        } else if (role.value == "Werkgever") {
+            showWerkgevers.style.display = "none"
+        }else if (role.value == "Admin") {
+            showWerkgevers.style.display = "none"
+        }
+         console.log(role.value + "dddd");
+    //hide or show werkgever dropdown
+    };
+
+    
 
 	function hideWerkgevers() {
 		var x = document.getElementById("isWerknemer");
@@ -76,14 +95,14 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Role"> Rol</label>
-                <select asp-for="Role" onchange='getSelectedOption(this).click(); count()'>
-                    <option onclick="hideWerkgevers()" value="Trainee">Trainee</option>
+                <select asp-for="Role" onchange='getSelectedOption(this).click(); count()' id="Role">
+                    <option onclick="showWerkgevers()" value="Trainee">Trainee</option>
                     <option onclick="hideWerkgeversAndSomeOptions()" value="Werkgever">Werkgever</option>
                     <option onclick="hideWerkgevers()" value="Admin">Admin</option>
                     <option onclick="showWerkgevers()" value="Werknemer">Werknemer</option>
                 </select>
             </div>
-            <div style="display: none;" class="form-group" id="isWerknemer">
+            <div class="form-group" id="isWerknemer">
                 <label asp-for="Werkgever"> Werkgever</label>
                 <select asp-for="Werkgever" asp-items="Model.Werkgevers" onchange='getSelectedOption(this).click(); count()'>
                     <option></option>
@@ -96,7 +115,7 @@
             </div>
             @if (Model.Role != "Werkgever")
             {
-                <div class="form-group" id="isWerkgever1">
+                @*<div class="form-group" id="isWerkgever1">
                     <label asp-for="Password">Wachtwoord</label>
                     <input asp-for="Password" class="form-control" id="passwordField" />
                     <span asp-validation-for="Password" class="text-danger"></span>
@@ -105,7 +124,7 @@
                     <label asp-for="ConfirmPassword">Bevestig wachtwoord</label>
                     <input asp-for="ConfirmPassword" class="form-control" id="passwordField2" />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
+                </div>*@
             }
             <div class="form-group">
                 <label id="naamLabel1" asp-for="Firstname">Voornaam</label>

@@ -154,11 +154,11 @@ namespace QienUrenMachien.Mail
             SendMail(recipient, subject, body);
         }
 
-        public void SendRegisterUserMail(string recipient)
+        public void SendRegisterUserMail(string recipient, string password)
         {
             string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
             string subject = $"Nieuw Account";
-            string body = "<br/> <a href=" + verificatielink + ">Verifier Account</a>";
+            string body = " <p>Er is een account voor u gemaakt voor Qien.</p> <br/> <p> Uw wachtwoord is: " + password + "</p>" + "<br/> <a href=" + verificatielink + ">Verifier Account</a>";
             SendMail(recipient, subject, body);
         }
 
