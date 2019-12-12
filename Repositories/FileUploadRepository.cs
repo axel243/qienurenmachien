@@ -23,12 +23,10 @@ namespace QienUrenMachien.Repositories
 
         public void UploadFile(ApplicationUser user, string filePath)
         {
-
-
             FileUpload file = new FileUpload();
 
             file.Id = user.Id;
-            file.SheetID = 50; //null
+            file.SheetID = null;
             file.FilePath = filePath;
             
             context.FileUploads.Add(file);
@@ -37,8 +35,6 @@ namespace QienUrenMachien.Repositories
 
         public void UploadFile(ApplicationUser user, string filePath, int sheetID)
         {
-
-
             FileUpload file = new FileUpload();
 
             file.Id = user.Id;
@@ -51,7 +47,6 @@ namespace QienUrenMachien.Repositories
 
         public List<FileUploadModel> GetFiles()
         {
-
             var files = context.FileUploads.
                 Select(f => new FileUploadModel
                 {
@@ -78,7 +73,6 @@ namespace QienUrenMachien.Repositories
                 }).ToList();
 
             return files;
-
         }
     }
 }
