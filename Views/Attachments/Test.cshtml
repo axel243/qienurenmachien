@@ -1,0 +1,20 @@
+﻿@model FileSheetUploadViewModel
+
+<h2>Bijlagen</h2>
+<br />
+<h6>Overige documenten</h6>
+<h6>met betrekking tot je urenformulier</h6>
+
+<br />
+<form method="post" enctype="multipart/form-data" asp-controller="upload" asp-action="submitsheetfiles">
+    <div class="form-group">
+        <label asp-for="url">sheeturl</label>
+        <input asp-for="url" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Files">Voeg bestand(en) toe:</label>
+        <input multiple asp-for="Files" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Opslaan</button>
+</form>
+<br />
