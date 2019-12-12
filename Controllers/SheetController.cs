@@ -33,6 +33,7 @@ namespace QienUrenMachien.Controllers
         private readonly IActivityLogRepository repox;
         private readonly IHubContext<ChatHub> hub;
         private readonly MailServer mailServer;
+        private readonly DataController dataController;
 
         public SheetController(ITimeSheetRepository repo, UserManager<ApplicationUser> userManager, IActivityLogRepository repox, IHubContext<ChatHub> hub)
         {
@@ -245,7 +246,6 @@ namespace QienUrenMachien.Controllers
         public async Task<IActionResult> UserTimeSheet(string url)
         {
             var result = await repo.GetOneTimeSheetByUrl(url);
-
             return View(result);
 
         }

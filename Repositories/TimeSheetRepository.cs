@@ -186,6 +186,25 @@ namespace QienUrenMachien.Repositories
             return Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType);
         }
 
+        public async Task<string> DaysData(string url)
+        {
+            var result = await context.TimeSheets.OrderBy(c => c.theDate).Where(t => t.Url == url).SingleOrDefaultAsync();
+
+            String[] x = new String[] {"ProjectHours", "Overwerk", "Sick", "Absence", "Training", "Other" };
+            String[] y = new String[] { "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "lightgray" };
+            Double[] z = new Double[] { result.ProjectHours, result.Overwork, result.Sick, result.Absence, result.Training, result.Other };
+            String[] w = new String[] { "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "lightgray" };
+
+            var myAnonymousType = new
+            {
+                labels = x,
+                data = z,
+                backgroundColor = y,
+                borderColor = w
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(myAnonymousType);
+        }
+
         public async Task<string> TimeSheetDataCSV(){
             var result = await context.TimeSheets.OrderBy(c => c.theDate).ToListAsync();
             var dictionary = new Dictionary<String, DataModel>();
@@ -524,5 +543,7 @@ namespace QienUrenMachien.Repositories
 
             return result;
         }
+
+       
     }
 }
