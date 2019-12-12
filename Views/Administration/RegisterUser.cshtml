@@ -143,6 +143,12 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="ActiveFrom"></label>
+                <input asp-for="ActiveFrom" class="form-control" value=@DateTime.Now/>
+                <span asp-validation-for="ActiveFrom" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label id="woonLabel" asp-for="City">Woonplaats</label>
                 <input asp-for="City" class="form-control" />
                 <span asp-validation-for="City" class="text-danger"></span>

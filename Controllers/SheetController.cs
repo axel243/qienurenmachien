@@ -228,8 +228,10 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task<IActionResult> Overview()
         {
-
-            var result = await repo.GetUserOverview(userManager.GetUserId(User));
+            
+            string id = userManager.GetUserId(User);
+            ApplicationUser user = await userManager.FindByIdAsync(id);
+            var result = await repo.GetUserOverview(id, user.ActiveFrom, user.ActiveUntil);
             //repo.AddTimeSheetTemp();
 
             return View(result);

@@ -89,8 +89,18 @@ namespace QienUrenMachien.Controllers
                 Country = model.Country,
                 WerkgeverID = model.Werkgever,
                 ProfileImageUrl = @"~/Uploads/Images/default_profile.jpg",
-                ActiveFrom = DateTime.Now
+                ActiveFrom = DateTime.Now,
+                ActiveUntil = DateTime.Now.AddYears(50)
                 };
+
+                if (model.Role == "Trainee"){
+                    user.ActiveFrom = model.ActiveFrom;
+                    user.ActiveUntil = model.ActiveFrom.AddYears(1); 
+                }
+                else if (model.Role == "Werknemer"){
+                    user.ActiveFrom = model.ActiveFrom;
+                }
+
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
                 var role = await roleManager.FindByNameAsync(model.Role);
