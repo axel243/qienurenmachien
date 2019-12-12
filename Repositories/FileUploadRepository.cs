@@ -51,5 +51,20 @@ namespace QienUrenMachien.Repositories
             return files;
         }
 
+        public List<FileUploadModel> GetFilesByUserId(string userId)
+        {
+                var files = context.FileUploads.Where(i => i.Id == userId).
+                Select(f => new FileUploadModel
+                {
+                FileId = f.FileId,
+                applicationUser = f.applicationUser,
+                Id = f.Id,
+                SheetID = f.SheetID,
+                FilePath = f.FilePath
+                }).ToList();
+
+            return files;
+
+        }
     }
 }

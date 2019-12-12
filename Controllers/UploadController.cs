@@ -22,15 +22,32 @@ namespace QienUrenMachien.Controllers
             this.fileRepo = fileRepo;
         }
 
+
+        [HttpGet]
+        public IActionResult SheetAttachment(string url)
+        {
+            var file = new FileSheetUploadViewModel
+            {
+                url = url
+            };
+
+            return View(@"~/Views/Attachments/Test.cshtml", file);
+        }
+
         public IActionResult Index()
         {
             var files = fileRepo.GetFiles();
             ViewBag.Files = files;
 
             return View(@"~/Views/Attachments/AddFiles.cshtml");
-            
         }
 
+        //public IActionResult ViewFiles(string userId)
+        //{
+        //    var files = fileRepo.GetFilesByUserId(userId);
+           
+        //    return View(@"~/Views/Attachments/ViewFiles.cshtml", files);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> SubmitFiles(FileViewModel model)
@@ -42,6 +59,24 @@ namespace QienUrenMachien.Controllers
                 var currentUser = await userManager.FindByIdAsync(userid);
 
                 UploadFile(currentUser, model);
+
+                return RedirectToAction("Index");
+            }
+
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSheetFiles(FileSheetUploadViewModel model)
+        {
+            if (model.Files != null)
+            {
+                var userid = userManager.GetUserId(HttpContext.User);
+
+                var currentUser = await userManager.FindByIdAsync(userid);
+
+                UploadFile(currentUser, null);
 
                 return RedirectToAction("Index");
             }
