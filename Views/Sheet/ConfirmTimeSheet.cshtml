@@ -90,6 +90,8 @@ else
                asp-controller="Sheet" asp-route-id="@Model.SheetID">Goedkeuren</a>
             <a class="btn btn-primary" asp-action="RejectTimeSheet"
                asp-controller="Sheet" asp-route-id="@Model.SheetID">Afkeuren</a>
+		<a class="btn btn-primary" asp-action="DownloadCSV"
+		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
         </div>
     </div>
 @*}*@
