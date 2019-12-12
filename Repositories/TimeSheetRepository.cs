@@ -414,9 +414,11 @@ namespace QienUrenMachien.Repositories
         {
 
             var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();
+            ApplicationUser user = await userManager.FindByIdAsync(entity.Id);
 
             return new TimeSheetViewModel
             {
+                UserName = user.Firstname + " " + user.Lastname,
                 SheetID = entity.SheetID,
                 Id = entity.Id,
                 Project = entity.Project,

@@ -9,6 +9,7 @@ namespace QienUrenMachien.Models
     public class FileSheetUploadViewModel
     {
         public string url { get; set; }
+        public int sheetID { get; set; }
         public List<IFormFile> Files { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace QienUrenMachien.Models
 {
     public class TimeSheetViewModel
     {
-
+        public string UserName { get; set; }
         public int SheetID { get; set; }
         public string Id { get; set; }
         public string Project { get; set; }
