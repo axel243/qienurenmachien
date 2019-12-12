@@ -482,7 +482,7 @@ namespace QienUrenMachien.Repositories
             context.SaveChanges();
         }
 
-        public async Task<List<TimeSheet>> GetUserOverview(string id)
+        public async Task<List<TimeSheet>> GetUserOverview(string id, DateTime ActiveFrom, DateTime ActiveUntil)
         {
             var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(c => c.theDate).ToListAsync();
             bool current_month = false;
@@ -498,7 +498,7 @@ namespace QienUrenMachien.Repositories
                 }
             }
 
-            if (result.Count == 0 || current_month == false)
+            if ((result.Count == 0 || current_month == false) && DateTime.Now >= ActiveFrom && DateTime.Now <= ActiveUntil)
             {
                 DateTime dt = DateTime.Now;
 

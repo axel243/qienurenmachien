@@ -228,8 +228,10 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task<IActionResult> Overview()
         {
-
-            var result = await repo.GetUserOverview(userManager.GetUserId(User));
+            
+            string id = userManager.GetUserId(User);
+            ApplicationUser user = await userManager.FindByIdAsync(id);
+            var result = await repo.GetUserOverview(id, user.ActiveFrom, user.ActiveUntil);
             //repo.AddTimeSheetTemp();
 
             return View(result);
@@ -247,7 +249,7 @@ namespace QienUrenMachien.Controllers
 
         }
 
-        [Route("Sheet/SubmitTimeSheet/{url}")]
+        [Route("Sheet/SubmitTimeSheet#{url}")]
         [HttpGet]
         public async Task<IActionResult> SubmitTimeSheet(string url)
         {
@@ -268,7 +270,7 @@ namespace QienUrenMachien.Controllers
             //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             //return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
-            return RedirectToAction("index", "upload", null);
+            return RedirectToAction("SheetAttachment", "upload", new { url });
         }
 
         [Route("Sheet/UnSubmitTimeSheet/{url}")]
