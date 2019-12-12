@@ -24,19 +24,22 @@ namespace QienUrenMachien.Controllers
 
 
         [HttpGet]
-        public IActionResult SheetAttachment(string url)
+        public IActionResult SheetAttachment(string url, int sheetID)
         {
             var file = new FileSheetUploadViewModel
             {
-                url = url
+                url = url,
+                sheetID = sheetID
             };
 
-            return View(@"~/Views/Attachments/Test.cshtml", file);
+            return View(@"~/Views/Attachments/SheetAttachments.cshtml", file);
         }
 
         public IActionResult Index()
         {
-            var files = fileRepo.GetFiles();
+            var userid = userManager.GetUserId(HttpContext.User);
+
+            var files = fileRepo.GetFilesByUserId(userid);
             ViewBag.Files = files;
 
             return View(@"~/Views/Attachments/AddFiles.cshtml");
@@ -141,9 +144,8 @@ namespace QienUrenMachien.Controllers
 
                 var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
 
-                var sheetID = 50; //test sheet id
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
-                fileRepo.UploadFile(user, filePath, sheetID);
+                fileRepo.UploadFile(user, filePath, model.sheetID);
 
             }
         }
