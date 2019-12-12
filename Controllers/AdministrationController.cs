@@ -91,12 +91,12 @@ namespace QienUrenMachien.Controllers
                 ProfileImageUrl = "http://www.naijaticketshop.com/images/default_profile.jpg",
                 ActiveFrom = DateTime.Now
                 };
-                model.Password = GetRandomPasswordUsingGUID(14);
+                model.Password = GetRandomPasswordUsingGUID(14) + "!";
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
                 var role = await roleManager.FindByNameAsync(model.Role);
                 resultt = await userManager.AddToRoleAsync(user, role.Name);
-
+               
                 if (result.Succeeded)
                 {
                     if (resultt.Succeeded)
@@ -111,6 +111,10 @@ namespace QienUrenMachien.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
+            else
+            {
+                await getAllWerkgevers(model);
+            }
             return View(model);
         }
 
@@ -121,7 +125,7 @@ namespace QienUrenMachien.Controllers
 
             // Remove the hyphens
             guidResult = guidResult.Replace("-", string.Empty);
-
+            guidResult = guidResult.Substring(0, 1).ToUpper() + guidResult.Substring(1);
             // Make sure length is valid
             if (length <= 0 || length > guidResult.Length)
                 throw new ArgumentException("Length must be between 1 and " + guidResult.Length);
