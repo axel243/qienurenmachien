@@ -38,54 +38,7 @@ namespace QienUrenMachien.Mail
 
         public string Convert(string month)
         {
-            if (month == "January"){
-                return "januari";
-            }
-            else if (month == "February")
-            {
-                return "februari";
-            }
-            else if (month == "March")
-            {
-                return "maart";
-            }
-            else if (month == "April")
-            {
-                return "april";
-            }
-            else if (month == "May")
-            {
-                return "mei";
-            }
-            else if (month == "June")
-            {
-                return "juni";
-            }
-            else if (month == "July")
-            {
-                return "juli";
-            }
-            else if (month == "August")
-            {
-                return "augustus";
-            }
-            else if (month == "September")
-            {
-                return "september";
-            }
-            else if (month == "October")
-            {
-                return "oktober";
-            }
-            else if (month == "November")
-            {
-                return "november";
-            }
-            else if (month == "December")
-            {
-                return "december";
-            }
-            else return "";
+            return QienUrenMachien.Translation.Translator.TranslateMonth(month);
 
         }
 

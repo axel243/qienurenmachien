@@ -24,7 +24,7 @@
     <tr>
         <td>@Model.UserName</td>
         <td>@Model.Project</td>
-        <td>@Model.Month</td>
+        <td>@Translator.TranslateMonth(Model.Month)</td>
         <td>@Model.ProjectHours</td>
         <td>@Model.Overwork</td>
         <td>@Model.Sick</td>
@@ -66,7 +66,7 @@
         else
         {
             <tr>
-                <td>@dt.ToString("dddd") @day.Key</td>
+                <td>@Translator.TranslateDay(dt.ToString("dddd"))@day.Key</td>
                 <td>@day.Value["projecthours"]</td>
                 <td>@day.Value["overwork"]</td>
                 <td>@day.Value["sick"]</td>
