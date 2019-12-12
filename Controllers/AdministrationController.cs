@@ -89,7 +89,7 @@ namespace QienUrenMachien.Controllers
                 Country = model.Country,
                 WerkgeverID = model.Werkgever,
                 ProfileImageUrl = "http://www.naijaticketshop.com/images/default_profile.jpg",
-                ActiveFrom = DateTime.Now
+                ActiveFrom = DateTime.Now,
                 };
                 model.Password = GetRandomPasswordUsingGUID(14) + "!";
                 IdentityResult resultt = null;
