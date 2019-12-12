@@ -19,6 +19,7 @@ using QienUrenMachien.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace QienUrenMachien.Controllers
 {
@@ -300,6 +301,33 @@ namespace QienUrenMachien.Controllers
             await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
+        }
+
+        public async Task<FileContentResult> DownloadCSV(string url)
+        {
+            var _timeSheet = await repo.GetTimeSheetUrl(url);
+            ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+            var data = JObject.Parse(_timeSheet.Data);
+
+            string csv = "Dag,Project,Overwerk,Ziek,Afwezig,Training,Overig\n";
+
+            foreach(KeyValuePair<string, JToken> entry in data)
+            {
+                Console.WriteLine(entry.Value);
+                var ProjectHours = entry.Value["projectHours"];
+                var Overwork = entry.Value["overwork"];
+                var Sick = entry.Value["sick"];
+                var Absence = entry.Value["absence"];
+                var Training = entry.Value["training"];
+                var Other = entry.Value["other"];
+
+                csv += $"{entry.Key},{ProjectHours},{Overwork},{Sick},{Absence},{Training},{Other}\n";
+            }
+
+
+            string date = DateTime.Now.ToString("yyyyMMddTHHmmss");
+            return File(new System.Text.UTF8Encoding().GetBytes(csv), "txt/csv", $"timesheet_{user.Firstname}_{user.Lastname}_{date}.csv");
         }
 
     }
