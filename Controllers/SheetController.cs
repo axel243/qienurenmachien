@@ -49,7 +49,7 @@ namespace QienUrenMachien.Controllers
 
         [Route("Sheet/ConfirmTimeSheet/{url}")]
         [HttpGet]
-        public IActionResult ConfirmTimeSheet(string url)
+        public async Task<IActionResult> ConfirmTimeSheet(string url)
         {
             ViewBag.url = url;
 
@@ -59,13 +59,13 @@ namespace QienUrenMachien.Controllers
                 return View("NotFound");
             };
 
-            var result = repo.GetOneTimeSheet(url);
+            var result = await repo.GetOneTimeSheetByUrl(url);
             return View(result);
         }
 
         [Route("Sheet/RejectedTimeSheet/{url}")]
         [HttpGet]
-        public IActionResult RejectedTimeSheet(string url)
+        public async Task<IActionResult> RejectedTimeSheet(string url)
         {
             ViewBag.url = url;
 
@@ -75,7 +75,7 @@ namespace QienUrenMachien.Controllers
                 return View("NotFound");
             };
 
-            var result = repo.GetOneTimeSheet(url);
+            var result = await repo.GetOneTimeSheetByUrl(url);
             return View(result);
         }
 
@@ -267,7 +267,7 @@ namespace QienUrenMachien.Controllers
             await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
 
-            //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
+            mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             //return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
             return RedirectToAction("SheetAttachment", "upload", new { url, SheetID = _timeSheet.SheetID });
