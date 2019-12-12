@@ -144,7 +144,14 @@ namespace QienUrenMachien.Controllers
                     var lastActivity = repox.GetLastLog();
                     await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
-                    mailServer.SendEditedProfileMail(currentUser.UserName, currentUser.Firstname);
+
+                    var admins = await userManager.GetUsersInRoleAsync("Admin");
+
+                    foreach (ApplicationUser admin in admins)
+                    {
+                        mailServer.SendEditedProfileMail(admin.UserName, admin.Firstname, currentUser.UserName, currentUser.Firstname, currentUser.Id);
+                    }
+
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
 
@@ -268,7 +275,7 @@ namespace QienUrenMachien.Controllers
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                     repox.LogActivity(activeUser, "AcceptedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} goedgekeurd.");
-                    mailServer.SendAcceptedProfileMail(currentUser.UserName, adminuser.UserName);
+                    mailServer.SendAcceptedProfileMail(currentUser.UserName, currentUser.Firstname, adminuser.UserName);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
                 return View(currentUser);
@@ -301,7 +308,7 @@ namespace QienUrenMachien.Controllers
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                     repox.LogActivity(activeUser, "DeniedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} afgewezen.");
 
-                    mailServer.SendDeclinedProfileMail(currentUser.UserName, adminuser.UserName);
+                    mailServer.SendDeclinedProfileMail(currentUser.UserName, currentUser.Firstname, adminuser.UserName, adminuser.Firstname);
 
                     return View(@"~/Views/Account/Profile/DeniedProfile.cshtml");
                 }
