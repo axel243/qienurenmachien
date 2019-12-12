@@ -76,7 +76,7 @@ namespace QienUrenMachien.Controllers
 
                 var currentUser = await userManager.FindByIdAsync(userid);
 
-                UploadFile(currentUser, null);
+                UploadSheetFile(currentUser, model);
 
                 return RedirectToAction("Index");
             }
@@ -113,6 +113,37 @@ namespace QienUrenMachien.Controllers
 
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
                 fileRepo.UploadFile(user, filePath);
+
+            }
+        }
+        void UploadSheetFile(ApplicationUser user, FileSheetUploadViewModel model)
+        {
+            foreach (var file in model.Files)
+            {
+                var uploadPath = $@"wwwroot/Uploads/Attachments/";
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+                var date = DateTime.Now;
+
+
+                var fileExtension = Path.GetExtension(file.FileName);
+                var fileNoExtension = Path.GetFileNameWithoutExtension(file.FileName);
+                var fileName = $"{user.Firstname}_{user.Lastname}_{date.ToShortDateString()}_{fileNoExtension}";
+
+                using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName + fileExtension), FileMode.Create, FileAccess.Write))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+
+                var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
+
+                var sheetID = 50; //test sheet id
+                //referentie(pad) naar het bestand wordt opgeslagen in de database
+                fileRepo.UploadFile(user, filePath, sheetID);
 
             }
         }
