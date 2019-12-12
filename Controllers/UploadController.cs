@@ -42,15 +42,15 @@ namespace QienUrenMachien.Controllers
             var files = fileRepo.GetFilesByUserId(userid);
             ViewBag.Files = files;
 
-            return View(@"~/Views/Attachments/AddFiles.cshtml");
+            return View(@"~/Views/Attachments/AddAttachments.cshtml");
         }
 
-        //public IActionResult ViewFiles(string userId)
-        //{
-        //    var files = fileRepo.GetFilesByUserId(userId);
-           
-        //    return View(@"~/Views/Attachments/ViewFiles.cshtml", files);
-        //}
+        public IActionResult ViewUserFiles(string userId)
+        {
+            var files = fileRepo.GetFilesByUserId(userId);
+
+            return PartialView(@"~/Views/Attachments/_PortfolioAdmin.cshtml", files);
+        }
 
         [HttpPost]
         public async Task<IActionResult> SubmitFiles(FileViewModel model)
@@ -76,14 +76,12 @@ namespace QienUrenMachien.Controllers
             if (model.Files != null)
             {
                 var userid = userManager.GetUserId(HttpContext.User);
-
                 var currentUser = await userManager.FindByIdAsync(userid);
 
                 UploadSheetFile(currentUser, model);
 
                 return RedirectToAction("Index");
             }
-
 
             return RedirectToAction("Index");
         }
@@ -141,12 +139,10 @@ namespace QienUrenMachien.Controllers
                     file.CopyTo(fileStream);
                 }
 
-
                 var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
 
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
                 fileRepo.UploadFile(user, filePath, model.sheetID);
-
             }
         }
 
@@ -156,7 +152,6 @@ namespace QienUrenMachien.Controllers
             var fileName = Path.GetFileName(filePath);
 
             string fileRePath = filePath.Replace("~", "wwwroot");
-
 
             byte[] fileBytes = System.IO.File.ReadAllBytes(fileRePath);
 
