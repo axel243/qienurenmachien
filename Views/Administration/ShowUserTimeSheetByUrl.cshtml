@@ -1,40 +1,41 @@
 ﻿@model QienUrenMachien.Models.TimeSheetViewModel
 @using Microsoft.AspNetCore.Identity;
 @using QienUrenMachien.Entities;
+@using QienUrenMachien.Translation;
 @inject UserManager<ApplicationUser> userManager;
 @{
-    ViewData["Title"] = "Urenformulier";
-    var user = userManager.FindByIdAsync(Model.Id);
+	ViewData["Title"] = "Urenformulier";
+	var user = userManager.FindByIdAsync(Model.Id);
 }
 
 <h1 style="text-align: center;">Urenformulier van @user.Result.UserName</h1>
 
 <table style="width:100%;">
-    <tr>
-        <th>Gebruiker</th>
-        <th>Maand</th>
-        <th>Jaar</th>
-        <th>Projecturen</th>
-        <th>Overwerk</th>
-        <th>Ziek</th>
-        <th>Afwezig</th>
-        <th>Training</th>
-        <th>Overige</th>
-        <th>Ingeleverd</th>
-        <th>Goedgekeurd</th>
-    </tr>
-    <tr>
-        <td>@user.Result.Firstname</td>
-        <td>@Model.Month</td>
-        <td>@Model.theDate.Year</td>
-        <td>@Model.ProjectHours</td>
-        <td>@Model.Overwork</td>
-        <td>@Model.Sick</td>
-        <td>@Model.Absence</td>
-        <td>@Model.Training</td>
-        <td>@Model.Other</td>
-        <td>@Model.Submitted</td>
-        <td>@Model.Approved</td>
-    </tr>
+	<tr>
+		<th>Gebruiker</th>
+		<th>Maand</th>
+		<th>Jaar</th>
+		<th>Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
+		<th>Ingeleverd</th>
+		<th>Goedgekeurd</th>
+	</tr>
+	<tr>
+		<td>@user.Result.Firstname</td>
+		<td>@Translator.TranslateMonth(Model.Month)</td>
+		<td>@Model.theDate.Year</td>
+		<td>@Model.ProjectHours</td>
+		<td>@Model.Overwork</td>
+		<td>@Model.Sick</td>
+		<td>@Model.Absence</td>
+		<td>@Model.Training</td>
+		<td>@Model.Other</td>
+		<td>@Model.Submitted</td>
+		<td>@Model.Approved</td>
+	</tr>
 </table>
 

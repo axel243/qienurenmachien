@@ -69,7 +69,7 @@ namespace QienUrenMachien.Controllers
             model.Werkgevers = new List<SelectListItem>();
             foreach (var users in usersAreWerkgevers)
             {
-                model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " " + users.Lastname, Value = users.Id });
+                model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " (Bedrijf: " + users.Lastname + ")", Value = users.Id });
             }
             return model.Werkgevers;
         }
@@ -155,6 +155,18 @@ namespace QienUrenMachien.Controllers
         {
             var singleuser = userManager.Users.Single(u => u.Id == Id);
             return View(singleuser);
+        }
+
+        public async Task<IActionResult> DeactivateUser(string Id)
+        {
+            var singleuser = await userManager.FindByIdAsync(Id);
+            singleuser.ActiveUntil = DateTime.Now;
+            var result = await userManager.UpdateAsync(singleuser);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("AdminDashboard", "Administration");
+            }
+            return View();
         }
 
         public async Task<IActionResult> TimeSheetOverview()

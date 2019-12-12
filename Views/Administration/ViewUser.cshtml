@@ -33,7 +33,11 @@
 			{
 				<th>Werkgever</th>
 			}
-		</tr>
+			@if (Model.ActiveUntil > DateTime.Now)
+			{
+				<th></th>
+			}
+			</tr>
 		<tr>
 			<td>@Model.UserName</td>
 			<td>@Model.Firstname</td>
@@ -45,7 +49,11 @@
 			<td>@Html.ActionLink("documenten","viewuserfiles","upload", new { userId = Model.Id })</td>
 			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
 			{
-		<td>@Html.ActionLink(werkgevernaam + werkgevernaam2, "ViewEmployer", "Administration", new { Id = Model.WerkgeverID }, null)</td>
+				<td>@Html.ActionLink(werkgevernaam + " (Bedrijf: " + werkgevernaam2 + ")", "ViewEmployer", "Administration", new { Id = Model.WerkgeverID }, null)</td>
+			}
+			@if (Model.ActiveUntil > DateTime.Now)
+			{
+				<td><a style="color: red; text-decoration: none;" asp-action="DeactivateUser" asp-controller="Administration" asp-route-id="@Model.Id" onclick="return confirm('Weet je zeker dat je deze gebruiker wilt deactiveren? Dit kan niet meer ongedaan worden gemaakt.')">Deactiveer</a></td>
 			}
 		</tr>
 	</table>
