@@ -146,14 +146,3 @@ connection.on("ReceiveActivity", function (jsonObject) {
 
 });
 //*****************************************************
-
-$(document).ready(function () {
-
-	jQuery(function ($) {
-		$('.traineeTable').footable({
-			"sorting": {
-				"enabled": true
-			}
-		});
-	});
-});

@@ -16,6 +16,5 @@ namespace QienUrenMachien.Models
         public List<SelectListItem> Months { get; set; }
         public List<SelectListItem> Years { get; set; }
         public DateTime theDate { get; set; }
-        public string orderSelection { get; set; }
     }
 }

@@ -117,41 +117,48 @@ namespace QienUrenMachien.Repositories
                 label = "Project",
                 data = ProjectHours,
                 borderColor = "#3e95cd",
-                fill = false
+                fill = false,
+                backgroundColor = "#3e95cd"
             };
 
             var DataSet2 = new {
                 label = "Overwerk",
                 data = Overwork,
                 borderColor = "#8e5ea2",
-                fill = false
+                fill = false,
+                backgroundColor = "#8e5ea2"
             };
 
             var DataSet3 = new {
                 label = "Ziek",
                 data = Sick,
                 borderColor = "#3cba9f",
-                fill = false
+                fill = false,
+                backgroundColor = "#3cba9f"
             };
 
             var DataSet4 = new {
                 label = "Afwezig",
                 data = Absence, 
                 borderColor = "#e8c3b9",
-                fill = false
+                fill = false,
+                backgroundColor = "#e8c3b9"
             };
 
             var DataSet5 = new {
                 label = "Training",
                 data = Training,
                 borderColor = "#c45850",
-                fill = false
+                fill = false,
+                backgroundColor = "#c45850"
             };
 
             var DataSet6 = new {
                 label = "Overig",
                 data = Other,
-                fill = false
+                borderColor = "lightgray",
+                fill = false,
+                backgroundColor = "lightgray"
             };
 
             z.Add(DataSet);
@@ -305,7 +312,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Comment = t.Comment, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate.Year == model.theDate.Year)
                 .ToListAsync();
         }
@@ -317,7 +324,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Comment = t.Comment, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate.Year == model.theDate.Year)
                 .ToListAsync();
         }

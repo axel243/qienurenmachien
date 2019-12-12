@@ -13,7 +13,7 @@
 
 <form asp-controller="Administration" asp-action="AdminDashboard" id="searchUsers">
 	<p>
-		Zoek: <input type="text" name="SearchString" oninput="$('#searchUsers').submit();" style="border-radius: 5px; background-color: #e6e6e6; border: none;" />
+		Zoek: <input name="SearchString" type="text" style="border-radius: 5px; background-color: #e6e6e6; border: none;" />
 	</p>
 </form>
 
@@ -21,12 +21,15 @@
 	<h2>Trainees</h2>
 </div>
 
-<table style="width:100%;">
+<table class="sortableTable" data-sorting="true" style="width:100%;">
+	<thead>
 	<tr>
 		<th style="text-align: left;">Naam</th>
 		<th style="text-align: left;">Mail</th>
-		<th style="text-align: left;">Bekijk</th>
+		<th style="text-align: left;" data-sortable="false">Bekijk</th>
 	</tr>
+	</thead>
+	<tbody>
 	@foreach (var role in Model.Trainees)
 	{
 		<tr>
@@ -35,6 +38,7 @@
 			<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
 		</tr>
 	}
+	</tbody>
 </table>
 
 <br />
@@ -42,12 +46,15 @@
 	<h2>Werknemers</h2>
 </div>
 
-<table style="width:100%;">
+<table class="sortableTable" data-sorting="true" style="width:100%;">
+	<thead>
 	<tr>
 		<th style="text-align: left;">Naam</th>
 		<th style="text-align: left;">Mail</th>
-		<th style="text-align: left;">Bekijk</th>
+		<th style="text-align: left;" data-sortable="false">Bekijk</th>
 	</tr>
+	</thead>
+	<tbody>
 	@foreach (var role in Model.Employees)
 	{
 		<tr>
@@ -56,6 +63,7 @@
 			<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewUser", "Administration", new { Id = role.Id }, null)</td>
 		</tr>
 	}
+	</tbody>
 </table>
 
 <br />
@@ -63,12 +71,15 @@
 	<h2>Werkgevers</h2>
 </div>
 
-<table style="width:100%;">
+<table class="sortableTable" data-sorting="true" style="width:100%;">
+	<thead>
 	<tr>
 		<th style="text-align: left;">Naam</th>
 		<th style="text-align: left;">Mail</th>
-		<th style="text-align: left;">Bekijk</th>
+		<th style="text-align: left;" data-sortable="false">Bekijk</th>
 	</tr>
+	</thead>
+	<tbody>
 	@foreach (var role in Model.Employers)
 	{
 		<tr>
@@ -77,4 +88,7 @@
 			<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewEmployer", "Administration", new { Id = role.Id }, null)</td>
 		</tr>
 	}
+	</tbody>
 </table>
+
+<script src="~/js/timesheetOverview.js"></script>
