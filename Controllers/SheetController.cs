@@ -324,8 +324,6 @@ namespace QienUrenMachien.Controllers
 
                 csv += $"{entry.Key},{ProjectHours},{Overwork},{Sick},{Absence},{Training},{Other}\n";
             }
-
-
             string date = DateTime.Now.ToString("yyyyMMddTHHmmss");
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "txt/csv", $"timesheet_{user.Firstname}_{user.Lastname}_{date}.csv");
         }
