@@ -46,10 +46,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (signInManager.IsSignedIn(User))
+                        @if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Upload" asp-action="Index">Documenten</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Upload" asp-action="index">Documenten</a>
                             </li>
                         }
                         </ul>

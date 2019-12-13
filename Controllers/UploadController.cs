@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Entities;
@@ -40,16 +41,14 @@ namespace QienUrenMachien.Controllers
             var userid = userManager.GetUserId(HttpContext.User);
 
             var files = fileRepo.GetFilesByUserId(userid);
-            ViewBag.Files = files;
 
-            return View(@"~/Views/Attachments/AddAttachments.cshtml");
+            return View(@"~/Views/Attachments/Files.cshtml", files);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult ViewUserFiles(string userId)
         {
             var files = fileRepo.GetFilesByUserId(userId);
-
-            return PartialView(@"~/Views/Attachments/_PortfolioAdmin.cshtml", files);
+            return View(@"~/Views/Attachments/Files.cshtml", files);
         }
 
         [HttpPost]

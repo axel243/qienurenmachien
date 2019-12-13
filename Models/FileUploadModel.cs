@@ -8,5 +8,6 @@ namespace QienUrenMachien.Models
 {
     public class FileUploadModel : FileUpload
     {
+        public FileViewModel FileView { get; set; }
     }
 }
