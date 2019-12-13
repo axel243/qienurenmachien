@@ -38,8 +38,6 @@ namespace QienUrenMachien.Controllers
             var employeesqueryable = model.Employees.AsQueryable();
             model.Trainees = await userManager.GetUsersInRoleAsync("Trainee");
             var traineesqueryable = model.Trainees.AsQueryable();
-            model.Employers = await userManager.GetUsersInRoleAsync("Werkgever");
-            var employersqueryable = model.Employers.AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -47,6 +45,19 @@ namespace QienUrenMachien.Controllers
                 model.Employees = employeesqueryable.ToList();
                 traineesqueryable = traineesqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Trainees = traineesqueryable.ToList();
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> ViewEmployers(string searchString)
+        {
+            UsersViewModel model = new UsersViewModel();
+            model.Employers = await userManager.GetUsersInRoleAsync("Werkgever");
+            var employersqueryable = model.Employers.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
                 employersqueryable = employersqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Employers = employersqueryable.ToList();
             }
@@ -66,7 +77,9 @@ namespace QienUrenMachien.Controllers
 
         public async Task<List<SelectListItem>> getAllWerkgevers(RegisterViewModel model){
             var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");
+            var mockWerkgever = await userManager.FindByNameAsync("n457_n.8-93f5j3nls-f.e@gmail.com");
             model.Werkgevers = new List<SelectListItem>();
+            model.Werkgevers.Add(new SelectListItem { Value = mockWerkgever.Id, Text = "Geen werkgever", Selected = true });
             foreach (var users in usersAreWerkgevers)
             {
                 model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " (Bedrijf: " + users.Lastname + ")", Value = users.Id });
