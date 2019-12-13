@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
+
+@model QienUrenMachien.Models.UsersViewModel
+@{
+	ViewData["Title"] = "View Employers";
+}
+<div class="text-center">
+	<h1 class="display-4">Overzicht Werkgevers</h1>
+	<p>Alle actieve en non-actieve werkgevers.</p>
+</div>
+
+<form asp-controller="Administration" asp-action="ViewEmployers" id="searchUsers">
+	<p>
+		Zoek: <input name="SearchString" type="text" style="border-radius: 5px; background-color: #e6e6e6; border: none;" />
+	</p>
+</form>
+
+
+<br />
+<div class="text-center">
+	<h2>Werkgevers</h2>
+</div>
+
+<table class="sortableTable" data-sorting="true" style="width:100%;">
+	<thead>
+		<tr>
+			<th style="text-align: left;">Naam</th>
+			<th style="text-align: left;">Mail</th>
+			<th style="text-align: left;" data-sortable="false"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var role in Model.Employers.Where(u => u.ActiveUntil > DateTime.Now))
+		{
+			<tr>
+				<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname (Bedrijf: @role.Lastname)</td>
+				<td style="text-align: left;">@role.UserName</td>
+				<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewEmployer", "Administration", new { Id = role.Id }, null)</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="text-center">
+	<h2>Gedeactiveerde Werkgevers</h2>
+</div>
+
+<br />
+<div class="text-center">
+	<h4>Werkgevers</h4>
+</div>
+
+<table class="sortableTable" data-sorting="true" style="width:100%;">
+	<thead>
+		<tr>
+			<th style="text-align: left;">Naam</th>
+			<th style="text-align: left;">Mail</th>
+			<th style="text-align: left;">Actief tot</th>
+			<th style="text-align: left;" data-sortable="false"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var role in Model.Employers.Where(u => u.ActiveUntil < DateTime.Now))
+		{
+			<tr>
+				<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname (Bedrijf: @role.Lastname)</td>
+				<td style="text-align: left;">@role.UserName</td>
+				<td style="text-align: left;">@role.ActiveUntil.ToString("dd/MM/yyyy")</td>
+				<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewEmployer", "Administration", new { Id = role.Id }, null)</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<script src="~/js/timesheetOverview.js"></script>
+

@@ -38,8 +38,6 @@ namespace QienUrenMachien.Controllers
             var employeesqueryable = model.Employees.AsQueryable();
             model.Trainees = await userManager.GetUsersInRoleAsync("Trainee");
             var traineesqueryable = model.Trainees.AsQueryable();
-            model.Employers = await userManager.GetUsersInRoleAsync("Werkgever");
-            var employersqueryable = model.Employers.AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -47,6 +45,19 @@ namespace QienUrenMachien.Controllers
                 model.Employees = employeesqueryable.ToList();
                 traineesqueryable = traineesqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Trainees = traineesqueryable.ToList();
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> ViewEmployers(string searchString)
+        {
+            UsersViewModel model = new UsersViewModel();
+            model.Employers = await userManager.GetUsersInRoleAsync("Werkgever");
+            var employersqueryable = model.Employers.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
                 employersqueryable = employersqueryable.Where(u => (u.UserName + u.Firstname + u.Lastname + u.City + u.Street).Contains(searchString, StringComparison.OrdinalIgnoreCase));
                 model.Employers = employersqueryable.ToList();
             }
@@ -66,7 +77,9 @@ namespace QienUrenMachien.Controllers
 
         public async Task<List<SelectListItem>> getAllWerkgevers(RegisterViewModel model){
             var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");
+            var mockWerkgever = await userManager.FindByNameAsync("n457_n.8-93f5j3nls-f.e@gmail.com");
             model.Werkgevers = new List<SelectListItem>();
+            model.Werkgevers.Add(new SelectListItem { Value = mockWerkgever.Id, Text = "Geen werkgever", Selected = true });
             foreach (var users in usersAreWerkgevers)
             {
                 model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " (Bedrijf: " + users.Lastname + ")", Value = users.Id });
@@ -101,8 +114,7 @@ namespace QienUrenMachien.Controllers
                     user.ActiveFrom = model.ActiveFrom;
                 }
 
-                //model.Password = GetRandomPasswordUsingGUID(14) + "!";
-                model.Password = "Test123!";
+                model.Password = GetRandomPasswordUsingGUID();
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
                 var role = await roleManager.FindByNameAsync(model.Role);
@@ -129,20 +141,28 @@ namespace QienUrenMachien.Controllers
             return View(model);
         }
 
-        public string GetRandomPasswordUsingGUID(int length)
+        public string GetRandomPasswordUsingGUID()
         {
-            // Get the GUID
-            string guidResult = System.Guid.NewGuid().ToString();
+ 
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#&()–[{}]:;',?/*~$^+=<>";
+            var capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var nonalphas = "!@#&()–[{}]:;',?/*~$^+=<>";
+            var numbers = "0123456789";
+            var stringChars = new char[10];
+            var random = new Random();
 
-            // Remove the hyphens
-            guidResult = guidResult.Replace("-", string.Empty);
-            guidResult = guidResult.Substring(0, 1).ToUpper() + guidResult.Substring(1);
-            // Make sure length is valid
-            if (length <= 0 || length > guidResult.Length)
-                throw new ArgumentException("Length must be between 1 and " + guidResult.Length);
-
-            // Return the first length bytes
-            return guidResult.Substring(0, length);
+            var capital = capitals[random.Next(capitals.Length)];
+            var nonalpha = nonalphas[random.Next(nonalphas.Length)];
+            var number = numbers[random.Next(numbers.Length)];
+            stringChars[0] = capital;
+            stringChars[1] = nonalpha;
+            stringChars[2] = number;
+            for (int i = 3; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+            return new string(stringChars); 
+            
         }
 
 
