@@ -1,0 +1,63 @@
+﻿@model List<FileUploadModel>
+@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
+{
+    <partial name="_AddAttachments.cshtml" model="@Model[0].FileView" />
+
+    <div style="padding-top: 50px;">
+
+        <h1 class="mb-5">Portfolio</h1>
+        <h5 class="mb-5">@User.Identity.Name</h5>
+        <table>
+            <tr>
+                <th>Document(en)</th>
+                <th></th>
+
+            </tr>
+            @for (int file = Model.Count; file --> 0; )
+            {
+                <tr>
+                    <td>@System.IO.Path.GetFileName(Model[file].FilePath)</td>
+                    <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = Model[file].FilePath })</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <div style="padding-top: 50px;">
+        @{
+            var userProfile = await @userManager.FindByIdAsync(@Context.Request.Query["userId"]);
+        }
+        <h1 class="mb-5">Portfolio</h1>
+        @if (userProfile != null)
+        {
+            <h5 class="mb-5">@userProfile.UserName</h5>
+        }
+        else
+        { <h5 class="mb-5">Er is iets fout gegaan met het vinden van de gebruiker</h5>}
+        <table>
+            <tr>
+                <th>Document(en)</th>
+                <th></th>
+
+            </tr>
+            @foreach (var file in Model)
+            {
+                <tr>
+                    <td>@System.IO.Path.GetFileName(@file.FilePath)</td>
+                    <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = file.FilePath })</td>
+                </tr>
+            }
+        </table>
+    </div>
+ }

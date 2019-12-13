@@ -114,7 +114,7 @@ namespace QienUrenMachien.Controllers
                     user.ActiveFrom = model.ActiveFrom;
                 }
 
-                model.Password = GetRandomPasswordUsingGUID(14) + "!";
+                model.Password = GetRandomPasswordUsingGUID();
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
                 var role = await roleManager.FindByNameAsync(model.Role);
@@ -141,20 +141,28 @@ namespace QienUrenMachien.Controllers
             return View(model);
         }
 
-        public string GetRandomPasswordUsingGUID(int length)
+        public string GetRandomPasswordUsingGUID()
         {
-            // Get the GUID
-            string guidResult = System.Guid.NewGuid().ToString();
+ 
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#&()–[{}]:;',?/*~$^+=<>";
+            var capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var nonalphas = "!@#&()–[{}]:;',?/*~$^+=<>";
+            var numbers = "0123456789";
+            var stringChars = new char[10];
+            var random = new Random();
 
-            // Remove the hyphens
-            guidResult = guidResult.Replace("-", string.Empty);
-            guidResult = guidResult.Substring(0, 1).ToUpper() + guidResult.Substring(1);
-            // Make sure length is valid
-            if (length <= 0 || length > guidResult.Length)
-                throw new ArgumentException("Length must be between 1 and " + guidResult.Length);
-
-            // Return the first length bytes
-            return guidResult.Substring(0, length);
+            var capital = capitals[random.Next(capitals.Length)];
+            var nonalpha = nonalphas[random.Next(nonalphas.Length)];
+            var number = numbers[random.Next(numbers.Length)];
+            stringChars[0] = capital;
+            stringChars[1] = nonalpha;
+            stringChars[2] = number;
+            for (int i = 3; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+            return new string(stringChars); 
+            
         }
 
 

@@ -1,3 +1,8 @@
+var ctx;
+var config;
+var endpoint;
+var url;
+var data;
 // function that populates the chart, gets data via api call
 document.addEventListener('DOMContentLoaded', function() {
     var endpoint = 'https://localhost:44398/api/data/total'
@@ -30,15 +35,55 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 }, false);
+document.addEventListener('DOMContentLoaded', loadChart, false);
 
-document.addEventListener('DOMContentLoaded', function () {
+$(("input")).change(function () {
+    $('#doughnut').replaceWith($('<canvas id="doughnut"></canvas>'));
+    //refreshAPI();
+    loadChart();
+    console.log("CHANGE")
+});
+
+//function refreshAPI() {
+//    url = document.getElementById("Url").innerHTML;
+//    endpoint = 'https://localhost:44398/api/data/days/' + url;
+//    $.ajax({
+//        method: "GET",
+//        url: endpoint,
+//        success: function (api_data) {
+//            data = JSON.parse(api_data);
+//            console.log(data.data);
+//            console.log(data.backgroundColor); 
+//            config = {
+//                type: 'doughnut',
+//                data: {
+//                    labels: data.labels,
+//                    datasets: [
+//                        {
+//                            data: data.data,
+//                            backgroundColor: data.backgroundColor,
+//                            borderColor: data.borderColor
+//                        }
+//                    ]
+//                }
+
+// }
+//        }
+//    })
+//  };
+
+//function loadChart() {
+//    var ctx = document.getElementById("doughnut");
+//    var myChart = new Chart(ctx, config);
+//}
+
+function loadChart() {
     var url = document.getElementById("Url").innerHTML;
     var endpoint = 'https://localhost:44398/api/data/days/' + url;
     $.ajax({
         method: "GET",
         url: endpoint,
         success: function (api_data) {
-            console.log("gelukt");
             var data = JSON.parse(api_data);
             console.log(data.data);
             console.log(data.backgroundColor);
@@ -55,15 +100,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     ]
                 }
-               
-               
+
+
             });
         },
         error: function (error_data) {
             console.log(error_data)
         }
     })
-}, false);
+};
+
+
 
 
  

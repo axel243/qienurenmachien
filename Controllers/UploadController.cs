@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QienUrenMachien.Entities;
@@ -40,16 +41,14 @@ namespace QienUrenMachien.Controllers
             var userid = userManager.GetUserId(HttpContext.User);
 
             var files = fileRepo.GetFilesByUserId(userid);
-            ViewBag.Files = files;
 
-            return View(@"~/Views/Attachments/AddAttachments.cshtml");
+            return View(@"~/Views/Attachments/Files.cshtml", files);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult ViewUserFiles(string userId)
         {
             var files = fileRepo.GetFilesByUserId(userId);
-
-            return PartialView(@"~/Views/Attachments/_PortfolioAdmin.cshtml", files);
+            return View(@"~/Views/Attachments/Files.cshtml", files);
         }
 
         [HttpPost]
@@ -89,27 +88,34 @@ namespace QienUrenMachien.Controllers
 
         void UploadFile(ApplicationUser user, FileViewModel model)
         {
+            // algemene bestanden zoals persoonlijke ontwikkeling
+            // voor elk bestand dat wordt geupload wordt deze loop uitgevoerd
             foreach (var file in model.Files)
             {
+                //de pad van de folder, waar het bestand wordt opgeslagen
                 var uploadPath = $@"wwwroot/Uploads/Attachments/";
 
+                //het bestaan van de pad hierboven wordt gecontroleerd en als die niet bestaat worden de mappen aangemaakt
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
                 }
-                var date = DateTime.Now;
+                var date = DateTime.Now.ToString("ddMMyyyy");
 
-
+                //de volledige bestandsnaam wordt gesplitst in naam en extensie
                 var fileExtension = Path.GetExtension(file.FileName);
                 var fileNoExtension = Path.GetFileNameWithoutExtension(file.FileName);
-                var fileName = $"{user.Firstname}_{user.Lastname}_{date.ToShortDateString()}_{fileNoExtension}";
 
+                //de volledige bestandsnaam krijgt een andere naam
+                var fileName = $"{user.Firstname}_{user.Lastname}_{date}_{fileNoExtension}";
+
+                //hier wordt de volledige pad samengesteld en kopie opgeslagen van het bestand dat wordt geupload
                 using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName + fileExtension), FileMode.Create, FileAccess.Write))
                 {
                     file.CopyTo(fileStream);
                 }
 
-
+                //volledige pad naar bestand
                 var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
 
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
@@ -119,26 +125,34 @@ namespace QienUrenMachien.Controllers
         }
         void UploadSheetFile(ApplicationUser user, FileSheetUploadViewModel model)
         {
+            // bestanden die betrekking hebben op het urenformulier, zoals declaratieformulier, onkosten
+            // voor elk bestand dat wordt geupload wordt deze loop uitgevoerd
             foreach (var file in model.Files)
             {
+                //de pad van de folder, waar het bestand wordt opgeslagen
                 var uploadPath = $@"wwwroot/Uploads/Attachments/";
 
+                //het bestaan van de pad hierboven wordt gecontroleerd en als die niet bestaat worden de mappen aangemaakt
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
                 }
-                var date = DateTime.Now;
+                var date = DateTime.Now.ToString("ddMMyyyy");
 
-
+                //de volledige bestandsnaam wordt gesplitst in naam en extensie
                 var fileExtension = Path.GetExtension(file.FileName);
                 var fileNoExtension = Path.GetFileNameWithoutExtension(file.FileName);
-                var fileName = $"{user.Firstname}_{user.Lastname}_{date.ToShortDateString()}_{fileNoExtension}";
 
+                //de volledige bestandsnaam krijgt een andere naam
+                var fileName = $"{user.Firstname}_{user.Lastname}_{date}_{fileNoExtension}";
+
+                //hier wordt de volledige pad samengesteld en kopie opgeslagen van het bestand dat wordt geupload
                 using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName + fileExtension), FileMode.Create, FileAccess.Write))
                 {
                     file.CopyTo(fileStream);
                 }
 
+                //volledige pad naar bestand
                 var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
 
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
