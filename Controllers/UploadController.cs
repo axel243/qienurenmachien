@@ -27,6 +27,8 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public IActionResult SheetAttachment(string url, int sheetID)
         {
+            //url en sheetId wordt opgehaald uit de submitTimeSheet action in de sheet controller
+            //deze worden in de view gebruikt om de geuploade bestanden aan de sheetID te linken
             var file = new FileSheetUploadViewModel
             {
                 url = url,
@@ -38,8 +40,10 @@ namespace QienUrenMachien.Controllers
 
         public IActionResult Index()
         {
+            //userid van ingelogde gebruiker wordt opgehaald
             var userid = userManager.GetUserId(HttpContext.User);
 
+            //userid wordt gebruikt om de bestanden van deze user op te halen
             var files = fileRepo.GetFilesByUserId(userid);
 
             return View(@"~/Views/Attachments/Files.cshtml", files);
@@ -47,6 +51,8 @@ namespace QienUrenMachien.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult ViewUserFiles(string userId)
         {
+            //userid wordt mee gegeven uit de view ViewUser
+            //hiermee worden de bestanden van deze user opgehaald
             var files = fileRepo.GetFilesByUserId(userId);
             return View(@"~/Views/Attachments/Files.cshtml", files);
         }
@@ -56,27 +62,32 @@ namespace QienUrenMachien.Controllers
         {
             if (model.Files != null)
             {
+                //userid van ingelogde gebruiker wordt opgehaald
                 var userid = userManager.GetUserId(HttpContext.User);
-
+                //deze userid wordt gebruikt om de gebruiker object op te halen
                 var currentUser = await userManager.FindByIdAsync(userid);
 
+                //de file wordt middels het model doorgegeven en opgeslagen met koppeling naar de user
                 UploadFile(currentUser, model);
 
                 return RedirectToAction("Index");
             }
-
-
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public async Task<IActionResult> SubmitSheetFiles(FileSheetUploadViewModel model)
         {
+            //deze action heeft betrekking tot het uploaden van bestanden die betrekking hebben de in te vullen uren formulier, bijv declaratieformulier
+            //check of er wel bestanden de view worden geupload 
             if (model.Files != null)
             {
+                //userid van ingelogde gebruiker wordt opgehaald
                 var userid = userManager.GetUserId(HttpContext.User);
+                //deze userid wordt gebruikt om de gebruiker object op te halen
                 var currentUser = await userManager.FindByIdAsync(userid);
 
+                //de file wordt middels het model doorgegeven en opgeslagen met koppeling naar de user
                 UploadSheetFile(currentUser, model);
 
                 return RedirectToAction("Index");

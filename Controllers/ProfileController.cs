@@ -38,6 +38,7 @@ namespace QienUrenMachien.Controllers
         }
         public IActionResult Index()
         {
+            //userid wordt opgehaald van de gebruiker die ingelogd is
             var userid = userManager.GetUserId(HttpContext.User);
 
             if (userid == null)
@@ -46,7 +47,10 @@ namespace QienUrenMachien.Controllers
             }
             else
             {
+                //de user wordt opgehaald middels de userid
                 var user = userManager.FindByIdAsync(userid).Result;
+
+                //user object wordt doorgegeven aan de view, waarmee de user gegevens worden gevuld in het profiel
                 return View(@"~/Views/Account/Profile/Profile.cshtml", user);
             }
         }
@@ -55,8 +59,11 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
-            var userid = userManager.GetUserId(HttpContext.User);
+            //user wordt opgehaald om de gegevens in te vullen op de pagina om de gegevens aan te passen
 
+
+            //userid wordt opgehaald van ingelogde gebruiker en daarmee wordt zijn object opgehaald
+            var userid = userManager.GetUserId(HttpContext.User);
             var currentUser = await userManager.FindByIdAsync(userid);
 
             if (currentUser == null)
@@ -65,6 +72,7 @@ namespace QienUrenMachien.Controllers
                 return View("NotFound");
             }
 
+            //models converteren
             var currentUserModel = new ProfileViewModel
             {
                 Id = currentUser.Id,
@@ -86,7 +94,10 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(ProfileViewModel model)
         {
-              var userid = model.Id;
+
+
+            //userid wordt opgehaald uit de meegekregen model en daarmee wordt zijn object opgehaald
+            var userid = model.Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
             var adminlist = await userManager.GetUsersInRoleAsync("Admin");
@@ -95,7 +106,10 @@ namespace QienUrenMachien.Controllers
             {
                 ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
-            } else if (adminlist.Contains(currentUser))
+            } 
+            
+            //als de gebruiker die zijn profiel aanpast een admin is, dan wordt het profiel meteen aangepast
+            else if (adminlist.Contains(currentUser))
             {
                 currentUser.UserName = model.UserName;
                 currentUser.Firstname = model.FirstName;
@@ -117,6 +131,7 @@ namespace QienUrenMachien.Controllers
                 }
                 return View(currentUser);
             }
+            // als de gebruiker die zijn profiel aanpast geen admin is, dan wordt profiel wijziging in een wachtrij gezet ter goedkeuring van admin
             else
             {
                 var fileNameHash = "";
@@ -125,11 +140,13 @@ namespace QienUrenMachien.Controllers
                 {
                     UploadImage();
                 }
-                //test mo //////////////////////////
+                
                 model.ProfileImageUrl = $@"~/Uploads/Images/" + fileNameHash;
                 
+                //het user model wordt geserialized naar jsonobject, in deze jsonobject zitten de nieuwe gegevens bij wijziging profiel
                 var jsonProfile = JsonConvert.SerializeObject(model);
 
+                //de property newprofile van huidige user krijgt invulling met deze jsonobject (potentieel nieuwe profiel)
                 currentUser.NewProfile = jsonProfile;
 
                 // Update the user using UpdateAsync
@@ -140,15 +157,18 @@ namespace QienUrenMachien.Controllers
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                     repox.LogActivity(activeUser, "EditProfile", $"{activeUser.UserName} heeft profiel verzoek ingediend.");
 
-                    //call hub
+                    //laatste activiteit log wordt binnengehaald uit de entity
                     var lastActivity = repox.GetLastLog();
-                    await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
+                    //call hub, hier wordt de websocket gebruikt om bericht te sturen naar de ontvanger dat met een nieuwe activiteitlog
+                    await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
                     var admins = await userManager.GetUsersInRoleAsync("Admin");
 
+                    //een loop door de lijst admins, zodat iedere admin een mail ontvangt
                     foreach (ApplicationUser admin in admins)
                     {
+                        //mail dat er een profielswijziging verzoek is
                         mailServer.SendEditedProfileMail(admin.UserName, admin.Firstname, currentUser.UserName, currentUser.Firstname, currentUser.Id);
                     }
 
@@ -159,7 +179,7 @@ namespace QienUrenMachien.Controllers
                 void UploadImage()
                 {
                     var file = model.ProfileImage;
-                    /////////////////////
+                    
                     var uploadPath = $@"wwwroot/Uploads/Images/";
 
                     if (!Directory.Exists(uploadPath))
@@ -167,14 +187,11 @@ namespace QienUrenMachien.Controllers
                         Directory.CreateDirectory(uploadPath);
                     }
 
-
                     //uploaded file renamen met een hash
                     var fileExtension = Path.GetExtension(file.FileName);
                     var fileHash = Guid.NewGuid().ToString();
                     fileNameHash = fileHash + fileExtension;
                     
-
-
                     using (var fileStream = new FileStream(Path.Combine(uploadPath, fileNameHash), FileMode.Create, FileAccess.Write))
                     {
                         file.CopyTo(fileStream);
@@ -188,10 +205,8 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmProfile(string id)
         {
-            // in parameter string id
-            //var userid = id;
+            //middels userid wordt user opgehaald
             var userid = id;
-
             var currentUser = await userManager.FindByIdAsync(userid);
 
             if (currentUser == null)
@@ -200,9 +215,10 @@ namespace QienUrenMachien.Controllers
                 return View(@"~/Views/Account/NotFound.cshtml");
             }
 
+            //jsonobject wordt uit de property new profile gehaald
             var jsonProfile = currentUser.NewProfile;
 
-            
+            //huidige profiel zoals die is en was
             var currentProfile = new ProfileViewModel
             {
                 Id = currentUser.Id,
@@ -218,7 +234,10 @@ namespace QienUrenMachien.Controllers
                 ProfileImageUrl = currentUser.ProfileImageUrl
             };
 
+            //de jsonobject met nieuwe profiel wordt opgehaald
             var x = JsonConvert.DeserializeObject<ApplicationUser>(jsonProfile);
+
+            //de jsonobject met nieuwe profiel wordt omgezet naar de juiste model
             var tempProfile = new ProfileViewModel {
             Id = userid,
             UserName = currentUser.UserName,
@@ -235,6 +254,9 @@ namespace QienUrenMachien.Controllers
 
             var profiles = new ConfirmProfileViewModel();
             
+            //huidige profiel is currentProfile
+            //nieuwe profiel is tempProfile
+            //deze profielen worden samengevoegd in een model om door te geven aan de view
             profiles.Profiles.Add(tempProfile);         //index 0
             profiles.Profiles.Add(currentProfile);      //index 1
 
@@ -246,8 +268,13 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> AcceptedProfile(ConfirmProfileViewModel model)
         {
+            //deze actie kan alleen de admin uitvoeren
+            //ingelogde user moet een admin zijn
+            //huidige admin user object wordt opgehaald
             var adminid = userManager.GetUserId(HttpContext.User);
             var adminuser = await userManager.FindByIdAsync(adminid);
+
+            //user van te beoordelen profiel wordt uit de model gehaald middels userid
             var userid = model.Profiles[0].Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
@@ -256,9 +283,9 @@ namespace QienUrenMachien.Controllers
                 ViewBag.ErrorMessage = $"User with Id = {userid} cannot be found";
                 return View("NotFound");
             }
+            //nieuwe profiel wordt erin gezet door tempprofile over te nemen naar currentprofile
             else
             {
-
                 currentUser.Street = model.Profiles[0].Street;
                 currentUser.PhoneNumber = model.Profiles[0].PhoneNumber;
                 currentUser.Zipcode = model.Profiles[0].Zipcode;
@@ -274,7 +301,9 @@ namespace QienUrenMachien.Controllers
                 if (result.Succeeded)
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+                // activiteit wordt gelogd
                     repox.LogActivity(activeUser, "AcceptedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} goedgekeurd.");
+                // mail wordt naar gebruiker verstuurd met bericht goedkeuring
                     mailServer.SendAcceptedProfileMail(currentUser.UserName, currentUser.Firstname, adminuser.UserName);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
@@ -285,9 +314,13 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> DeniedProfile(ConfirmProfileViewModel model)
         {
+            //deze actie kan alleen de admin uitvoeren
+            //ingelogde user moet een admin zijn
+            //huidige admin user object wordt opgehaald
             var adminid = userManager.GetUserId(HttpContext.User);
             var adminuser = await userManager.FindByIdAsync(adminid);
 
+            //user van te beoordelen profiel wordt uit de model gehaald middels userid
             var userid = model.Profiles[0].Id;
             ApplicationUser currentUser = await userManager.FindByIdAsync(userid);
 
@@ -298,7 +331,7 @@ namespace QienUrenMachien.Controllers
             }
             else
             {
-                // field in db legen
+                //de wijzigen in het profiel dat werd opgeslagen in de newprofile property wordt leeg gemaakt. omdat het profiel is afgekeurd
                 currentUser.NewProfile = null;
                 // Update the user using UpdateAsync
                 var result = await userManager.UpdateAsync(currentUser);
@@ -306,8 +339,9 @@ namespace QienUrenMachien.Controllers
                 if (result.Succeeded)
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
+                //activiteit wordt gelogd
                     repox.LogActivity(activeUser, "DeniedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} afgewezen.");
-
+                //er wordt een mail verzonden aan de gebruiker, dat profiel is afgekeurd
                     mailServer.SendDeclinedProfileMail(currentUser.UserName, currentUser.Firstname, adminuser.UserName, adminuser.Firstname);
 
                     return View(@"~/Views/Account/Profile/DeniedProfile.cshtml");

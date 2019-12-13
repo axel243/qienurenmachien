@@ -117,7 +117,9 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            //userid van ingelogde gebruiker wordt opgehaald
             var userid = userManager.GetUserId(HttpContext.User);
+
 
             if (ModelState.IsValid)
             {
@@ -194,8 +196,10 @@ namespace QienUrenMachien.Controllers
                 var user = await userManager.FindByNameAsync(model.Email);
                 if (user != null)                           
                 {
+                    //token wordt gegenereerd, zodat een gebruiker zich kan identificeren middels deze token om het wachtwoord te resetten
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
+                    //url wordt samengesteld met de email, token en verwijzing naar de action resetpassword in de account controller
                 passwordResetLink = Url.Action("ResetPassword", "Account",
                     new { email = model.Email, token = token }, Request.Scheme);
 
