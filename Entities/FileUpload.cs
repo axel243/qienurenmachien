@@ -16,7 +16,7 @@ namespace QienUrenMachien.Entities
         public string Id { get; set; }
         [ForeignKey("SheetID")]
         public TimeSheet timeSheet { get; set; }
-        public int SheetID { get; set; }
+        public int? SheetID { get; set; }
         public string FilePath { get; set; }
     }
 }

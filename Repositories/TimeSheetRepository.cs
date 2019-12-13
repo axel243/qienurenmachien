@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using QienUrenMachien.Data;
 using QienUrenMachien.Entities;
 using QienUrenMachien.Models;
+using QienUrenMachien.Translation;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -299,13 +300,13 @@ namespace QienUrenMachien.Repositories
         public List<SelectListItem> GetMonths()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = DateTime.Now.ToString("MMMM"), Selected = true });
+            list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = Translator.TranslateMonth(DateTime.Now.ToString("MMMM")), Selected = true });
             DateTime dt = DateTime.Now;
             for (int i = 1; i < DateTime.Now.Month; i++)
             {
                 dt = dt.AddMonths(-1);
                 var month = dt.ToString("MMMM");
-                list.Add(new SelectListItem { Value = month, Text = month });
+                list.Add(new SelectListItem { Value = month, Text = Translator.TranslateMonth(month) });
             }
             return list;
         }
@@ -331,7 +332,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Comment = t.Comment, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Comment = t.Comment, Training = t.Training, Url = t.Url, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => traineesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate.Year == model.theDate.Year)
                 .ToListAsync();
         }
@@ -343,7 +344,7 @@ namespace QienUrenMachien.Repositories
                 .Select(e => e.Id);
 
             return await context.TimeSheets
-                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Comment = t.Comment, Training = t.Training, Data = t.Data, applicationUser = t.applicationUser })
+                .Select(t => new TimeSheet { Id = t.Id, SheetID = t.SheetID, Project = t.Project, Month = t.Month, theDate = t.theDate, ProjectHours = t.ProjectHours, Overwork = t.Overwork, Sick = t.Sick, Absence = t.Absence, Approved = t.Approved, Other = t.Other, Submitted = t.Submitted, Comment = t.Comment, Training = t.Training, Url = t.Url, Data = t.Data, applicationUser = t.applicationUser })
                 .Where(t => employeesIds.Contains(t.Id) && t.Month.Equals(model.Month) && t.theDate.Year == model.theDate.Year)
                 .ToListAsync();
         }
@@ -433,9 +434,11 @@ namespace QienUrenMachien.Repositories
         {
 
             var entity = await context.TimeSheets.Where(t => t.Url == url).FirstOrDefaultAsync<TimeSheet>();
+            ApplicationUser user = await userManager.FindByIdAsync(entity.Id);
 
             return new TimeSheetViewModel
             {
+                UserName = user.Firstname + " " + user.Lastname,
                 SheetID = entity.SheetID,
                 Id = entity.Id,
                 Project = entity.Project,
@@ -501,7 +504,7 @@ namespace QienUrenMachien.Repositories
             context.SaveChanges();
         }
 
-        public async Task<List<TimeSheet>> GetUserOverview(string id)
+        public async Task<List<TimeSheet>> GetUserOverview(string id, DateTime ActiveFrom, DateTime ActiveUntil)
         {
             var result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(c => c.theDate).ToListAsync();
             bool current_month = false;
@@ -517,7 +520,7 @@ namespace QienUrenMachien.Repositories
                 }
             }
 
-            if (result.Count == 0 || current_month == false)
+            if ((result.Count == 0 || current_month == false) && DateTime.Now >= ActiveFrom && DateTime.Now <= ActiveUntil)
             {
                 DateTime dt = DateTime.Now;
 

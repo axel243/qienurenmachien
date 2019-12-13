@@ -18,7 +18,7 @@ namespace QienUrenMachien.Repositories
         Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model);
         Task<List<TimeSheet>> GetAllEmployeeTimeSheets(TimeSheetsViewModel model);
 
-        Task<List<TimeSheet>> GetUserOverview(string id);
+        Task<List<TimeSheet>> GetUserOverview(string id, DateTime ActiveFrom, DateTime ActiveUntil);
         List<SelectListItem> GetMonths();
         List<SelectListItem> GetYears();
         TimeSheet GetOneTimeSheet(string url);

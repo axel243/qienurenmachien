@@ -22,15 +22,35 @@ namespace QienUrenMachien.Controllers
             this.fileRepo = fileRepo;
         }
 
-        public IActionResult Index()
-        {
-            var files = fileRepo.GetFiles();
-            ViewBag.Files = files;
 
-            return View(@"~/Views/Attachments/AddFiles.cshtml");
-            
+        [HttpGet]
+        public IActionResult SheetAttachment(string url, int sheetID)
+        {
+            var file = new FileSheetUploadViewModel
+            {
+                url = url,
+                sheetID = sheetID
+            };
+
+            return View(@"~/Views/Attachments/SheetAttachments.cshtml", file);
         }
 
+        public IActionResult Index()
+        {
+            var userid = userManager.GetUserId(HttpContext.User);
+
+            var files = fileRepo.GetFilesByUserId(userid);
+            ViewBag.Files = files;
+
+            return View(@"~/Views/Attachments/AddAttachments.cshtml");
+        }
+
+        public IActionResult ViewUserFiles(string userId)
+        {
+            var files = fileRepo.GetFilesByUserId(userId);
+
+            return PartialView(@"~/Views/Attachments/_PortfolioAdmin.cshtml", files);
+        }
 
         [HttpPost]
         public async Task<IActionResult> SubmitFiles(FileViewModel model)
@@ -46,6 +66,22 @@ namespace QienUrenMachien.Controllers
                 return RedirectToAction("Index");
             }
 
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSheetFiles(FileSheetUploadViewModel model)
+        {
+            if (model.Files != null)
+            {
+                var userid = userManager.GetUserId(HttpContext.User);
+                var currentUser = await userManager.FindByIdAsync(userid);
+
+                UploadSheetFile(currentUser, model);
+
+                return RedirectToAction("Index");
+            }
 
             return RedirectToAction("Index");
         }
@@ -81,6 +117,34 @@ namespace QienUrenMachien.Controllers
 
             }
         }
+        void UploadSheetFile(ApplicationUser user, FileSheetUploadViewModel model)
+        {
+            foreach (var file in model.Files)
+            {
+                var uploadPath = $@"wwwroot/Uploads/Attachments/";
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+                var date = DateTime.Now;
+
+
+                var fileExtension = Path.GetExtension(file.FileName);
+                var fileNoExtension = Path.GetFileNameWithoutExtension(file.FileName);
+                var fileName = $"{user.Firstname}_{user.Lastname}_{date.ToShortDateString()}_{fileNoExtension}";
+
+                using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName + fileExtension), FileMode.Create, FileAccess.Write))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+                var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
+
+                //referentie(pad) naar het bestand wordt opgeslagen in de database
+                fileRepo.UploadFile(user, filePath, model.sheetID);
+            }
+        }
 
         public IActionResult DownloadDocument(string filePath)
         {
@@ -88,7 +152,6 @@ namespace QienUrenMachien.Controllers
             var fileName = Path.GetFileName(filePath);
 
             string fileRePath = filePath.Replace("~", "wwwroot");
-
 
             byte[] fileBytes = System.IO.File.ReadAllBytes(fileRePath);
 

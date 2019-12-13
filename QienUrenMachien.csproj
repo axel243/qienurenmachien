@@ -23,6 +23,7 @@
 
 
   <ItemGroup>
+    <Folder Include="wwwroot\Uploads\Attachments\" />
     <Folder Include="wwwroot\Uploads\Images\" />
   </ItemGroup>
 

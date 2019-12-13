@@ -1,28 +1,59 @@
-﻿@model QienUrenMachien.Entities.ApplicationUser
+﻿@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
+
+@model QienUrenMachien.Entities.ApplicationUser
 @{
 	ViewData["Title"] = "Bekijk gebruiker";
+	var werkgevernaam = "";
+	var werkgevernaam2 = "";
+	@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
+	{
+		werkgevernaam = userManager.Users.Single(u => u.Id == Model.WerkgeverID).Firstname;
+		werkgevernaam2 = userManager.Users.Single(u => u.Id == Model.WerkgeverID).Lastname;
+	}
 }
 
-<div class="text-center">
-	<h1 class="display-4">Bekijk gebruiker</h1>
-	<p>Overzicht van gebruikerinformatie.</p>
-</div>
+	<div class="text-center">
+		<h1 class="display-4">Bekijk gebruiker</h1>
+		<p>Overzicht van gebruikerinformatie.</p>
+	</div>
 
-<table style="width:100%;">
-	<tr>
-		<th>Mail</th>
-		<th>Voornaam</th>
-		<th>Achternaam</th>
-		<th>Woonplaats</th>
-		<th>Straat</th>
-		<th>Telefoon</th>
-	</tr>
-	<tr>
-		<td>@Model.UserName</td>
-		<td>@Model.Firstname</td>
-		<td>@Model.Lastname</td>
-		<td>@Model.City</td>
-		<td>@Model.Street</td>
-		<td>@Model.PhoneNumber</td>
-	</tr>
-</table>
+	<table style="width:100%;">
+		<tr>
+			<th>Mail</th>
+			<th>Voornaam</th>
+			<th>Achternaam</th>
+			<th>Woonplaats</th>
+			<th>Straat</th>
+			<th>Telefoon</th>
+			<th>Actief sinds</th>
+			<th></th>
+			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
+			{
+				<th>Werkgever</th>
+			}
+			@if (Model.ActiveUntil > DateTime.Now)
+			{
+				<th></th>
+			}
+			</tr>
+		<tr>
+			<td>@Model.UserName</td>
+			<td>@Model.Firstname</td>
+			<td>@Model.Lastname</td>
+			<td>@Model.City</td>
+			<td>@Model.Street</td>
+			<td>@Model.PhoneNumber</td>
+			<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
+			<td>@Html.ActionLink("documenten","viewuserfiles","upload", new { userId = Model.Id })</td>
+			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
+			{
+				<td>@Html.ActionLink(werkgevernaam + " (Bedrijf: " + werkgevernaam2 + ")", "ViewEmployer", "Administration", new { Id = Model.WerkgeverID }, null)</td>
+			}
+			@if (Model.ActiveUntil > DateTime.Now)
+			{
+				<td><a style="color: red; text-decoration: none;" asp-action="DeactivateUser" asp-controller="Administration" asp-route-id="@Model.Id" onclick="return confirm('Weet je zeker dat je deze gebruiker wilt deactiveren? Dit kan niet meer ongedaan worden gemaakt.')">Deactiveer</a></td>
+			}
+		</tr>
+	</table>

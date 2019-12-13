@@ -1,6 +1,16 @@
-﻿@model QienUrenMachien.Entities.ApplicationUser
+﻿@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
+
+@model QienUrenMachien.Entities.ApplicationUser
 @{
 	ViewData["Title"] = "Bekijk werkgever";
+
+	var werknemers = new List<ApplicationUser>();
+	@if (userManager.Users.Where(u => u.WerkgeverID == Model.Id) != null)
+	{
+		werknemers = userManager.Users.Where(u => u.WerkgeverID == Model.Id).ToList();
+	}
 }
 
 <div class="text-center">
@@ -16,6 +26,7 @@
 		<th>Plaats</th>
 		<th>Straat</th>
 		<th>Telefoon</th>
+		<th>Actief sinds</th>
 	</tr>
 	<tr>
 		<td>@Model.UserName</td>
@@ -24,5 +35,29 @@
 		<td>@Model.City</td>
 		<td>@Model.Street</td>
 		<td>@Model.PhoneNumber</td>
+		<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
 	</tr>
+</table>
+
+<br />
+
+<table style="width:100%;">
+	<tr>
+		<th>Werknemers</th>
+	</tr>
+	@if (userManager.Users.Where(u => u.WerkgeverID == Model.Id).Count() >= 1)
+	{
+		@foreach (var person in werknemers)
+		{
+			<tr>
+				<td>@Html.ActionLink(@person.Firstname + " " +  @person.Lastname, "ViewUser", "Administration", new { Id = person.Id }, null)</td>
+			</tr>
+		}
+	}
+	else
+	{
+		<tr>
+			<td>Deze werkgever heeft geen huidige Qien-werknemers.</td>
+		</tr>
+	}
 </table>

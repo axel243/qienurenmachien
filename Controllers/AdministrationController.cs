@@ -69,7 +69,7 @@ namespace QienUrenMachien.Controllers
             model.Werkgevers = new List<SelectListItem>();
             foreach (var users in usersAreWerkgevers)
             {
-                model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " " + users.Lastname, Value = users.Id });
+                model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " (Bedrijf: " + users.Lastname + ")", Value = users.Id });
             }
             return model.Werkgevers;
         }
@@ -89,8 +89,18 @@ namespace QienUrenMachien.Controllers
                 Country = model.Country,
                 WerkgeverID = model.Werkgever,
                 ProfileImageUrl = @"~/Uploads/Images/default_profile.jpg",
-                ActiveFrom = DateTime.Now
+                ActiveFrom = DateTime.Now,
+                ActiveUntil = DateTime.Now.AddYears(50)
                 };
+
+                if (model.Role == "Trainee"){
+                    user.ActiveFrom = model.ActiveFrom;
+                    user.ActiveUntil = model.ActiveFrom.AddYears(1); 
+                }
+                else if (model.Role == "Werknemer"){
+                    user.ActiveFrom = model.ActiveFrom;
+                }
+
                 model.Password = GetRandomPasswordUsingGUID(14) + "!";
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -145,6 +155,18 @@ namespace QienUrenMachien.Controllers
         {
             var singleuser = userManager.Users.Single(u => u.Id == Id);
             return View(singleuser);
+        }
+
+        public async Task<IActionResult> DeactivateUser(string Id)
+        {
+            var singleuser = await userManager.FindByIdAsync(Id);
+            singleuser.ActiveUntil = DateTime.Now;
+            var result = await userManager.UpdateAsync(singleuser);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("AdminDashboard", "Administration");
+            }
+            return View();
         }
 
         public async Task<IActionResult> TimeSheetOverview()

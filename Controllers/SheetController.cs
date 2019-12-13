@@ -19,6 +19,7 @@ using QienUrenMachien.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace QienUrenMachien.Controllers
 {
@@ -50,7 +51,7 @@ namespace QienUrenMachien.Controllers
 
         [Route("Sheet/ConfirmTimeSheet/{url}")]
         [HttpGet]
-        public IActionResult ConfirmTimeSheet(string url)
+        public async Task<IActionResult> ConfirmTimeSheet(string url)
         {
             ViewBag.url = url;
 
@@ -60,13 +61,13 @@ namespace QienUrenMachien.Controllers
                 return View("NotFound");
             };
 
-            var result = repo.GetOneTimeSheet(url);
+            var result = await repo.GetOneTimeSheetByUrl(url);
             return View(result);
         }
 
         [Route("Sheet/RejectedTimeSheet/{url}")]
         [HttpGet]
-        public IActionResult RejectedTimeSheet(string url)
+        public async Task<IActionResult> RejectedTimeSheet(string url)
         {
             ViewBag.url = url;
 
@@ -76,7 +77,7 @@ namespace QienUrenMachien.Controllers
                 return View("NotFound");
             };
 
-            var result = repo.GetOneTimeSheet(url);
+            var result = await repo.GetOneTimeSheetByUrl(url);
             return View(result);
         }
 
@@ -229,8 +230,10 @@ namespace QienUrenMachien.Controllers
         [HttpGet]
         public async Task<IActionResult> Overview()
         {
-
-            var result = await repo.GetUserOverview(userManager.GetUserId(User));
+            
+            string id = userManager.GetUserId(User);
+            ApplicationUser user = await userManager.FindByIdAsync(id);
+            var result = await repo.GetUserOverview(id, user.ActiveFrom, user.ActiveUntil);
             //repo.AddTimeSheetTemp();
 
             return View(result);
@@ -247,7 +250,16 @@ namespace QienUrenMachien.Controllers
 
         }
 
-        [Route("Sheet/SubmitTimeSheet/{url}")]
+        [HttpGet]
+        public async Task<IActionResult> AdminViewSheet(string url)
+        {
+            var result = await repo.GetOneTimeSheetByUrl(url);
+
+            return View(result);
+
+        }
+
+        [Route("Sheet/SubmitTimeSheet#{url}")]
         [HttpGet]
         public async Task<IActionResult> SubmitTimeSheet(string url)
         {
@@ -265,10 +277,10 @@ namespace QienUrenMachien.Controllers
             await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
 
-            //mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
+            mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             //return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
-            return RedirectToAction("index", "upload", null);
+            return RedirectToAction("SheetAttachment", "upload", new { url, SheetID = _timeSheet.SheetID });
         }
 
         [Route("Sheet/UnSubmitTimeSheet/{url}")]
@@ -289,6 +301,31 @@ namespace QienUrenMachien.Controllers
             await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
             return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
+        }
+
+        public async Task<FileContentResult> DownloadCSV(string url)
+        {
+            var _timeSheet = await repo.GetTimeSheetUrl(url);
+            ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
+
+            var data = JObject.Parse(_timeSheet.Data);
+
+            string csv = "Dag,Project,Overwerk,Ziek,Afwezig,Training,Overig\n";
+
+            foreach(KeyValuePair<string, JToken> entry in data)
+            {
+                Console.WriteLine(entry.Value);
+                var ProjectHours = entry.Value["projectHours"];
+                var Overwork = entry.Value["overwork"];
+                var Sick = entry.Value["sick"];
+                var Absence = entry.Value["absence"];
+                var Training = entry.Value["training"];
+                var Other = entry.Value["other"];
+
+                csv += $"{entry.Key},{ProjectHours},{Overwork},{Sick},{Absence},{Training},{Other}\n";
+            }
+            string date = DateTime.Now.ToString("yyyyMMddTHHmmss");
+            return File(new System.Text.UTF8Encoding().GetBytes(csv), "txt/csv", $"timesheet_{user.Firstname}_{user.Lastname}_{date}.csv");
         }
 
     }

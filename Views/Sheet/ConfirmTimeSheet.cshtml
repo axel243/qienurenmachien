@@ -1,4 +1,6 @@
-@model QienUrenMachien.Entities.TimeSheet
+@model TimeSheetViewModel;
+@using Newtonsoft.Json.Linq;
+@using QienUrenMachien.Translation;
 @{
     ViewData["Title"] = "Urenformulier";
 }
@@ -7,7 +9,7 @@
 
 <table style="width:100%;">
     <tr>
-        <th>Gebruiker ID</th>
+        <th>Gebruiker</th>
         <th>Project</th>
         <th>Maand</th>
         <th>Projecturen</th>
@@ -20,9 +22,9 @@
         <th>Goedgekeurd</th>
     </tr>
     <tr>
-        <td>@Model.Id</td>
+        <td>@Model.UserName</td>
         <td>@Model.Project</td>
-        <td>@Model.Month</td>
+        <td>@Translator.TranslateMonth(Model.Month)</td>
         <td>@Model.ProjectHours</td>
         <td>@Model.Overwork</td>
         <td>@Model.Sick</td>
@@ -32,6 +34,48 @@
         <td>@Model.Submitted</td>
         <td>@Model.Approved</td>
     </tr>
+</table>
+
+<br>
+<table id="TimeSheetTable" style="width:100%;">
+	<tr>
+		<th>Dag</th>
+		<th>Projecturen</th>
+		<th>Overwerk</th>
+		<th>Ziek</th>
+		<th>Afwezig</th>
+		<th>Training</th>
+		<th>Overige</th>
+	</tr>
+
+    @foreach (var day in JObject.Parse(Model.Data))
+    {
+        DateTime dt = new DateTime(Model.theDate.Year, Model.theDate.Month, Convert.ToInt32(day.Key));
+        @if (dt.ToString("dddd") == "Saturday" || dt.ToString("dddd") == "Sunday")
+        {
+            <tr style="background-color: #f3f3f3">
+                <td>@Translator.TranslateDay(dt.ToString("dddd")) @day.Key</td>
+                <td>@day.Value["projecthours"]</td>
+                <td>@day.Value["overwork"]</td>
+                <td>@day.Value["sick"]</td>
+                <td>@day.Value["absence"]</td>
+                <td>@day.Value["training"]</td>
+                <td>@day.Value["other"]</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>@Translator.TranslateDay(dt.ToString("dddd"))@day.Key</td>
+                <td>@day.Value["projecthours"]</td>
+                <td>@day.Value["overwork"]</td>
+                <td>@day.Value["sick"]</td>
+                <td>@day.Value["absence"]</td>
+                <td>@day.Value["training"]</td>
+                <td>@day.Value["other"]</td>
+            </tr>
+        }
+    }
 </table>
 
 @*@if (Model.Approved == "Approved")
@@ -46,6 +90,8 @@ else
                asp-controller="Sheet" asp-route-id="@Model.SheetID">Goedkeuren</a>
             <a class="btn btn-primary" asp-action="RejectTimeSheet"
                asp-controller="Sheet" asp-route-id="@Model.SheetID">Afkeuren</a>
+		<a class="btn btn-primary" asp-action="DownloadCSV"
+		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
         </div>
     </div>
 @*}*@

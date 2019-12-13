@@ -9,6 +9,7 @@ using System.Net.Mail;
 using QienUrenMachien.Repositories;
 using QienUrenMachien.Models;
 using QienUrenMachien.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace QienUrenMachien.Mail
 {
@@ -38,54 +39,7 @@ namespace QienUrenMachien.Mail
 
         public string Convert(string month)
         {
-            if (month == "January"){
-                return "januari";
-            }
-            else if (month == "February")
-            {
-                return "februari";
-            }
-            else if (month == "March")
-            {
-                return "maart";
-            }
-            else if (month == "April")
-            {
-                return "april";
-            }
-            else if (month == "May")
-            {
-                return "mei";
-            }
-            else if (month == "June")
-            {
-                return "juni";
-            }
-            else if (month == "July")
-            {
-                return "juli";
-            }
-            else if (month == "August")
-            {
-                return "augustus";
-            }
-            else if (month == "September")
-            {
-                return "september";
-            }
-            else if (month == "October")
-            {
-                return "oktober";
-            }
-            else if (month == "November")
-            {
-                return "november";
-            }
-            else if (month == "December")
-            {
-                return "december";
-            }
-            else return "";
+            return QienUrenMachien.Translation.Translator.TranslateMonth(month);
 
         }
 
@@ -122,36 +76,44 @@ namespace QienUrenMachien.Mail
 
 
 
-        public void SendForgotPasswordMail(string recipient, string resetlink)
+        public void SendForgotPasswordMail(string recipient, string personName,  string resetlink)
         {
-            string subject = $"Link om het wachtwoord te resetten"; 
-            string body = "<br/> <a href=" + resetlink + ">Wachtwoord resetten</a>";
-            SendMail(recipient, subject, body);
+            string subject = $"Link om het wachtwoord te resetten";
+            string aanhef = $"Beste {personName},<br><br>";
+            string body1 = "Er is zojuist een verzoek ingediend om uw wachtwoord te resetten. Hieronder kunt u klikken op wachtwoord resetten, waarmee u wordt doorgelinkt naar de pagina om een nieuw wachtwoord op te geven. ";
+            string body2 = "<br/> <a href=" + resetlink + ">Wachtwoord resetten</a>";
+            string body3 = "Heeft u dit verzoek niet gedaan, dan is er waarschijnlijk iemand anders geweest die dit heeft gedaan. Wij raden u aan om ten alle tijden een sterk wachtwoord te gebruiken en deze met niemand te delen. Mocht dit verzoek vaker voorkomen, dan kunt u hier een melding van maken. ";
+            string groet = "<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+
+            SendMail(recipient, subject, aanhef + body1 + body2 + body3 + groet);
         }
 
-        public void SendEditedProfileMail(string recipient, string person)
+        public void SendEditedProfileMail(string recipient, string adminName, string personUserName, string personFirstName, string userId)
         {
-            //recipient zal de admin moeten zijn, nu zijn recipient en person nog gelijk
-            string subject = $"Verzoek profiels wijziging van {person}";
-            string body = $"{person} heeft een profielswijziging ingediend";
-            
+            string subject = $"Verzoek profiels wijziging van {personUserName}";
+            string link = "<a href=" + "https://localhost:44398/profile/confirmprofile/" + userId + ">hier</a>";
+            string body = @$"Beste {adminName},<br><br> Het profiel van {personFirstName} is gewijzigd en is in afwachting van goedkeuring.<br> Dit profielverzoek kunt u bekijken door " + link + " te klikken.<br> Mocht dit problemen opleveren, dan kunt u deze zien in de admin dashboard onder het tab profielverzoeken. <br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
-        public void SendAcceptedProfileMail(string recipient, string admin)
+        public void SendAcceptedProfileMail(string recipient, string personName, string admin)
         {
             string subject = "Profielwijziging is goedgekeurd";
-            string body = $"Het verzoek tot wijziging van je profiel is goedgekeurd door {admin}";
+            string aanhef = $"Beste {personName},<br><br>";
+            string body = $"Je hebt eerder je profielgegevens gewijzigd, deze wijziging is zojuist goedgekeurd door {admin} ";
+            string groet = "<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
-            SendMail(recipient, subject, body);
+            SendMail(recipient, subject, aanhef + body + groet);
         }
 
-        public void SendDeclinedProfileMail(string recipient, string admin)
+        public void SendDeclinedProfileMail(string recipient, string personName, string admin, string adminName)
         {
-            string subject = "Profielwijziging is afgekeurd";
-            string body = $"Het verzoek tot wijziging van je profiel is afgekeurd door {admin}";
+            string subject = "Profielwijziging is afgewezen";
+            string aanhef = $"Beste {personName},<br><br>";
+            string body = $"Je hebt eerder je profielgegevens gewijzigd, deze wijziging is zojuist afgewezen door {admin}. Neem contact op met {adminName} om dit te bespreken.";
+            string groet = "<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
-            SendMail(recipient, subject, body);
+            SendMail(recipient, subject, aanhef + body + groet);
         }
 
         public void SendRegisterUserMail(string recipient, string password)
