@@ -30,15 +30,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 }, false);
+document.addEventListener('DOMContentLoaded', loadChart, false);
 
-document.addEventListener('DOMContentLoaded', function () {
+$(("input")).change(function () {
+    $('#doughnut').replaceWith($('<canvas id="doughnut"></canvas>'));
+    loadChart();
+    console.log("CHANGE")
+});
+
+function loadChart() {
     var url = document.getElementById("Url").innerHTML;
     var endpoint = 'https://localhost:44398/api/data/days/' + url;
     $.ajax({
         method: "GET",
         url: endpoint,
         success: function (api_data) {
-            console.log("gelukt");
             var data = JSON.parse(api_data);
             console.log(data.data);
             console.log(data.backgroundColor);
@@ -55,15 +61,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     ]
                 }
-               
-               
+
+
             });
         },
         error: function (error_data) {
             console.log(error_data)
         }
     })
-}, false);
+};
+
+
 
 
  
