@@ -88,27 +88,34 @@ namespace QienUrenMachien.Controllers
 
         void UploadFile(ApplicationUser user, FileViewModel model)
         {
+            // algemene bestanden zoals persoonlijke ontwikkeling
+            // voor elk bestand dat wordt geupload wordt deze loop uitgevoerd
             foreach (var file in model.Files)
             {
+                //de pad van de folder, waar het bestand wordt opgeslagen
                 var uploadPath = $@"wwwroot/Uploads/Attachments/";
 
+                //het bestaan van de pad hierboven wordt gecontroleerd en als die niet bestaat worden de mappen aangemaakt
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
                 }
-                var date = DateTime.Now;
+                var date = DateTime.Now.ToString("ddMMyyyy");
 
-
+                //de volledige bestandsnaam wordt gesplitst in naam en extensie
                 var fileExtension = Path.GetExtension(file.FileName);
                 var fileNoExtension = Path.GetFileNameWithoutExtension(file.FileName);
-                var fileName = $"{user.Firstname}_{user.Lastname}_{date.ToShortDateString()}_{fileNoExtension}";
 
+                //de volledige bestandsnaam krijgt een andere naam
+                var fileName = $"{user.Firstname}_{user.Lastname}_{date}_{fileNoExtension}";
+
+                //hier wordt de volledige pad samengesteld en kopie opgeslagen van het bestand dat wordt geupload
                 using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName + fileExtension), FileMode.Create, FileAccess.Write))
                 {
                     file.CopyTo(fileStream);
                 }
 
-
+                //volledige pad naar bestand
                 var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
 
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
@@ -118,26 +125,34 @@ namespace QienUrenMachien.Controllers
         }
         void UploadSheetFile(ApplicationUser user, FileSheetUploadViewModel model)
         {
+            // bestanden die betrekking hebben op het urenformulier, zoals declaratieformulier, onkosten
+            // voor elk bestand dat wordt geupload wordt deze loop uitgevoerd
             foreach (var file in model.Files)
             {
+                //de pad van de folder, waar het bestand wordt opgeslagen
                 var uploadPath = $@"wwwroot/Uploads/Attachments/";
 
+                //het bestaan van de pad hierboven wordt gecontroleerd en als die niet bestaat worden de mappen aangemaakt
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
                 }
-                var date = DateTime.Now;
+                var date = DateTime.Now.ToString("ddMMyyyy");
 
-
+                //de volledige bestandsnaam wordt gesplitst in naam en extensie
                 var fileExtension = Path.GetExtension(file.FileName);
                 var fileNoExtension = Path.GetFileNameWithoutExtension(file.FileName);
-                var fileName = $"{user.Firstname}_{user.Lastname}_{date.ToShortDateString()}_{fileNoExtension}";
 
+                //de volledige bestandsnaam krijgt een andere naam
+                var fileName = $"{user.Firstname}_{user.Lastname}_{date}_{fileNoExtension}";
+
+                //hier wordt de volledige pad samengesteld en kopie opgeslagen van het bestand dat wordt geupload
                 using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName + fileExtension), FileMode.Create, FileAccess.Write))
                 {
                     file.CopyTo(fileStream);
                 }
 
+                //volledige pad naar bestand
                 var filePath = $@"~/Uploads/Attachments/" + fileName + fileExtension;
 
                 //referentie(pad) naar het bestand wordt opgeslagen in de database
