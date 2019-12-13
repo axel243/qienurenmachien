@@ -38,6 +38,38 @@ $(("input")).change(function () {
     console.log("CHANGE")
 });
 
+function refreshAPI() {
+    var url = document.getElementById("Url").innerHTML;
+    var endpoint = 'https://localhost:44398/api/data/days/' + url;
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function (api_data) {
+            var data = JSON.parse(api_data);
+            console.log(data.data);
+            console.log(data.backgroundColor);
+            var ctx = document.getElementById("doughnut");
+            var config = {
+                type: 'doughnut',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            data: data.data,
+                            backgroundColor: data.backgroundColor,
+                            borderColor: data.borderColor
+                        }
+                    ]
+                }
+            };
+        }
+    }
+        }
+
+function loadChart() {
+
+}
+
 function loadChart() {
     var url = document.getElementById("Url").innerHTML;
     var endpoint = 'https://localhost:44398/api/data/days/' + url;

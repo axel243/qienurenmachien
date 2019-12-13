@@ -101,7 +101,8 @@ namespace QienUrenMachien.Controllers
                     user.ActiveFrom = model.ActiveFrom;
                 }
 
-                model.Password = GetRandomPasswordUsingGUID(14) + "!";
+                //model.Password = GetRandomPasswordUsingGUID(14) + "!";
+                model.Password = "Test123!";
                 IdentityResult resultt = null;
                 var result = await userManager.CreateAsync(user, model.Password);
                 var role = await roleManager.FindByNameAsync(model.Role);
