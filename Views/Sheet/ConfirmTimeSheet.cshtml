@@ -21,19 +21,41 @@
         <th>Ingeleverd</th>
         <th>Goedgekeurd</th>
     </tr>
-    <tr>
-        <td>@Model.UserName</td>
-        <td>@Model.Project</td>
-        <td>@Translator.TranslateMonth(Model.Month)</td>
-        <td>@Model.ProjectHours</td>
-        <td>@Model.Overwork</td>
-        <td>@Model.Sick</td>
-        <td>@Model.Absence</td>
-        <td>@Model.Training</td>
-        <td>@Model.Other</td>
-        <td>@Model.Submitted</td>
-        <td>@Model.Approved</td>
-    </tr>
+	<tr>
+		<td>@Model.UserName</td>
+		<td>@Model.Project</td>
+		<td>@Translator.TranslateMonth(Model.Month)</td>
+		<td>@Model.ProjectHours</td>
+		<td>@Model.Overwork</td>
+		<td>@Model.Sick</td>
+		<td>@Model.Absence</td>
+		<td>@Model.Training</td>
+		<td>@Model.Other</td>
+		@if (@Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if (!@Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if ((@Model.Approved == "Not submitted" || @Model.Approved == "Not Submitted") && Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if ((@Model.Approved == "Not submitted" || @Model.Approved == "Not Submitted") && !Model.Submitted)
+		{
+			<td></td>
+		}
+		@if (@Model.Approved == "Rejected")
+		{
+			<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if (@Model.Approved == "Approved")
+		{
+			<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+		}
+	</tr>
 </table>
 
 <br>

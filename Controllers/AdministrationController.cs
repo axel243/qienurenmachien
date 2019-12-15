@@ -33,6 +33,8 @@ namespace QienUrenMachien.Controllers
 
         public async Task<IActionResult> AdminDashboard(string searchString)
         {
+            //Het overzicht van alle werknemers en trainees. Gebruikt een viewmodel om de users op de delen per rol. 
+            //Vervolgens moeten ze van list naar queryable worden geconverteerd, en weer terug om ze zoekbaar te maken.
             UsersViewModel model = new UsersViewModel();
             model.Employees = await userManager.GetUsersInRoleAsync("Werknemer");
             var employeesqueryable = model.Employees.AsQueryable();
@@ -79,8 +81,8 @@ namespace QienUrenMachien.Controllers
             var usersAreWerkgevers = await userManager.GetUsersInRoleAsync("Werkgever");
             var mockWerkgever = await userManager.FindByNameAsync("n457_n.8-93f5j3nls-f.e@gmail.com");
             model.Werkgevers = new List<SelectListItem>();
-            model.Werkgevers.Add(new SelectListItem { Value = mockWerkgever.Id, Text = "Geen werkgever", Selected = true });
-            foreach (var users in usersAreWerkgevers)
+            model.Werkgevers.Add(new SelectListItem { Value = mockWerkgever.Id, Text = "Geen (HR @ Qien)", Selected = true });
+            foreach (var users in usersAreWerkgevers.Where(u => u.ActiveUntil > DateTime.Now))
             {
                 model.Werkgevers.Add(new SelectListItem() { Text = users.Firstname + " (Bedrijf: " + users.Lastname + ")", Value = users.Id });
             }
@@ -180,6 +182,7 @@ namespace QienUrenMachien.Controllers
 
         public async Task<IActionResult> DeactivateUser(string Id)
         {
+            //De gebruiker deactiveren door de einddatum naar het huidige tijdstip te veranderen.
             var singleuser = await userManager.FindByIdAsync(Id);
             singleuser.ActiveUntil = DateTime.Now;
             var result = await userManager.UpdateAsync(singleuser);
@@ -190,8 +193,23 @@ namespace QienUrenMachien.Controllers
             return View();
         }
 
+        public async Task<IActionResult> DeactivateEmployer(string Id)
+        {
+            var singleuser = await userManager.FindByIdAsync(Id);
+            singleuser.ActiveUntil = DateTime.Now;
+            var result = await userManager.UpdateAsync(singleuser);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ViewEmployers", "Administration");
+            }
+            return View();
+        }
+
         public async Task<IActionResult> TimeSheetOverview()
         {
+            //Hier wordt een overzicht van alle timesheets per maand gemaakt, door een view-model te gebruiken waarin de users worden opgedeeld in hun rollen.
+            //In dit view-model zit ook een lijst met maanden die in de repository dynamisch wordt gemaakt op basis van de huidige maand. Hetzelfde geld voor jaren.
+            //Verder worden de huidige maand en het huidige jaar automatisch geselecteerd wanneer je het overzicht opent.
             TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM"), theDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1) };
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
@@ -203,6 +221,8 @@ namespace QienUrenMachien.Controllers
         [HttpPost]
         public async Task<IActionResult> TimeSheetOverview(TimeSheetsViewModel model)
         {
+            //Deze functie wordt aangeroepen zodra de gebruiker een selectie maand in de dropdown van maanden of jaren.
+            //Als het geselecteerde jaar nog steeds het huidige jaar is, worden de maanden dynamisch aangemaakt. Als het niet het huidige jaar is, kan de gebruiker in de maanden-dropdown alle maanden kiezen.
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
             if (model.theDate.Year == DateTime.Now.Year)

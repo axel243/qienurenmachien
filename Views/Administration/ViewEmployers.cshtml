@@ -34,13 +34,16 @@
 	<tbody>
 		@foreach (var role in Model.Employers.Where(u => u.ActiveUntil > DateTime.Now))
 		{
-			<tr>
-				<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname (Bedrijf: @role.Lastname)</td>
-				<td style="text-align: left;">@role.UserName</td>
-				<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewEmployer", "Administration", new { Id = role.Id }, null)</td>
-			</tr>
+			@if (role.Id != "87f665fa-366a-43d9-a3b7-4c59c91bd818")
+			{
+				<tr>
+					<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname (Bedrijf: @role.Lastname)</td>
+					<td style="text-align: left;">@role.UserName</td>
+					<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewEmployer", "Administration", new { Id = role.Id }, null)</td>
+				</tr>
+			}
 		}
-	</tbody>
+		</tbody>
 </table>
 
 <br />
@@ -52,11 +55,6 @@
 
 <div class="text-center">
 	<h2>Gedeactiveerde Werkgevers</h2>
-</div>
-
-<br />
-<div class="text-center">
-	<h4>Werkgevers</h4>
 </div>
 
 <table class="sortableTable" data-sorting="true" style="width:100%;">
@@ -71,12 +69,15 @@
 	<tbody>
 		@foreach (var role in Model.Employers.Where(u => u.ActiveUntil < DateTime.Now))
 		{
+			@if (role.Id != "87f665fa-366a-43d9-a3b7-4c59c91bd818")
+			{
 			<tr>
 				<td style="text-align: left;"><img id="profilepictureInList" src="@Url.Content((userManager.Users.Single(u => u.Id == role.Id)).ProfileImageUrl)">@role.Firstname (Bedrijf: @role.Lastname)</td>
 				<td style="text-align: left;">@role.UserName</td>
 				<td style="text-align: left;">@role.ActiveUntil.ToString("dd/MM/yyyy")</td>
 				<td style="text-align: left;">@Html.ActionLink("Bekijk", "ViewEmployer", "Administration", new { Id = role.Id }, null)</td>
 			</tr>
+			}
 		}
 	</tbody>
 </table>
