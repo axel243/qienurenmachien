@@ -155,7 +155,7 @@ namespace QienUrenMachien.Controllers
                 if (result.Succeeded)
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-                    repox.LogActivity(activeUser, "EditProfile", $"{activeUser.UserName} heeft profiel verzoek ingediend.");
+                    repox.LogActivity(activeUser, "EditProfile", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft profiel verzoek ingediend.");
 
                     //laatste activiteit log wordt binnengehaald uit de entity
                     var lastActivity = repox.GetLastLog();
@@ -169,7 +169,7 @@ namespace QienUrenMachien.Controllers
                     foreach (ApplicationUser admin in admins)
                     {
                         //mail dat er een profielswijziging verzoek is
-                        mailServer.SendEditedProfileMail(admin.UserName, admin.Firstname, currentUser.UserName, currentUser.Firstname, currentUser.Id);
+                        mailServer.SendEditedProfileMail(admin.UserName, admin.Firstname, currentUser.Firstname, currentUser.Lastname, currentUser.Id);
                     }
 
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
@@ -302,9 +302,9 @@ namespace QienUrenMachien.Controllers
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                 // activiteit wordt gelogd
-                    repox.LogActivity(activeUser, "AcceptedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} goedgekeurd.");
+                    repox.LogActivity(activeUser, "AcceptedProfile", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft profielverzoek van {currentUser.Firstname[0]}. {currentUser.Lastname} goedgekeurd.");
                 // mail wordt naar gebruiker verstuurd met bericht goedkeuring
-                    mailServer.SendAcceptedProfileMail(currentUser.UserName, currentUser.Firstname, adminuser.UserName);
+                    mailServer.SendAcceptedProfileMail(currentUser.UserName, currentUser.Firstname, currentUser.Lastname, adminuser.Firstname, adminuser.Lastname);
                     return View(@"~/Views/Account/Profile/StatusProfile.cshtml");
                 }
                 return View(currentUser);
@@ -340,9 +340,9 @@ namespace QienUrenMachien.Controllers
                 {
                     var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
                 //activiteit wordt gelogd
-                    repox.LogActivity(activeUser, "DeniedProfile", $"{activeUser.UserName} heeft profielverzoek van {currentUser.UserName} afgewezen.");
+                    repox.LogActivity(activeUser, "DeniedProfile", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft profielverzoek van {currentUser.Firstname[0]}. {currentUser.Lastname} afgewezen.");
                 //er wordt een mail verzonden aan de gebruiker, dat profiel is afgekeurd
-                    mailServer.SendDeclinedProfileMail(currentUser.UserName, currentUser.Firstname, adminuser.UserName, adminuser.Firstname);
+                    mailServer.SendDeclinedProfileMail(currentUser.UserName, currentUser.Firstname, currentUser.Lastname, adminuser.Firstname, adminuser.Lastname);
 
                     return View(@"~/Views/Account/Profile/DeniedProfile.cshtml");
                 }
