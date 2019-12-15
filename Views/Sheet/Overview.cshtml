@@ -14,46 +14,58 @@
 </div>
 
 <table style="width:100%;">
-    <tr>
-        <th>Opdracht</th>
-        <th>Maand</th>
-        <th>Ingeleverd</th>
-        <th>Goedgekeurd</th>
-        <th>Toon urenformulier</th>
-    </tr>
-    @foreach (var sheet in Model)
-    {
+	@if (Model.Count() >= 1)
+	{
+		<tr>
+			<th>Opdracht</th>
+			<th>Maand</th>
+			<th>Ingeleverd</th>
+			<th>Goedgekeurd</th>
+			<th>Toon urenformulier</th>
+		</tr>
+		@foreach (var sheet in Model)
+		{
 
-        var url = sheet.Url;
-<tr>
-	<td>@sheet.Project</td>
-	<td>@Translator.TranslateMonth(sheet.Month)</td>
-	@if (@sheet.Submitted)
-	{
-		<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+			var url = sheet.Url;
+			<tr>
+				<td>@sheet.Project</td>
+				<td>@Translator.TranslateMonth(sheet.Month)</td>
+				@if (@sheet.Submitted)
+				{
+					<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+				}
+				@if (!@sheet.Submitted)
+				{
+					<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+				}
+				@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && sheet.Submitted)
+				{
+					<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+				}
+				@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && !sheet.Submitted)
+				{
+					<td></td>
+				}
+				@if (@sheet.Approved == "Rejected")
+				{
+					<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+				}
+				@if (@sheet.Approved == "Approved")
+				{
+					<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+				}
+				<td><a asp-controller="Sheet" asp-action="UserTimeSheet" asp-route-url="@url">Bekijk</a></td>
+			</tr>
+		}
 	}
-	@if (!@sheet.Submitted)
+	else
 	{
-		<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		<tr>
+			<th>Urenformulieren van gebruiker</th>
+		</tr>
+		<tr>
+			<td>Er zijn nog geen timesheets om in te vullen.</td>
+		</tr>
 	}
-	@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && sheet.Submitted)
-	{
-		<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
-	}
-	@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && !sheet.Submitted)
-	{
-		<td></td>
-	}
-	@if (@sheet.Approved == "Rejected")
-	{
-		<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
-	}
-	@if (@sheet.Approved == "Approved")
-	{
-		<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
-	}
-	<td><a asp-controller="Sheet" asp-action="UserTimeSheet" asp-route-url="@url">Bekijk</a></td>
-</tr>
-}
 </table>
 
