@@ -1,0 +1,34 @@
+﻿@model List<FileUploadModel>
+@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div style="padding-top: 50px;">
+
+    <h1>Bijlagen</h1>
+    <h6 class="mb-5">urenformulier</h6>
+    <table>
+        <tr>
+            <th>Document(en)</th>
+            <th></th>
+
+        </tr>
+        @for (int file = Model.Count; file-- > 0;)
+        {
+            <tr>
+                <td>@System.IO.Path.GetFileName(Model[file].FilePath)</td>
+                <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = Model[file].FilePath })</td>
+            </tr>
+        }
+    </table>
+</div>
+@if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
+{
+    @Html.ActionLink("Meer bijlagen toevoegen", "sheetattachment", "Upload", new { sheetID = Model[0].SheetID })
+}

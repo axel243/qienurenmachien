@@ -9,7 +9,7 @@
 	var user = userManager.FindByIdAsync(Model.Id);
 }
 
-	<h1 style="text-align: center;">Urenformulier van @user.Result.Firstname @user.Result.Lastname</h1>
+<h1 style="text-align: center;">Urenformulier van @user.Result.Firstname @user.Result.Lastname</h1>
 
 <p hidden id="SheetID">@Model.SheetID</p>
 
@@ -113,3 +113,6 @@
 <label>Opmerking</label>
 <textarea id="Comment" asp-for="Comment" class="form-control" text-wrap:normal" type="text" placeholder="Geen opmerking" value="@Model.Comment" readonly></textarea>
 
+<br />
+<a class="btn btn-primary" asp-action="ViewUserSheetFiles"
+   asp-controller="upload" asp-route-sheetId="@Model.SheetID">Toon bijlagen</a>

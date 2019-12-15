@@ -107,14 +107,16 @@
 else
 {
     *@<div class="form-group row">
-        <div class="col-sm-10">
-            <a class="btn btn-primary" asp-action="ApproveTimeSheet"
-               asp-controller="Sheet" asp-route-id="@Model.SheetID">Goedkeuren</a>
-            <a class="btn btn-primary" asp-action="RejectTimeSheet"
-               asp-controller="Sheet" asp-route-id="@Model.SheetID">Afkeuren</a>
-		<a class="btn btn-primary" asp-action="DownloadCSV"
-		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
-        </div>
+          <div class="col-sm-10">
+              <a class="btn btn-primary" asp-action="ApproveTimeSheet"
+                 asp-controller="Sheet" asp-route-id="@Model.SheetID">Goedkeuren</a>
+              <a class="btn btn-primary" asp-action="RejectTimeSheet"
+                 asp-controller="Sheet" asp-route-id="@Model.SheetID">Afkeuren</a>
+              <a class="btn btn-primary" asp-action="DownloadCSV"
+                 asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
+              <a class="btn btn-primary" asp-action="ViewUserSheetFiles"
+                 asp-controller="upload" asp-route-sheetId="@Model.SheetID">Toon bijlagen</a>
+          </div>
     </div>
 @*}*@
 

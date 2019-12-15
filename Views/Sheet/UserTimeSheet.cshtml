@@ -165,16 +165,18 @@ else
 	<div class="col-sm-10">
 		@if (!Model.Submitted)
 		{
-		<a class="btn btn-primary" asp-action="SubmitTimeSheet"
-		   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+			<a class="btn btn-primary" asp-action="SubmitTimeSheet"
+			   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
 		}
 		@if (Model.Submitted)
 		{
-		<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
-		   asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
+			<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
+			   asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
 		}
 		<a class="btn btn-primary" asp-action="DownloadCSV"
 		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
+		<a class="btn btn-primary" asp-action="viewusersheetfiles"
+		   asp-controller="upload" asp-route-sheetId="@Model.SheetID">Toon bijlagen</a>
 	</div>
 </div>
 
