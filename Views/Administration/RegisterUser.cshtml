@@ -15,8 +15,6 @@
             showWerkgevers.style.display = "block"
         } else if (role.value == "Werkgever") {
             showWerkgevers.style.display = "none"
-        }else if (role.value == "Admin") {
-            showWerkgevers.style.display = "none"
         }
          console.log(role.value + "dddd");
     //hide or show werkgever dropdown
@@ -98,14 +96,12 @@
                 <select asp-for="Role" onchange='getSelectedOption(this).click(); count()' id="Role">
                     <option onclick="showWerkgevers()" value="Trainee">Trainee</option>
                     <option onclick="hideWerkgeversAndSomeOptions()" value="Werkgever">Werkgever</option>
-                    <option onclick="hideWerkgevers()" value="Admin">Admin</option>
                     <option onclick="showWerkgevers()" value="Werknemer">Werknemer</option>
                 </select>
             </div>
             <div class="form-group" id="isWerknemer">
                 <label asp-for="Werkgever"> Werkgever</label>
                 <select asp-for="Werkgever" asp-items="Model.Werkgevers" onchange='getSelectedOption(this).click(); count()'>
-                    <option></option>
                 </select>
             </div>
             <div class="form-group">
@@ -178,7 +174,7 @@
                 <input asp-for="Country" class="form-control" />
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">Registreer</button>
         </form>
     </div>
 </div>
