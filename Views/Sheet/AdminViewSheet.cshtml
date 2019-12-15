@@ -75,9 +75,6 @@
 		<th>Training</th>
 		<th>Overig</th>
 	</tr>
-
-	@if (Model.Submitted == true)
-	{
 		@foreach (var day in JObject.Parse(Model.Data))
 		{
 			DateTime dt = new DateTime(Model.theDate.Year, Model.theDate.Month, Convert.ToInt32(day.Key));
@@ -106,7 +103,6 @@
 				</tr>
 			}
 		}
-	}
 </table>
 
 <br />
