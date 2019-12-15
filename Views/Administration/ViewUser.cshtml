@@ -2,72 +2,69 @@
 @using QienUrenMachien.Entities;
 @inject UserManager<ApplicationUser> userManager;
 
-@model QienUrenMachien.Entities.ApplicationUser
+@model QienUrenMachien.Models.UserViewModel
 @{
 	ViewData["Title"] = "Bekijk gebruiker";
 	var werkgevernaam = "";
 	var werkgevernaam2 = "";
-	@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
+	@if (Model.theUser.WerkgeverID != "" && Model.theUser.WerkgeverID != null)
 	{
-		werkgevernaam = userManager.Users.Single(u => u.Id == Model.WerkgeverID).Firstname;
-		werkgevernaam2 = userManager.Users.Single(u => u.Id == Model.WerkgeverID).Lastname;
+		werkgevernaam = userManager.Users.Single(u => u.Id == Model.theUser.WerkgeverID).Firstname;
+		werkgevernaam2 = userManager.Users.Single(u => u.Id == Model.theUser.WerkgeverID).Lastname;
 	}
 }
 
-	<div class="text-center">
-		<h1 class="display-4">Bekijk gebruiker</h1>
-		<p>Overzicht van gebruikerinformatie.</p>
-	</div>
+<div class="text-center">
+	<h1 class="display-4">Bekijk gebruiker</h1>
+	<p>Overzicht van gebruikerinformatie.</p>
+</div>
 
-	<table style="width:100%;">
-		<tr>
-			<th>Mail</th>
-			<th>Voornaam</th>
-			<th>Achternaam</th>
-			<th>Woonplaats</th>
-			<th>Straat</th>
-			<th>Telefoon</th>
-			<th>Actief vanaf</th>
-			<th>Actief tot</th>
-			<th></th>
-			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
-			{
-				<th>Werkgever</th>
-			}
-			@if (Model.ActiveUntil > DateTime.Now)
-			{
-				<th></th>
-			}
-			@*<th>Test</th>*@
-			</tr>
-		<tr>
-			<td>@Model.UserName</td>
-			<td>@Model.Firstname</td>
-			<td>@Model.Lastname</td>
-			<td>@Model.City</td>
-			<td>@Model.Street</td>
-			<td>@Model.PhoneNumber</td>
-			<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
-			<td>@Model.ActiveUntil.ToString("dd/MM/yyyy")</td>
-			<td>@Html.ActionLink("documenten", "viewuserfiles", "upload", new { userId = Model.Id })</td>
-			@if (Model.WerkgeverID != "" && Model.WerkgeverID != "87f665fa-366a-43d9-a3b7-4c59c91bd818" && Model.WerkgeverID != null)
-			{
-				<td>@Html.ActionLink(werkgevernaam + " (Bedrijf: " + werkgevernaam2 + ")", "ViewEmployer", "Administration", new { Id = Model.WerkgeverID }, null)</td>
-			}
-			else
-			{
-				<td>Geen (HR at Qien)</td>
-			}
-			@if (Model.ActiveUntil > DateTime.Now)
-			{
-				<td><a style="color: red; text-decoration: none;" asp-action="DeactivateUser" asp-controller="Administration" asp-route-id="@Model.Id" onclick="return confirm('Weet je zeker dat je deze gebruiker wilt deactiveren? Dit kan niet meer ongedaan worden gemaakt.')">Deactiveer</a></td>
-			}
-		@*<td>
-			<form method="post" id="activeForm" runat="server">
-				<label>Deactiveren</label>
-				<input asp-for="ActiveUntil" class="form-control" onchange="$('#activeForm').submit();" value=@Model.ActiveUntil />
-				<span asp-validation-for="ActiveUntil" class="text-danger"></span>
-			</form>
-		</td>*@
-		</tr>
-	</table>
+<table style="width:100%;">
+	<tr>
+		<th>Mail</th>
+		<th>Voornaam</th>
+		<th>Achternaam</th>
+		<th>Woonplaats</th>
+		<th>Straat</th>
+		<th>Telefoon</th>
+		<th>Actief vanaf</th>
+		<th>Actief tot</th>
+		<th></th>
+		@if (Model.theUser.WerkgeverID != "" && Model.theUser.WerkgeverID != null)
+		{
+			<th>Werkgever</th>
+		}
+		@if (Model.theUser.ActiveUntil > DateTime.Now)
+		{
+			<th>'Actief tot' aanpassen</th>
+		}
+	</tr>
+	<tr>
+		<td>@Model.theUser.UserName</td>
+		<td>@Model.theUser.Firstname</td>
+		<td>@Model.theUser.Lastname</td>
+		<td>@Model.theUser.City</td>
+		<td>@Model.theUser.Street</td>
+		<td>@Model.theUser.PhoneNumber</td>
+		<td>@Model.theUser.ActiveFrom.ToString("dd/MM/yyyy")</td>
+		<td>@Model.theUser.ActiveUntil.ToString("dd/MM/yyyy")</td>
+		<td>@Html.ActionLink("documenten", "viewuserfiles", "upload", new { userId = Model.theUser.Id })</td>
+		@if (Model.theUser.WerkgeverID != "" && Model.theUser.WerkgeverID != "87f665fa-366a-43d9-a3b7-4c59c91bd818" && Model.theUser.WerkgeverID != null)
+		{
+			<td>@Html.ActionLink(werkgevernaam + " (Bedrijf: " + werkgevernaam2 + ")", "ViewEmployer", "Administration", new { Id = Model.theUser.WerkgeverID }, null)</td>
+		}
+		else
+		{
+			<td>Geen (HR at Qien)</td>
+		}
+		@if (Model.theUser.ActiveUntil > DateTime.Now)
+		{
+			<td>
+				<form method="post" id="activeForm" runat="server" asp-controller="Administration" asp-action="DeactivateUser" asp-route-id="@Model.theUser.Id">
+					<input asp-for="ActiveUntilParam" class="form-control" onchange="if (confirm('Weet je het zeker? De gebruiker zal op de gekozen datum inactief worden. Wanneer deze datum is verstreken kan dit niet meer ongedaan worden gemaakt.')) { $('#activeForm').submit(); }" value=@DateTime.Now />
+					<span asp-validation-for="ActiveUntilParam" class="text-danger"></span>
+				</form>
+			</td>
+		}
+	</tr>
+</table>

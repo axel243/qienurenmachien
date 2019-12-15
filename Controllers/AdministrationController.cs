@@ -168,23 +168,26 @@ namespace QienUrenMachien.Controllers
         }
 
 
-        public IActionResult ViewUser(string Id)
+        public IActionResult ViewUser(UserViewModel model, string Id)
         {
-            var singleuser = userManager.Users.Single(u => u.Id == Id);
-            return View(singleuser);
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
+            model.ActiveUntilParam = model.theUser.ActiveUntil;
+            return View(model);
         }
 
-        public IActionResult ViewEmployer(string Id)
+        public IActionResult ViewEmployer(UserViewModel model, string Id)
         {
-            var singleuser = userManager.Users.Single(u => u.Id == Id);
-            return View(singleuser);
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
+            model.ActiveUntilParam = model.theUser.ActiveUntil;
+            return View(model);
         }
 
-        public async Task<IActionResult> DeactivateUser(string Id)
+        public async Task<IActionResult> DeactivateUser(UserViewModel model, string Id)
         {
-            //De gebruiker deactiveren door de einddatum naar het huidige tijdstip te veranderen.
+            //De gebruiker deactiveren door de einddatum naar de nieuwe einddatum (die is gekozen door de admin) te veranderen.
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
             var singleuser = await userManager.FindByIdAsync(Id);
-            singleuser.ActiveUntil = DateTime.Now;
+            singleuser.ActiveUntil = model.ActiveUntilParam;
             var result = await userManager.UpdateAsync(singleuser);
             if (result.Succeeded)
             {
@@ -193,10 +196,11 @@ namespace QienUrenMachien.Controllers
             return View();
         }
 
-        public async Task<IActionResult> DeactivateEmployer(string Id)
+        public async Task<IActionResult> DeactivateEmployer(UserViewModel model, string Id)
         {
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
             var singleuser = await userManager.FindByIdAsync(Id);
-            singleuser.ActiveUntil = DateTime.Now;
+            singleuser.ActiveUntil = model.ActiveUntilParam;
             var result = await userManager.UpdateAsync(singleuser);
             if (result.Succeeded)
             {
