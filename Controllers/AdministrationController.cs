@@ -168,10 +168,11 @@ namespace QienUrenMachien.Controllers
         }
 
 
-        public IActionResult ViewUser(string Id)
+        public IActionResult ViewUser(UserViewModel model, string Id)
         {
-            var singleuser = userManager.Users.Single(u => u.Id == Id);
-            return View(singleuser);
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
+            model.theUser.ActiveUntil = model.ActiveUntilParam;
+            return View(model);
         }
 
         public IActionResult ViewEmployer(string Id)
@@ -180,11 +181,11 @@ namespace QienUrenMachien.Controllers
             return View(singleuser);
         }
 
-        public async Task<IActionResult> DeactivateUser(string Id)
+        public async Task<IActionResult> DeactivateUser(UserViewModel model, string Id)
         {
             //De gebruiker deactiveren door de einddatum naar het huidige tijdstip te veranderen.
             var singleuser = await userManager.FindByIdAsync(Id);
-            singleuser.ActiveUntil = DateTime.Now;
+            singleuser.ActiveUntil = model.ActiveUntilParam;
             var result = await userManager.UpdateAsync(singleuser);
             if (result.Succeeded)
             {
