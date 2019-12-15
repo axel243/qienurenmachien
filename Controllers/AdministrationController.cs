@@ -233,16 +233,16 @@ namespace QienUrenMachien.Controllers
                 model.Months = new List<SelectListItem>();
                 model.Months.Add(new SelectListItem { Value = "December", Text = "December" });
                 model.Months.Add(new SelectListItem { Value = "November", Text = "November" });
-                model.Months.Add(new SelectListItem { Value = "October", Text = "October" });
+                model.Months.Add(new SelectListItem { Value = "October", Text = "Oktober" });
                 model.Months.Add(new SelectListItem { Value = "September", Text = "September" });
-                model.Months.Add(new SelectListItem { Value = "August", Text = "August" });
-                model.Months.Add(new SelectListItem { Value = "July", Text = "July" });
-                model.Months.Add(new SelectListItem { Value = "June", Text = "June" });
-                model.Months.Add(new SelectListItem { Value = "May", Text = "May" });
+                model.Months.Add(new SelectListItem { Value = "August", Text = "Augustus" });
+                model.Months.Add(new SelectListItem { Value = "July", Text = "Juli" });
+                model.Months.Add(new SelectListItem { Value = "June", Text = "Juni" });
+                model.Months.Add(new SelectListItem { Value = "May", Text = "Mei" });
                 model.Months.Add(new SelectListItem { Value = "April", Text = "April" });
-                model.Months.Add(new SelectListItem { Value = "March", Text = "March" });
-                model.Months.Add(new SelectListItem { Value = "February", Text = "February" });
-                model.Months.Add(new SelectListItem { Value = "January", Text = "January" });
+                model.Months.Add(new SelectListItem { Value = "March", Text = "Maart" });
+                model.Months.Add(new SelectListItem { Value = "February", Text = "Februari" });
+                model.Months.Add(new SelectListItem { Value = "January", Text = "Januari" });
             }
             model.Years = repo.GetYears();
             return View(model);

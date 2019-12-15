@@ -101,7 +101,7 @@
 			else
 			{
 				<tr>
-					<td>@dt.ToString("dddd") @day.Key</td>
+					<td>@Translator.TranslateDay(dt.ToString("dddd")) @day.Key</td>
 					<td>@day.Value["projecthours"]</td>
 					<td>@day.Value["overwork"]</td>
 					<td>@day.Value["sick"]</td>
@@ -157,8 +157,11 @@ else
 
 <div class="form-group row">
 	<div class="col-sm-10">
+		@if (!Model.Submitted)
+		{
 		<a class="btn btn-primary" asp-action="SubmitTimeSheet"
 		   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+		}
 		@if (Model.Submitted)
 		{
 		<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
