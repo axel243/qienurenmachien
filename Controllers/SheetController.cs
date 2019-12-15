@@ -93,7 +93,7 @@ namespace QienUrenMachien.Controllers
             ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-            repox.LogActivity(activeUser, "ApproveTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} van {user.UserName} goedgekeurd.");
+            repox.LogActivity(activeUser, "ApproveTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.Firstname[0]}. {user.Lastname} goedgekeurd.");
 
             mailServer.SendApprovalMail(user.UserName, "Approved");
 
@@ -113,7 +113,7 @@ namespace QienUrenMachien.Controllers
 
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-            repox.LogActivity(activeUser, "RejectTimeSheet", $"{activeUser.Firstname + " " + activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.UserName} afgewezen.");
+            repox.LogActivity(activeUser, "RejectTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.Firstname[0]}. {user.Lastname} afgewezen.");
 
             mailServer.SendApprovalMail(user.UserName, "Rejected");
 
@@ -141,7 +141,7 @@ namespace QienUrenMachien.Controllers
 
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-            repox.LogActivity(activeUser, "OpenTimeSheet", $"{activeUser.Firstname + " " + activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.UserName} geopend.");
+            repox.LogActivity(activeUser, "OpenTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.Firstname[0]}. {user.Lastname} geopend.");
 
             mailServer.OpenTimeSheetMail(user.UserName, user.Firstname + " " + user.Lastname , _timeSheet.Month, _timeSheet.Url);
 
@@ -270,7 +270,7 @@ namespace QienUrenMachien.Controllers
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-            repox.LogActivity(activeUser, "SubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingediend.");
+            repox.LogActivity(activeUser, "SubmitTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} ingediend.");
 
             //call hub
             var lastActivity = repox.GetLastLog();
@@ -293,7 +293,7 @@ namespace QienUrenMachien.Controllers
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
-            repox.LogActivity(activeUser, "UnSubmitTimeSheet", $"{activeUser.UserName} heeft urenformulier {_timeSheet.Month} ingetrokken.");
+            repox.LogActivity(activeUser, "UnSubmitTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} ingetrokken.");
 
 
             //call hub

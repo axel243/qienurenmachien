@@ -205,7 +205,7 @@ namespace QienUrenMachien.Controllers
 
                     // hier wordt de mail verzonden met de wachtwoord resetlink
                     mailServer.SendForgotPasswordMail(user.UserName, user.Firstname, passwordResetLink);
-                    repo.LogActivity(user, "ForgotPassword", "WW verzoek");
+                    repo.LogActivity(user, "ForgotPassword", $"{user.Firstname[0]}. {user.Lastname} heeft een wachtwoord vergeten verzoek ingediend.");
 
                     return View("ForgotPasswordConfirmation", passwordResetLink);
             }
