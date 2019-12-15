@@ -280,7 +280,7 @@ namespace QienUrenMachien.Controllers
             mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
 
             //return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
-            return RedirectToAction("SheetAttachment", "upload", new { url, SheetID = _timeSheet.SheetID });
+            return RedirectToAction("SheetAttachment", "upload", new { SheetID = _timeSheet.SheetID });
         }
 
         [Route("Sheet/UnSubmitTimeSheet/{url}")]
