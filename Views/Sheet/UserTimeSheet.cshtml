@@ -11,7 +11,7 @@
 <script>
     window.onload = function () {
         loadChart();
-    };
+	};
 </script>
 
 <h1 style="text-align: center;">Urenformulier van gebruiker</h1>
@@ -20,6 +20,9 @@
     </div>
 <p hidden id="SheetID">@Model.SheetID</p>
 <p hidden id="Url">@Model.Url</p>
+
+<br />
+<br />
 
 
 <table id="OverViewTable" style="width:100%;">
@@ -81,7 +84,7 @@
 		<th>Ziek</th>
 		<th>Afwezig</th>
 		<th>Training</th>
-		<th>Overige</th>
+		<th>Overig</th>
 	</tr>
 
 	@if (Model.Submitted == true)
@@ -154,7 +157,7 @@ else
 
 </table>
 <br />
-<label asp-for="Comment"></label>
+<label>Opmerking</label>
 <textarea id="Comment" asp-for="Comment" class="form-control" text-wrap:normal" type="text" placeholder="Voeg commentaar toe" value="@Model.Comment"></textarea>
 
 

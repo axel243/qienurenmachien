@@ -29,7 +29,7 @@
 		<th>Telefoon</th>
 		<th>Actief vanaf</th>
 		<th>Actief tot</th>
-		<th></th>
+		<th>Documenten</th>
 		@if (Model.theUser.WerkgeverID != "" && Model.theUser.WerkgeverID != null)
 		{
 			<th>Werkgever</th>
@@ -48,7 +48,7 @@
 		<td>@Model.theUser.PhoneNumber</td>
 		<td>@Model.theUser.ActiveFrom.ToString("dd/MM/yyyy")</td>
 		<td>@Model.theUser.ActiveUntil.ToString("dd/MM/yyyy")</td>
-		<td>@Html.ActionLink("documenten", "viewuserfiles", "upload", new { userId = Model.theUser.Id })</td>
+		<td>@Html.ActionLink("Bekijk", "viewuserfiles", "upload", new { userId = Model.theUser.Id })</td>
 		@if (Model.theUser.WerkgeverID != "" && Model.theUser.WerkgeverID != "87f665fa-366a-43d9-a3b7-4c59c91bd818" && Model.theUser.WerkgeverID != null)
 		{
 			<td>@Html.ActionLink(werkgevernaam + " (Bedrijf: " + werkgevernaam2 + ")", "ViewEmployer", "Administration", new { Id = Model.theUser.WerkgeverID }, null)</td>
