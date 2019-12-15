@@ -28,6 +28,7 @@
 			<th>Straat</th>
 			<th>Telefoon</th>
 			<th>Actief sinds</th>
+			<th>Actief tot</th>
 			<th></th>
 			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
 			{
@@ -37,6 +38,7 @@
 			{
 				<th></th>
 			}
+			@*<th>Test</th>*@
 			</tr>
 		<tr>
 			<td>@Model.UserName</td>
@@ -46,14 +48,26 @@
 			<td>@Model.Street</td>
 			<td>@Model.PhoneNumber</td>
 			<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
-			<td>@Html.ActionLink("documenten","viewuserfiles","upload", new { userId = Model.Id })</td>
-			@if (Model.WerkgeverID != "" && Model.WerkgeverID != null)
+			<td>@Model.ActiveUntil.ToString("dd/MM/yyyy")</td>
+			<td>@Html.ActionLink("documenten", "viewuserfiles", "upload", new { userId = Model.Id })</td>
+			@if (Model.WerkgeverID != "" && Model.WerkgeverID != "87f665fa-366a-43d9-a3b7-4c59c91bd818" && Model.WerkgeverID != null)
 			{
 				<td>@Html.ActionLink(werkgevernaam + " (Bedrijf: " + werkgevernaam2 + ")", "ViewEmployer", "Administration", new { Id = Model.WerkgeverID }, null)</td>
+			}
+			else
+			{
+				<td>Geen (HR at Qien)</td>
 			}
 			@if (Model.ActiveUntil > DateTime.Now)
 			{
 				<td><a style="color: red; text-decoration: none;" asp-action="DeactivateUser" asp-controller="Administration" asp-route-id="@Model.Id" onclick="return confirm('Weet je zeker dat je deze gebruiker wilt deactiveren? Dit kan niet meer ongedaan worden gemaakt.')">Deactiveer</a></td>
 			}
+		@*<td>
+			<form method="post" id="activeForm" runat="server">
+				<label>Deactiveren</label>
+				<input asp-for="ActiveUntil" class="form-control" onchange="$('#activeForm').submit();" value=@Model.ActiveUntil />
+				<span asp-validation-for="ActiveUntil" class="text-danger"></span>
+			</form>
+		</td>*@
 		</tr>
 	</table>
