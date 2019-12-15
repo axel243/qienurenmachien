@@ -85,7 +85,7 @@
 <br />
 <form asp-controller="Administration" asp-action="TimeSheetOverview" id="searchForm" method="post">
 	<h4>Maand:</h4>
-	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected" onchange="$('#searchForm').submit();">
+	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected" onchange="$('#searchForm').submit();" >
 	</select>
 	<h4>Jaar:</h4>
 	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected" onchange="$('#searchForm').submit();">
@@ -101,7 +101,7 @@
 <table class="sortableTable" data-sorting="true" style="width:100%;">
 	<thead>
 	<tr>
-		<th>Naam</th>
+		<th data-breakpoints="xs">Naam</th>
 		<th data-sorted="true" data-type="number" data-direction="DESC">Projecturen</th>
 		<th data-type="number">Overwerk</th>
 		<th data-type="number">Ziek</th>
@@ -118,7 +118,7 @@
 	{
 		var url = sheet.Url;
 <tr>
-	<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 	<td>@sheet.ProjectHours</td>
 	<td>@sheet.Overwork</td>
 	<td>@sheet.Sick</td>
@@ -165,7 +165,7 @@
 <table class="sortableTable" data-sorting="true" style="width:100%;">
 	<thead>
 		<tr>
-			<th>Naam</th>
+			<th data-breakpoints="xs">Naam</th>
 			<th data-sorted="true" data-type="number" data-direction="DESC">Projecturen</th>
 			<th data-type="number">Overwerk</th>
 			<th data-type="number">Ziek</th>
@@ -182,7 +182,7 @@
 		{
 		var url = sheet.Url;
 		<tr>
-			<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+			<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 			<td>@sheet.ProjectHours</td>
 			<td>@sheet.Overwork</td>
 			<td>@sheet.Sick</td>
