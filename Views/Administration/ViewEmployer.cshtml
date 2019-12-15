@@ -2,14 +2,14 @@
 @using QienUrenMachien.Entities;
 @inject UserManager<ApplicationUser> userManager;
 
-@model QienUrenMachien.Entities.ApplicationUser
+@model QienUrenMachien.Models.UserViewModel
 @{
 	ViewData["Title"] = "Bekijk werkgever";
 
 	var werknemers = new List<ApplicationUser>();
-	@if (userManager.Users.Where(u => u.WerkgeverID == Model.Id) != null)
+	@if (userManager.Users.Where(u => u.WerkgeverID == Model.theUser.Id) != null)
 	{
-		werknemers = userManager.Users.Where(u => u.WerkgeverID == Model.Id).ToList();
+		werknemers = userManager.Users.Where(u => u.WerkgeverID == Model.theUser.Id).ToList();
 	}
 }
 
@@ -28,23 +28,28 @@
 		<th>Telefoon</th>
 		<th>Actief vanaf</th>
 		<th>Actief tot</th>
-		@if (Model.ActiveUntil > DateTime.Now)
+		@if (Model.theUser.ActiveUntil > DateTime.Now)
 		{
-			<th></th>
+			<th>'Actief tot' aanpassen</th>
 		}
 	</tr>
 	<tr>
-		<td>@Model.UserName</td>
-		<td>@Model.Firstname</td>
-		<td>@Model.Lastname</td>
-		<td>@Model.City</td>
-		<td>@Model.Street</td>
-		<td>@Model.PhoneNumber</td>
-		<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
-		<td>@Model.ActiveUntil.ToString("dd/MM/yyyy")</td>
-		@if (Model.ActiveUntil > DateTime.Now)
+		<td>@Model.theUser.UserName</td>
+		<td>@Model.theUser.Firstname</td>
+		<td>@Model.theUser.Lastname</td>
+		<td>@Model.theUser.City</td>
+		<td>@Model.theUser.Street</td>
+		<td>@Model.theUser.PhoneNumber</td>
+		<td>@Model.theUser.ActiveFrom.ToString("dd/MM/yyyy")</td>
+		<td>@Model.theUser.ActiveUntil.ToString("dd/MM/yyyy")</td>
+		@if (Model.theUser.ActiveUntil > DateTime.Now)
 		{
-			<td><a style="color: red; text-decoration: none;" asp-action="DeactivateEmployer" asp-controller="Administration" asp-route-id="@Model.Id" onclick="return confirm('Weet je zeker dat je deze werkgever wilt deactiveren? Dit kan niet meer ongedaan worden gemaakt.')">Deactiveer</a></td>
+			<td>
+				<form method="post" id="activeForm2" runat="server" asp-controller="Administration" asp-action="DeactivateEmployer" asp-route-id="@Model.theUser.Id">
+					<input asp-for="ActiveUntilParam" class="form-control" onchange="if (confirm('Weet je het zeker? De gebruiker zal op de gekozen datum inactief worden. Wanneer deze datum is verstreken kan dit niet meer ongedaan worden gemaakt.')) { $('#activeForm2').submit(); }" value=@DateTime.Now />
+					<span asp-validation-for="ActiveUntilParam" class="text-danger"></span>
+				</form>
+			</td>
 		}
 	</tr>
 </table>
@@ -55,7 +60,7 @@
 	<tr>
 		<th>Werknemers</th>
 	</tr>
-	@if (userManager.Users.Where(u => u.WerkgeverID == Model.Id).Count() >= 1)
+	@if (userManager.Users.Where(u => u.WerkgeverID == Model.theUser.Id).Count() >= 1)
 	{
 		@foreach (var person in werknemers)
 		{
