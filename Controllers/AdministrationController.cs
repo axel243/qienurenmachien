@@ -126,7 +126,7 @@ namespace QienUrenMachien.Controllers
                 {
                     if (resultt.Succeeded)
                     {
-                        mailServer.SendRegisterUserMail(user.UserName, model.Password);
+                        mailServer.SendRegisterUserMail(user.UserName, model.Password, (user.Firstname +" " + user.Lastname));
                         return RedirectToAction("AdminDashboard", "Administration");
                     }
                 }
