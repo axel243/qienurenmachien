@@ -14,7 +14,7 @@
         } else if (role.value == "Trainee") {
             showWerkgevers.style.display = "block"
         } else if (role.value == "Werkgever") {
-            showWerkgevers.style.display = "none"
+			showWerkgevers.style.display = "none"
         }
          console.log(role.value + "dddd");
     //hide or show werkgever dropdown
@@ -109,19 +109,6 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            @if (Model.Role != "Werkgever")
-            {
-                @*<div class="form-group" id="isWerkgever1">
-                    <label asp-for="Password">Wachtwoord</label>
-                    <input asp-for="Password" class="form-control" id="passwordField" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group" id="isWerkgever2">
-                    <label asp-for="ConfirmPassword">Bevestig wachtwoord</label>
-                    <input asp-for="ConfirmPassword" class="form-control" id="passwordField2" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>*@
-            }
             <div class="form-group">
                 <label id="naamLabel1" asp-for="Firstname">Voornaam</label>
                 <input asp-for="Firstname" class="form-control" />

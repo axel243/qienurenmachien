@@ -93,7 +93,7 @@
 			<div class="table-wrapper-scroll-y my-custom-scrollbar">
 				<table style="font-size: 0.9rem;">
 					<tr>
-						<th>Comment</th>
+						<th>Opmerking</th>
 						<th>Timestamp</th>
 
 					</tr>
@@ -133,7 +133,6 @@
 					}
 					else
 					{
-						@*<td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>*@
 						<td><a asp-controller="Sheet" asp-action="AdminViewSheet" asp-route-url="@row.url">Bekijk</a></td>
 					}
 				</tr>
