@@ -1,19 +1,16 @@
 ﻿@model FileViewModel
 
+    <div style="padding-top: 100px;">
+        <h6>Documenten toevoegen</h6>
+        <br />
 
-<h2>Bijlagen</h2>
-<br />
-<h6>- declaratie formulieren</h6>
-<h6>- overige documenten</h6>
+        <form method="post" enctype="multipart/form-data" asp-controller="upload" asp-action="submitfiles">
 
-<br />
-<form method="post" enctype="multipart/form-data" asp-controller="upload" asp-action="submitfiles">
-
-    <div class="form-group">
-        <label asp-for="Files">Voeg bestand(en) toe:</label>
-        <input multiple asp-for="Files" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Files">Voeg bestand(en) toe:</label>
+                <input multiple asp-for="Files" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Opslaan</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary">Opslaan</button>
-</form>
-<br />
 
