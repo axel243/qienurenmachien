@@ -41,8 +41,30 @@
 		<td>@Model.Absence</td>
 		<td>@Model.Training</td>
 		<td>@Model.Other</td>
-		<td>@Model.Submitted</td>
-		<td>@Model.Approved</td>
+		@if (@Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if (!@Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if ((@Model.Approved == "Not submitted" || @Model.Approved == "Not Submitted") && Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if ((@Model.Approved == "Not submitted" || @Model.Approved == "Not Submitted") && !Model.Submitted)
+		{
+			<td></td>
+		}
+		@if (@Model.Approved == "Rejected")
+		{
+			<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if (@Model.Approved == "Approved")
+		{
+			<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+		}
 	</tr>
 </table>
 <br />
@@ -79,7 +101,7 @@
 			else
 			{
 				<tr>
-					<td>@dt.ToString("dddd") @day.Key</td>
+					<td>@Translator.TranslateDay(dt.ToString("dddd")) @day.Key</td>
 					<td>@day.Value["projecthours"]</td>
 					<td>@day.Value["overwork"]</td>
 					<td>@day.Value["sick"]</td>
@@ -135,8 +157,11 @@ else
 
 <div class="form-group row">
 	<div class="col-sm-10">
+		@if (!Model.Submitted)
+		{
 		<a class="btn btn-primary" asp-action="SubmitTimeSheet"
 		   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+		}
 		@if (Model.Submitted)
 		{
 		<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"

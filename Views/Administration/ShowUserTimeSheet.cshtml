@@ -23,10 +23,6 @@
 		<th>Overige</th>
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
-		@if (@Model.Comment != "")
-		{
-		<th>Opmerking</th>
-		}
 	</tr>
 	<tr>
 		<td>@user.Result.Firstname @user.Result.Lastname</td>
@@ -39,11 +35,29 @@
 		<td>@Model.Absence</td>
 		<td>@Model.Training</td>
 		<td>@Model.Other</td>
-		<td>@Model.Submitted</td>
-		<td>@Model.Approved</td>
-		@if (@Model.Comment != "")
+		@if (@Model.Submitted)
 		{
-		<td>@Model.Comment</td>
+			<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if (!@Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if ((@Model.Approved == "Not submitted" || @Model.Approved == "Not Submitted") && Model.Submitted)
+		{
+			<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if ((@Model.Approved == "Not submitted" || @Model.Approved == "Not Submitted") && !Model.Submitted)
+		{
+			<td></td>
+		}
+		@if (@Model.Approved == "Rejected")
+		{
+			<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+		}
+		@if (@Model.Approved == "Approved")
+		{
+			<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 		}
 	</tr>
 </table>

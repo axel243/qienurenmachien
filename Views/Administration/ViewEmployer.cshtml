@@ -26,7 +26,12 @@
 		<th>Plaats</th>
 		<th>Straat</th>
 		<th>Telefoon</th>
-		<th>Actief sinds</th>
+		<th>Actief vanaf</th>
+		<th>Actief tot</th>
+		@if (Model.ActiveUntil > DateTime.Now)
+		{
+			<th></th>
+		}
 	</tr>
 	<tr>
 		<td>@Model.UserName</td>
@@ -36,6 +41,11 @@
 		<td>@Model.Street</td>
 		<td>@Model.PhoneNumber</td>
 		<td>@Model.ActiveFrom.ToString("dd/MM/yyyy")</td>
+		<td>@Model.ActiveUntil.ToString("dd/MM/yyyy")</td>
+		@if (Model.ActiveUntil > DateTime.Now)
+		{
+			<td><a style="color: red; text-decoration: none;" asp-action="DeactivateEmployer" asp-controller="Administration" asp-route-id="@Model.Id" onclick="return confirm('Weet je zeker dat je deze werkgever wilt deactiveren? Dit kan niet meer ongedaan worden gemaakt.')">Deactiveer</a></td>
+		}
 	</tr>
 </table>
 

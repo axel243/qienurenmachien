@@ -93,7 +93,7 @@
 			<div class="table-wrapper-scroll-y my-custom-scrollbar">
 				<table style="font-size: 0.9rem;">
 					<tr>
-						<th>Comment</th>
+						<th>Opmerking</th>
 						<th>Timestamp</th>
 
 					</tr>
@@ -119,23 +119,23 @@
 					</tr>
 					@foreach (var row in Model.timeSheetWithUsers)
 					{
-						<tr>
-							<td>@(row.FirstName + " " + row.LastName)</td>
-							<td>@row.Status</td>
-							@if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
-							{
-								<td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
+				<tr>
+					<td>@(row.FirstName + " " + row.LastName)</td>
+					<td>@row.Status</td>
+					@if (row.Status == "Heeft een verzoek van profielwijziging ingediend")
+					{
+						<td>@Html.ActionLink("Bekijk", "ConfirmProfile", "Profile", new { id = row.url })</td>
 
-							}
-							else if (row.Status == "Afgewezen timesheet")
-							{
-								<td><a asp-controller="Sheet" asp-action="RejectedTimeSheet" asp-route-url="@row.url">Bekijk</a></td>
-							}
-							else
-							{
-								<td><a asp-controller="Administration" asp-action="ShowUserTimeSheetByUrl" asp-route-url="@row.url">Bekijk</a></td>
-							}
-						</tr>
+					}
+					else if (row.Status == "Afgewezen timesheet")
+					{
+						<td><a asp-controller="Sheet" asp-action="RejectedTimeSheet" asp-route-url="@row.url">Bekijk</a></td>
+					}
+					else
+					{
+						<td><a asp-controller="Sheet" asp-action="AdminViewSheet" asp-route-url="@row.url">Bekijk</a></td>
+					}
+				</tr>
 					}
 				</table>
 			</div>

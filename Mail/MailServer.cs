@@ -90,7 +90,7 @@ namespace QienUrenMachien.Mail
 
         public void SendEditedProfileMail(string recipient, string adminName, string personUserName, string personFirstName, string userId)
         {
-            string subject = $"Verzoek profiels wijziging van {personUserName}";
+            string subject = $"Verzoek profielwijziging van {personUserName}";
             string link = "<a href=" + "https://localhost:44398/profile/confirmprofile/" + userId + ">hier</a>";
             string body = @$"Beste {adminName},<br><br> Het profiel van {personFirstName} is gewijzigd en is in afwachting van goedkeuring.<br> Dit profielverzoek kunt u bekijken door " + link + " te klikken.<br> Mocht dit problemen opleveren, dan kunt u deze zien in de admin dashboard onder het tab profielverzoeken. <br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
@@ -120,7 +120,7 @@ namespace QienUrenMachien.Mail
         {
             string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
             string subject = $"Nieuw Account";
-            string body = " <p>Er is een account voor u gemaakt voor Qien.</p> <br/> <p> Uw wachtwoord is: " + password + "</p>" + "<br/> <a href=" + verificatielink + ">Verifier Account</a>";
+            string body = " <p>Er is een account voor u gemaakt voor Qien.</p> <br/> <p> Uw wachtwoord is: " + password + "</p>" + "<br/> <a href=" + verificatielink + ">Verifieer Account</a>";
             SendMail(recipient, subject, body);
         }
 

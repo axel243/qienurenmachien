@@ -85,7 +85,7 @@
 <br />
 <form asp-controller="Administration" asp-action="TimeSheetOverview" id="searchForm" method="post">
 	<h4>Maand:</h4>
-	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected" onchange="$('#searchForm').submit();">
+	<select class="form-control" asp-for="Month" asp-items="Model.Months" selected="selected" onchange="$('#searchForm').submit();" >
 	</select>
 	<h4>Jaar:</h4>
 	<select class="form-control" asp-for="theDate" asp-items="Model.Years" selected="selected" onchange="$('#searchForm').submit();">
@@ -101,7 +101,7 @@
 <table class="sortableTable" data-sorting="true" style="width:100%;">
 	<thead>
 	<tr>
-		<th>Naam</th>
+		<th data-breakpoints="xs">Naam</th>
 		<th data-sorted="true" data-type="number" data-direction="DESC">Projecturen</th>
 		<th data-type="number">Overwerk</th>
 		<th data-type="number">Ziek</th>
@@ -111,7 +111,6 @@
 		<th>Ingeleverd</th>
 		<th>Goedgekeurd</th>
 		<th data-sortable="false"></th>
-		<th></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -119,7 +118,7 @@
 	{
 		var url = sheet.Url;
 <tr>
-	<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+	<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 	<td>@sheet.ProjectHours</td>
 	<td>@sheet.Overwork</td>
 	<td>@sheet.Sick</td>
@@ -128,15 +127,15 @@
 	<td>@sheet.Other</td>
 	@if (@sheet.Submitted)
 	{
-	<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+	<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 	}
 	@if (!@sheet.Submitted)
 	{
-	<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+	<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
 	}
 	@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && sheet.Submitted)
 	{
-	<td><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+	<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
 	}
 	@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && !sheet.Submitted)
 	{
@@ -144,19 +143,15 @@
 	}
 	@if (@sheet.Approved == "Rejected")
 	{
-	<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+	<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
 	}
 	@if (@sheet.Approved == "Approved")
 	{
-	<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+	<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 	}
 
 	<td><a asp-controller="Sheet" asp-action="AdminViewSheet" asp-route-url="@url">Bekijk</a></td>
 
-	@if (@sheet.Comment != "")
-	{
-	<td style="font-size: 0.7rem;">Opmerking: @sheet.Comment</td>
-	}
 </tr>
 }
 	</tbody>
@@ -170,7 +165,7 @@
 <table class="sortableTable" data-sorting="true" style="width:100%;">
 	<thead>
 		<tr>
-			<th>Naam</th>
+			<th data-breakpoints="xs">Naam</th>
 			<th data-sorted="true" data-type="number" data-direction="DESC">Projecturen</th>
 			<th data-type="number">Overwerk</th>
 			<th data-type="number">Ziek</th>
@@ -180,7 +175,6 @@
 			<th>Ingeleverd</th>
 			<th>Goedgekeurd</th>
 			<th data-sortable="false"></th>
-			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -188,7 +182,7 @@
 		{
 		var url = sheet.Url;
 		<tr>
-			<td>@Html.ActionLink(@sheet.applicationUser.Firstname + @sheet.applicationUser.Lastname, "ViewUser", "Administration", new { Id = sheet.applicationUser.Id }, null)</td>
+			<td>@sheet.applicationUser.Firstname @sheet.applicationUser.Lastname</td>
 			<td>@sheet.ProjectHours</td>
 			<td>@sheet.Overwork</td>
 			<td>@sheet.Sick</td>
@@ -197,15 +191,15 @@
 			<td>@sheet.Other</td>
 			@if (@sheet.Submitted)
 			{
-				<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+				<td data-toggle="tooltip" title="Ingeleverd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 			}
 			@if (!@sheet.Submitted)
 			{
-				<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+				<td data-toggle="tooltip" title="Niet ingeleverd" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
 			}
 			@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && sheet.Submitted)
 			{
-				<td><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
+				<td data-toggle="tooltip" title="In afwachting" data-placement="right"><img src="~/Uploads/Images/minus-circle-solid.svg" width="20" height="20" /></td>
 			}
 			@if ((@sheet.Approved == "Not submitted" || @sheet.Approved == "Not Submitted") && !sheet.Submitted)
 			{
@@ -213,19 +207,15 @@
 			}
 			@if (@sheet.Approved == "Rejected")
 			{
-				<td><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
+				<td data-toggle="tooltip" title="Afgewezen" data-placement="right"><img src="~/Uploads/Images/times-circle-solid.svg" width="20" height="20" /></td>
 			}
 			@if (@sheet.Approved == "Approved")
 			{
-				<td><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
+				<td data-toggle="tooltip" title="Goedgekeurd" data-placement="right"><img src="~/Uploads/Images/check-circle-solid.svg" width="20" height="20" /></td>
 			}
 
 			<td><a asp-controller="Sheet" asp-action="AdminViewSheet" asp-route-url="@url">Bekijk</a></td>
 
-			@if (@sheet.Comment != "")
-			{
-				<td style="font-size: 0.7rem;">Opmerking: @sheet.Comment</td>
-			}
 		</tr>
 		}
 	</tbody>

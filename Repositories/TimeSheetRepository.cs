@@ -191,7 +191,7 @@ namespace QienUrenMachien.Repositories
         {
             var result = await context.TimeSheets.OrderBy(c => c.theDate).Where(t => t.Url == url).SingleOrDefaultAsync();
 
-            String[] x = new String[] {"ProjectHours", "Overwerk", "Sick", "Absence", "Training", "Other" };
+            String[] x = new String[] {"Projecturen", "Overwerk", "Ziek", "Afwezig", "Training", "Overige" };
             String[] y = new String[] { "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "lightgray" };
             Double[] z = new Double[] { result.ProjectHours, result.Overwork, result.Sick, result.Absence, result.Training, result.Other };
             String[] w = new String[] { "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "lightgray" };
@@ -299,6 +299,7 @@ namespace QienUrenMachien.Repositories
 
         public List<SelectListItem> GetMonths()
         {
+            //Maakt voor het time-sheet overzicht een dropdown met maanden gebaseerd op de huidige maand, zodat de gebruiker niet een maand in de toekomst kan kiezen.
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem { Value = DateTime.Now.ToString("MMMM"), Text = Translator.TranslateMonth(DateTime.Now.ToString("MMMM")), Selected = true });
             DateTime dt = DateTime.Now;
@@ -327,6 +328,7 @@ namespace QienUrenMachien.Repositories
 
         public async Task<List<TimeSheet>> GetAllTraineeTimeSheets(TimeSheetsViewModel model)
         {
+            //Hier wordt een lijst van timesheets aangemaakt van trainees specifiek, en alleen trainee-timesheets van de geselecteerde maand en het geselecteerde jaar.
             var traineeslist = await userManager.GetUsersInRoleAsync("Trainee");
             var traineesIds = traineeslist
                 .Select(e => e.Id);
