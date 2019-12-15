@@ -1,11 +1,15 @@
 ﻿@using Newtonsoft.Json.Linq;
 @model TimeSheetViewModel;
 @using QienUrenMachien.Translation;
+@using Microsoft.AspNetCore.Identity;
+@using QienUrenMachien.Entities;
+@inject UserManager<ApplicationUser> userManager;
 @{
 	ViewData["Title"] = "AdminViewSheet";
+	var user = userManager.FindByIdAsync(Model.Id);
 }
 
-<h1 style="text-align: center;">Urenformulier van gebruiker</h1>
+	<h1 style="text-align: center;">Urenformulier van @user.Result.Firstname @user.Result.Lastname</h1>
 
 <p hidden id="SheetID">@Model.SheetID</p>
 
