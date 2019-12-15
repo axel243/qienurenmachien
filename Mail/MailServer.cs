@@ -116,11 +116,11 @@ namespace QienUrenMachien.Mail
             SendMail(recipient, subject, aanhef + body + groet);
         }
 
-        public void SendRegisterUserMail(string recipient, string password)
+        public void SendRegisterUserMail(string recipient, string password, string name)
         {
-            string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
+            //string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
             string subject = $"Nieuw Account";
-            string body = " <p>Er is een account voor u gemaakt voor Qien.</p> <br/> <p> Uw wachtwoord is: " + password + "</p>" + "<br/> <a href=" + verificatielink + ">Verifieer Account</a>";
+            string body = "<p> Beste " + name + "</p>" + "<br/>" +" <p>Er is voor u een nieuw account gemaakt op QienUrenMachien.</p> <br/> <p>U krijgt voor dit account een automatisch gegenereerd wachtwoord die u de eerste keer moet gebruiken om in te loggen. Daarna kunt u het wachtwoord veranderen in de instellingen van uw profiel. </p> <br/> <p> Uw wachtwoord is: " + password + "</p>";
             SendMail(recipient, subject, body);
         }
 
