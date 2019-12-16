@@ -43,17 +43,18 @@ namespace QienUrenMachien.Mail
 
         }
 
-        public void SendConfirmationMail(string recipient, string body, string werknemer)
+        public void SendConfirmationMail(string recipient, string werkgever, string url, string werknemer, string month)
         {
-            string subject = $"{werknemer} urenformulier ingeleverd";
-            body += $"<br/> {werknemer} heeft zijn uren ingeleverd";
+            string subject = $"{werknemer} heeft een urenformulier ingeleverd";
+            string body = $"Beste {werkgever},<br/><br>Er is een timesheet ingediend door {werknemer} voor {Convert(month)}. Deze timesheet dient door u te worden gekeurd, dat kan via de volgende link: {url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
 
-        public void SendApprovalMail(string recipient, string body)
+        public void SendApprovalMail(string recipient, string username, string month, string state)
         {
-            string subject = $"Timesheet {body}";
+            string body = $"Beste {username},<br><br>Je timesheet voor {month} is {state}.<br><br>Met vriendelijke groet,<br>QienUrenMachien"; 
+            string subject = $"Timesheet {state}";
 
             SendMail(recipient, subject, body);
         }
@@ -120,7 +121,7 @@ namespace QienUrenMachien.Mail
         {
             //string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
             string subject = $"Nieuw Account";
-            string body = "<p> Beste " + name + "</p>" + "<br/>" +" <p>Er is voor u een nieuw account gemaakt op QienUrenMachien.</p> <br/> <p>U krijgt voor dit account een automatisch gegenereerd wachtwoord die u de eerste keer moet gebruiken om in te loggen. Daarna kunt u het wachtwoord veranderen in de instellingen van uw profiel. </p> <br/> <p> Uw wachtwoord is: " + password + "</p>";
+            string body = $"<p> Beste {name},<br><br>Er is voor u een nieuw account gemaakt op QienUrenMachien.<br/>U krijgt voor dit account een automatisch gegenereerd wachtwoord die u de eerste keer moet gebruiken om in te loggen. Daarna kunt u het wachtwoord veranderen in de instellingen van uw profiel.<br>Uw wachtwoord is: {password}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
             SendMail(recipient, subject, body);
         }
 

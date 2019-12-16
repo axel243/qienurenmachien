@@ -166,7 +166,7 @@ else
 		@if (!Model.Submitted)
 		{
 			<a class="btn btn-primary" asp-action="SubmitTimeSheet"
-			   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+			   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker? Er kunnen geen wijzigingen meer worden aangebracht.')">Indienen</a>
 		}
 		@if (Model.Submitted)
 		{
