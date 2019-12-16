@@ -8,12 +8,12 @@ namespace QienUrenMachien.Models
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required (ErrorMessage = "Voer een email in.")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+        [Required (ErrorMessage = "Voer je wachtwoord in.")]
+        [DataType(DataType.Password, ErrorMessage = "Onjuist wachtwoord.")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me")]

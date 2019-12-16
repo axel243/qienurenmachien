@@ -10,11 +10,11 @@ namespace QienUrenMachien.Models
 {
     public class ChangePasswordViewModel 
     {
-        [Required]
+        [Required (ErrorMessage = "Voer een wachtwoord in.")]
         [DataType(DataType.Password)]
         public string OldPassword { get; set; }
 
-        [Required]
+        [Required (ErrorMessage = "Voer een nieuw wachtwoord in.")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
         public string Email { get; set; }
