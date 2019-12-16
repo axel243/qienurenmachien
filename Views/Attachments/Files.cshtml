@@ -9,27 +9,29 @@
 
 @if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
 {
-    <partial name="_AddAttachments.cshtml" model="@Model[0].FileView" />
 
-    <div style="padding-top: 50px;">
+    <div style="padding-top: 30px;">
 
-        <h1 class="mb-5">Portfolio</h1>
-        <h5 class="mb-5">@User.Identity.Name</h5>
+        <h1 class="mb-2">Portfolio</h1>
         <table>
             <tr>
                 <th>Document(en)</th>
                 <th></th>
 
             </tr>
-            @for (int file = Model.Count; file --> 0; )
+            @for (int file = Model.Count; file-- > 0;)
             {
                 <tr>
+                    @if(Model[file].FileId != 0){
                     <td>@System.IO.Path.GetFileName(Model[file].FilePath)</td>
                     <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = Model[file].FilePath })</td>
+                    }
                 </tr>
             }
         </table>
     </div>
+    
+    <partial name="_AddAttachments.cshtml" model="@Model[0].FileView" />
 }
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -38,10 +40,11 @@
         @{
             var userProfile = await @userManager.FindByIdAsync(@Context.Request.Query["userId"]);
         }
-        <h1 class="mb-5">Portfolio</h1>
+        <h1 class="mb-2">Alle documenten</h1>
         @if (userProfile != null)
         {
-            <h5 class="mb-5">@userProfile.UserName</h5>
+            
+            <h5 class="mb-5">van gebruiker: @userProfile.UserName</h5>
         }
         else
         { <h5 class="mb-5">Er is iets fout gegaan met het vinden van de gebruiker</h5>}
@@ -60,4 +63,4 @@
             }
         </table>
     </div>
- }
+}

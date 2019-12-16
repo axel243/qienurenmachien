@@ -11,7 +11,7 @@
 <script>
     window.onload = function () {
         loadChart();
-    };
+	};
 </script>
 
 <h1 style="text-align: center;">Urenformulier van gebruiker</h1>
@@ -20,6 +20,9 @@
     </div>
 <p hidden id="SheetID">@Model.SheetID</p>
 <p hidden id="Url">@Model.Url</p>
+
+<br />
+<br />
 
 
 <table id="OverViewTable" style="width:100%;">
@@ -81,7 +84,7 @@
 		<th>Ziek</th>
 		<th>Afwezig</th>
 		<th>Training</th>
-		<th>Overige</th>
+		<th>Overig</th>
 	</tr>
 
 	@if (Model.Submitted == true)
@@ -104,7 +107,7 @@
 			else
 			{
 				<tr>
-					<td>@dt.ToString("dddd") @day.Key</td>
+					<td>@Translator.TranslateDay(dt.ToString("dddd")) @day.Key</td>
 					<td>@day.Value["projecthours"]</td>
 					<td>@day.Value["overwork"]</td>
 					<td>@day.Value["sick"]</td>
@@ -154,21 +157,26 @@ else
 
 </table>
 <br />
-<label asp-for="Comment"></label>
+<label>Opmerking</label>
 <textarea id="Comment" asp-for="Comment" class="form-control" text-wrap:normal" type="text" placeholder="Voeg commentaar toe" value="@Model.Comment"></textarea>
 
 
 <div class="form-group row">
 	<div class="col-sm-10">
-		<a class="btn btn-primary" asp-action="SubmitTimeSheet"
-		   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker?')">Indienen</a>
+		@if (!Model.Submitted)
+		{
+			<a class="btn btn-primary" asp-action="SubmitTimeSheet"
+			   asp-controller="Sheet" asp-route-url="@Model.Url" onclick="return confirm('Weet je het zeker? Er kunnen geen wijzigingen meer worden aangebracht.')">Indienen</a>
+		}
 		@if (Model.Submitted)
 		{
-		<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
-		   asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
+			<a class="btn btn-primary" asp-action="UnSubmitTimeSheet"
+			   asp-controller="Sheet" asp-route-url="@Model.Url">Terugdraaien</a>
 		}
 		<a class="btn btn-primary" asp-action="DownloadCSV"
 		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
+		<a class="btn btn-primary" asp-action="viewusersheetfiles"
+		   asp-controller="upload" asp-route-sheetId="@Model.SheetID">Toon bijlagen</a>
 	</div>
 </div>
 

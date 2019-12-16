@@ -69,7 +69,7 @@
 		<th>Ziek</th>
 		<th>Afwezig</th>
 		<th>Training</th>
-		<th>Overige</th>
+		<th>Overig</th>
 	</tr>
 
     @foreach (var day in JObject.Parse(Model.Data))
@@ -109,12 +109,15 @@
 else
 {
     *@<div class="form-group row">
-        <div class="col-sm-10">
-            <a class="btn btn-primary" asp-action="OpenTimeSheet"
-               asp-controller="Sheet" asp-route-id="@Model.Url">Open zetten</a>
-		<a class="btn btn-primary" asp-action="DownloadCSV"
-		   asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>
-        </div>
+          <div class="col-sm-10">
+              <a class="btn btn-primary" asp-action="OpenTimeSheet"
+                 asp-controller="Sheet" asp-route-id="@Model.Url">Open zetten</a>
+              <a class="btn btn-primary" asp-action="DownloadCSV"
+                 asp-controller="Sheet" asp-route-url="@Model.Url">Export naar CSV</a>    
+              <a class="btn btn-primary" asp-action="ViewUserSheetFiles"
+                 asp-controller="upload" asp-route-sheetId="@Model.SheetID">Toon bijlagen</a>
+          </div>
+
     </div>
 @*}*@
 

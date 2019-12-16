@@ -168,23 +168,26 @@ namespace QienUrenMachien.Controllers
         }
 
 
-        public IActionResult ViewUser(string Id)
+        public IActionResult ViewUser(UserViewModel model, string Id)
         {
-            var singleuser = userManager.Users.Single(u => u.Id == Id);
-            return View(singleuser);
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
+            model.ActiveUntilParam = model.theUser.ActiveUntil;
+            return View(model);
         }
 
-        public IActionResult ViewEmployer(string Id)
+        public IActionResult ViewEmployer(UserViewModel model, string Id)
         {
-            var singleuser = userManager.Users.Single(u => u.Id == Id);
-            return View(singleuser);
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
+            model.ActiveUntilParam = model.theUser.ActiveUntil;
+            return View(model);
         }
 
-        public async Task<IActionResult> DeactivateUser(string Id)
+        public async Task<IActionResult> DeactivateUser(UserViewModel model, string Id)
         {
-            //De gebruiker deactiveren door de einddatum naar het huidige tijdstip te veranderen.
+            //De gebruiker deactiveren door de einddatum naar de nieuwe einddatum (die is gekozen door de admin) te veranderen.
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
             var singleuser = await userManager.FindByIdAsync(Id);
-            singleuser.ActiveUntil = DateTime.Now;
+            singleuser.ActiveUntil = model.ActiveUntilParam;
             var result = await userManager.UpdateAsync(singleuser);
             if (result.Succeeded)
             {
@@ -193,10 +196,11 @@ namespace QienUrenMachien.Controllers
             return View();
         }
 
-        public async Task<IActionResult> DeactivateEmployer(string Id)
+        public async Task<IActionResult> DeactivateEmployer(UserViewModel model, string Id)
         {
+            model.theUser = userManager.Users.Single(u => u.Id == Id);
             var singleuser = await userManager.FindByIdAsync(Id);
-            singleuser.ActiveUntil = DateTime.Now;
+            singleuser.ActiveUntil = model.ActiveUntilParam;
             var result = await userManager.UpdateAsync(singleuser);
             if (result.Succeeded)
             {
@@ -233,16 +237,16 @@ namespace QienUrenMachien.Controllers
                 model.Months = new List<SelectListItem>();
                 model.Months.Add(new SelectListItem { Value = "December", Text = "December" });
                 model.Months.Add(new SelectListItem { Value = "November", Text = "November" });
-                model.Months.Add(new SelectListItem { Value = "October", Text = "October" });
+                model.Months.Add(new SelectListItem { Value = "October", Text = "Oktober" });
                 model.Months.Add(new SelectListItem { Value = "September", Text = "September" });
-                model.Months.Add(new SelectListItem { Value = "August", Text = "August" });
-                model.Months.Add(new SelectListItem { Value = "July", Text = "July" });
-                model.Months.Add(new SelectListItem { Value = "June", Text = "June" });
-                model.Months.Add(new SelectListItem { Value = "May", Text = "May" });
+                model.Months.Add(new SelectListItem { Value = "August", Text = "Augustus" });
+                model.Months.Add(new SelectListItem { Value = "July", Text = "Juli" });
+                model.Months.Add(new SelectListItem { Value = "June", Text = "Juni" });
+                model.Months.Add(new SelectListItem { Value = "May", Text = "Mei" });
                 model.Months.Add(new SelectListItem { Value = "April", Text = "April" });
-                model.Months.Add(new SelectListItem { Value = "March", Text = "March" });
-                model.Months.Add(new SelectListItem { Value = "February", Text = "February" });
-                model.Months.Add(new SelectListItem { Value = "January", Text = "January" });
+                model.Months.Add(new SelectListItem { Value = "March", Text = "Maart" });
+                model.Months.Add(new SelectListItem { Value = "February", Text = "Februari" });
+                model.Months.Add(new SelectListItem { Value = "January", Text = "Januari" });
             }
             model.Years = repo.GetYears();
             return View(model);

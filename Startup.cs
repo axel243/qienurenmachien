@@ -35,8 +35,9 @@ namespace QienUrenMachien
         {
 
             services.AddDbContext<RepositoryContext>(opt =>
-                            opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
-            
+                            //opt.UseSqlServer(Configuration.GetConnectionString("ConnectAzure")));
+                            opt.UseSqlServer(Configuration.GetConnectionString("ConnectGoogle")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RepositoryContext>().AddDefaultTokenProviders();
 

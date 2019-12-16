@@ -43,17 +43,18 @@ namespace QienUrenMachien.Mail
 
         }
 
-        public void SendConfirmationMail(string recipient, string body, string werknemer)
+        public void SendConfirmationMail(string recipient, string werkgever, string url, string werknemer, string month)
         {
-            string subject = $"{werknemer} urenformulier ingeleverd";
-            body += $"<br/> {werknemer} heeft zijn uren ingeleverd";
+            string subject = $"{werknemer} heeft een urenformulier ingeleverd";
+            string body = $"Beste {werkgever},<br/><br>Er is een timesheet ingediend door {werknemer} voor {Convert(month)}. Deze timesheet dient door u te worden gekeurd, dat kan via de volgende link: {url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
 
-        public void SendApprovalMail(string recipient, string body)
+        public void SendApprovalMail(string recipient, string username, string month, string state)
         {
-            string subject = $"Timesheet {body}";
+            string body = $"Beste {username},<br><br>Je timesheet voor {month} is {state}.<br><br>Met vriendelijke groet,<br>QienUrenMachien"; 
+            string subject = $"Timesheet {state}";
 
             SendMail(recipient, subject, body);
         }
@@ -88,29 +89,29 @@ namespace QienUrenMachien.Mail
             SendMail(recipient, subject, aanhef + body1 + body2 + body3 + groet);
         }
 
-        public void SendEditedProfileMail(string recipient, string adminName, string personUserName, string personFirstName, string userId)
+        public void SendEditedProfileMail(string recipient, string adminName, string personFirstName, string personLastName, string userId)
         {
-            string subject = $"Verzoek profielwijziging van {personUserName}";
+            string subject = $"Verzoek profielwijziging van {personFirstName[0]}. {personLastName}";
             string link = "<a href=" + "https://localhost:44398/profile/confirmprofile/" + userId + ">hier</a>";
-            string body = @$"Beste {adminName},<br><br> Het profiel van {personFirstName} is gewijzigd en is in afwachting van goedkeuring.<br> Dit profielverzoek kunt u bekijken door " + link + " te klikken.<br> Mocht dit problemen opleveren, dan kunt u deze zien in de admin dashboard onder het tab profielverzoeken. <br><br>Met vriendelijke groet,<br>QienUrenMachien";
+            string body = @$"Beste {adminName},<br><br> Het profiel van {personFirstName[0]}. {personLastName} is gewijzigd en is in afwachting van goedkeuring.<br> Dit profielverzoek kunt u bekijken door " + link + " te klikken.<br> Mocht dit problemen opleveren, dan kunt u deze zien in de admin dashboard onder het tab profielverzoeken. <br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
-        public void SendAcceptedProfileMail(string recipient, string personName, string admin)
+        public void SendAcceptedProfileMail(string recipient, string personFirstName, string personLastName, string adminFirstName, string adminLastName)
         {
             string subject = "Profielwijziging is goedgekeurd";
-            string aanhef = $"Beste {personName},<br><br>";
-            string body = $"Je hebt eerder je profielgegevens gewijzigd, deze wijziging is zojuist goedgekeurd door {admin} ";
+            string aanhef = $"Beste {personFirstName},<br><br>";
+            string body = $"Je hebt eerder je profielgegevens gewijzigd, deze wijziging is zojuist goedgekeurd door {adminFirstName[0]}. {adminLastName} ";
             string groet = "<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, aanhef + body + groet);
         }
 
-        public void SendDeclinedProfileMail(string recipient, string personName, string admin, string adminName)
+        public void SendDeclinedProfileMail(string recipient, string personFirstName, string personLastName, string adminFirstName, string adminLastName)
         {
             string subject = "Profielwijziging is afgewezen";
-            string aanhef = $"Beste {personName},<br><br>";
-            string body = $"Je hebt eerder je profielgegevens gewijzigd, deze wijziging is zojuist afgewezen door {admin}. Neem contact op met {adminName} om dit te bespreken.";
+            string aanhef = $"Beste {personFirstName},<br><br>";
+            string body = $"Je hebt eerder je profielgegevens gewijzigd, deze wijziging is zojuist afgewezen door {adminFirstName[0]}. {adminLastName}. Neem contact op met {adminFirstName} om dit te bespreken.";
             string groet = "<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, aanhef + body + groet);
@@ -120,7 +121,7 @@ namespace QienUrenMachien.Mail
         {
             //string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
             string subject = $"Nieuw Account";
-            string body = "<p> Beste " + name + "</p>" + "<br/>" +" <p>Er is voor u een nieuw account gemaakt op QienUrenMachien.</p> <br/> <p>U krijgt voor dit account een automatisch gegenereerd wachtwoord die u de eerste keer moet gebruiken om in te loggen. Daarna kunt u het wachtwoord veranderen in de instellingen van uw profiel. </p> <br/> <p> Uw wachtwoord is: " + password + "</p>";
+            string body = $"<p> Beste {name},<br><br>Er is voor u een nieuw account gemaakt op QienUrenMachien.<br/>U krijgt voor dit account een automatisch gegenereerd wachtwoord die u de eerste keer moet gebruiken om in te loggen. Daarna kunt u het wachtwoord veranderen in de instellingen van uw profiel.<br>Uw wachtwoord is: {password}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
             SendMail(recipient, subject, body);
         }
 

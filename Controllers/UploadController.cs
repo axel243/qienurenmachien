@@ -25,13 +25,12 @@ namespace QienUrenMachien.Controllers
 
 
         [HttpGet]
-        public IActionResult SheetAttachment(string url, int sheetID)
+        public IActionResult SheetAttachment(int sheetID)
         {
             //url en sheetId wordt opgehaald uit de submitTimeSheet action in de sheet controller
             //deze worden in de view gebruikt om de geuploade bestanden aan de sheetID te linken
             var file = new FileSheetUploadViewModel
             {
-                url = url,
                 sheetID = sheetID
             };
 
@@ -40,21 +39,66 @@ namespace QienUrenMachien.Controllers
 
         public IActionResult Index()
         {
-            //userid van ingelogde gebruiker wordt opgehaald
-            var userid = userManager.GetUserId(HttpContext.User);
-
-            //userid wordt gebruikt om de bestanden van deze user op te halen
-            var files = fileRepo.GetFilesByUserId(userid);
-
-            return View(@"~/Views/Attachments/Files.cshtml", files);
+            return View();
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult ViewUserFiles(string userId)
         {
             //userid wordt mee gegeven uit de view ViewUser
             //hiermee worden de bestanden van deze user opgehaald
             var files = fileRepo.GetFilesByUserId(userId);
             return View(@"~/Views/Attachments/Files.cshtml", files);
+        }
+        public IActionResult ViewUserSheetFiles(int sheetId)
+        {
+            //userid wordt mee gegeven uit de view usertimesheet
+            //hiermee worden de bestanden van deze user opgehaald
+            var files = fileRepo.GetSheetFilesBySheetId(sheetId);
+            if (files.Count > 0)
+            {
+                return View(@"~/Views/Attachments/SheetFiles.cshtml", files);
+            }
+            else
+            {
+                var file = new FileUploadModel
+                {
+                    SheetID = sheetId
+                };
+
+                var filez = new List<FileUploadModel>();
+                filez.Add(file);
+
+                return View(@"~/Views/Attachments/SheetFiles.cshtml", filez);
+            }
+        }
+        public IActionResult ViewUserOtherFiles()
+        {
+            //userid van ingelogde gebruiker wordt opgehaald
+            var userid = userManager.GetUserId(HttpContext.User);
+
+
+            //userid wordt gebruikt om de portfolio bestanden van deze user op te halen
+            var files = fileRepo.GetOtherFilesByUserId(userid);
+            if (files.Count > 0)
+            {
+                return View(@"~/Views/Attachments/Files.cshtml", files);
+            }
+            else
+            {
+                var file = new FileUploadModel
+                {
+                    //FileId = 0,
+                    //Id = "",
+                    //SheetID = 0,
+                    //FilePath = ""
+                };
+
+                var filez = new List<FileUploadModel>();
+                filez.Add(file);
+
+                return View(@"~/Views/Attachments/Files.cshtml", filez);
+
+            }
         }
 
         [HttpPost]
@@ -70,9 +114,9 @@ namespace QienUrenMachien.Controllers
                 //de file wordt middels het model doorgegeven en opgeslagen met koppeling naar de user
                 UploadFile(currentUser, model);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("ViewUserOtherFiles");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewUserOtherFiles");
         }
 
         [HttpPost]
@@ -90,12 +134,11 @@ namespace QienUrenMachien.Controllers
                 //de file wordt middels het model doorgegeven en opgeslagen met koppeling naar de user
                 UploadSheetFile(currentUser, model);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("viewusersheetfiles", new { model.sheetID });
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("viewsheetfiles", new { model.sheetID });
         }
-
 
         void UploadFile(ApplicationUser user, FileViewModel model)
         {
@@ -170,6 +213,7 @@ namespace QienUrenMachien.Controllers
                 fileRepo.UploadFile(user, filePath, model.sheetID);
             }
         }
+
 
         public IActionResult DownloadDocument(string filePath)
         {
