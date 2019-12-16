@@ -1,5 +1,7 @@
 # QienUrenMachien v1.0.0
 
+Systeem voor urendeclaratie en personeelsadministratie.
+
 
 ## Getting Started
 
@@ -10,19 +12,25 @@
 ## Deployment
 
 
-## Built With
+## Ontwikkeld met
 
-* [MVC]() - 
+- [ASP.NET MVC](https://dotnet.microsoft.com/apps/aspnet/mvc)
+- [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
+- [Chartsjs](https://www.chartjs.org/)
+- []() 
 
 
 
-## Versioning
+## Versiebeheer
 
-We use [SemVer](http://semver.org/) for versioning.
+We gebruiken [SemVer](http://semver.org/) voor versiebeheer.
 
 ## Authors
 
-* **Julian Kramer** - *Initial work* - [Juless89](https://github.com/Juless89)
+* **Julian Kramer** - [Juless89](https://github.com/Juless89)
+* **Ties Wijnker** - [TiesW](https://github.com/TiesW)
+* **Mohammed Adda** - [arriff](https://github.com/arriff)
+* **Axel Lauffer** - [axel243](https://github.com/axel243)
 
 ## License
 
