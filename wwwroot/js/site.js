@@ -96,7 +96,7 @@ $(("input")).change(function () {
 
 
 //Websocket
-var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44398/chatHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("http://www.qienurenmachien.tk/chatHub").build();
 
 connection.start().then(function () {
 }).catch(function (err) {
