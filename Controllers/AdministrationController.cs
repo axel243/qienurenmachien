@@ -126,15 +126,11 @@ namespace QienUrenMachien.Controllers
                 {
                     if (resultt.Succeeded)
                     {
+                        if (model.Role != "Werkgever") {
                         mailServer.SendRegisterUserMail(user.UserName, model.Password, (user.Firstname +" " + user.Lastname));
-                        if (model.Role == "Werkgever")
-                        {
-                            return RedirectToAction("ViewEmployers", "Administration");
                         }
-                        else
-                        {
-                            return RedirectToAction("AdminDashboard", "Administration");
-                        }
+                        return RedirectToAction("AdminDashboard", "Administration");
+
                     }
                 }
 
@@ -153,9 +149,9 @@ namespace QienUrenMachien.Controllers
         public string GetRandomPasswordUsingGUID()
         {
  
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#&()–[{}]:;',?/*~$^+=<>";
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#&()ï¿½[{}]:;',?/*~$^+=<>";
             var capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var nonalphas = "!@#&()–[{}]:;',?/*~$^+=<>";
+            var nonalphas = "!@#&()ï¿½[{}]:;',?/*~$^+=<>";
             var numbers = "0123456789";
             var stringChars = new char[10];
             var random = new Random();
