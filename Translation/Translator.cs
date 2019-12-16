@@ -11,7 +11,7 @@ namespace QienUrenMachien.Translation
             else if (day == "Friday") {return "Vrijdag";}
             else if (day == "Saturday") {return "Zaterdag";}
             else if (day == "Sunday") {return "Zondag";}
-            else {return "Onjuiste dag";}
+            else {return day;}
         }
 
         public static string TranslateMonth(string month)
@@ -28,7 +28,7 @@ namespace QienUrenMachien.Translation
             else if (month == "October") {return "Oktober";}
             else if (month == "November") {return "November";}
             else if (month == "December") {return "December";}
-            else {return "Onjuiste maand";}
+            else {return month;}
         }
     }
 }

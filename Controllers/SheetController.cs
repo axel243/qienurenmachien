@@ -87,7 +87,7 @@ namespace QienUrenMachien.Controllers
         {
             var _timeSheet = await repo.GetTimeSheet(id);
 
-            _timeSheet.Approved = "Approved";
+            _timeSheet.Approved = "goedgekeurd";
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
             ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
@@ -95,7 +95,7 @@ namespace QienUrenMachien.Controllers
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
             repox.LogActivity(activeUser, "ApproveTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.Firstname[0]}. {user.Lastname} goedgekeurd.");
 
-            mailServer.SendApprovalMail(user.UserName, "Approved");
+            mailServer.SendApprovalMail(user.UserName, user.Firstname + " " + user.Lastname, _timeSheet.Month, "approved");
 
             return RedirectToAction("confirmtimesheet", "sheet", new { url = _timeSheet.Url });
         }
@@ -106,7 +106,7 @@ namespace QienUrenMachien.Controllers
         {
             var _timeSheet = await repo.GetTimeSheet(id);
 
-            _timeSheet.Approved = "Rejected";
+            _timeSheet.Approved = "afgewezen";
             var result = await repo.UpdateTimeSheet(_timeSheet);
 
             ApplicationUser user = await userManager.FindByIdAsync(_timeSheet.Id);
@@ -115,7 +115,7 @@ namespace QienUrenMachien.Controllers
             var activeUser = userManager.FindByIdAsync(userManager.GetUserId(HttpContext.User)).Result;
             repox.LogActivity(activeUser, "RejectTimeSheet", $"{activeUser.Firstname[0]}. {activeUser.Lastname} heeft urenformulier {_timeSheet.Month} van {user.Firstname[0]}. {user.Lastname} afgewezen.");
 
-            mailServer.SendApprovalMail(user.UserName, "Rejected");
+            mailServer.SendApprovalMail(user.UserName, user.Firstname + " " + user.Lastname, _timeSheet.Month,"rejected");
 
             var admins = await userManager.GetUsersInRoleAsync("Admin");
 
@@ -277,7 +277,7 @@ namespace QienUrenMachien.Controllers
             await hub.Clients.All.SendAsync("ReceiveActivity", lastActivity);
 
 
-            mailServer.SendConfirmationMail(currentWerkgever.UserName, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname) );
+            mailServer.SendConfirmationMail(currentWerkgever.UserName, currentWerkgever.Firstname, "https://localhost:44398/sheet/confirmtimesheet/" + result.Url, (currentWerknemer.Firstname + " " + currentWerknemer.Lastname), _timeSheet.Month);
 
             //return RedirectToAction("usertimesheet", "sheet", new { url = _timeSheet.Url });
             return RedirectToAction("SheetAttachment", "upload", new { SheetID = _timeSheet.SheetID });
