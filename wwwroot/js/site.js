@@ -113,6 +113,7 @@ connection.on("ReceiveMessage", function (jsonObject) {
     var index = 0;
 
     for (let [key, value] of Object.entries(encodedMsg)) {
+        console.log(key, value);
         var cel = row.insertCell(index);
         cel.innerHTML = value;
         index++;
