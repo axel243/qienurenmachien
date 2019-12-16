@@ -22,13 +22,15 @@
             @for (int file = Model.Count; file-- > 0;)
             {
                 <tr>
+                    @if(Model[file].FileId != 0){
                     <td>@System.IO.Path.GetFileName(Model[file].FilePath)</td>
                     <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = Model[file].FilePath })</td>
+                    }
                 </tr>
             }
         </table>
     </div>
-
+    
     <partial name="_AddAttachments.cshtml" model="@Model[0].FileView" />
 }
 

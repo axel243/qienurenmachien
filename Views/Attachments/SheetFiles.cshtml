@@ -21,14 +21,17 @@
         </tr>
         @for (int file = Model.Count; file-- > 0;)
         {
-            <tr>
-                <td>@System.IO.Path.GetFileName(Model[file].FilePath)</td>
-                <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = Model[file].FilePath })</td>
-            </tr>
+        <tr>
+        @if (Model[file].FileId != 0)
+        {
+            <td>@System.IO.Path.GetFileName(Model[file].FilePath)</td>
+            <td>@Html.ActionLink("download", "DownloadDocument", "Upload", new { FilePath = Model[file].FilePath })</td>
+        }
+        </tr>
         }
     </table>
 </div>
 @if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
 {
-    @Html.ActionLink("Meer bijlagen toevoegen", "sheetattachment", "Upload", new { sheetID = Model[0].SheetID })
+    @Html.ActionLink("Meer bijlagen toevoegen", "SheetAttachment", "Upload", new { sheetID = Model[0].SheetID })
 }
