@@ -17,9 +17,7 @@ Zelfde als een werknemer, enkel maar actief voor 1 jaar.
 Iedere werknemer/trainee is gekoppeld aan een werkgever. De werkgever kan zelf niet inloggen, het account wordt gebruikt om gegevens over de werkgever te beheren. De admin beheert dit.
 
 ### Admin
-Admin kan als enige accounts aanmaken en heeft overzicht in alle gebruikers en timesheets.
-
-Voor een gebruikeraccount is gekozen voor het Idenity Model. Hieraan zijn de volgende properties toegevoegd.
+Admin kan als enige accounts aanmaken en heeft overzicht in alle gebruikers en timesheets. Voor een gebruikeraccount is gekozen voor het Idenity Model. Hieraan zijn de volgende properties toegevoegd.
 
 - Firstname
 - Lastname
