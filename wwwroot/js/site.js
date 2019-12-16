@@ -96,7 +96,7 @@ $(("input")).change(function () {
 
 
 //Websocket
-var connection = new signalR.HubConnectionBuilder().withUrl("http://www.qienurenmachien.tk/chatHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("http://qienurenmachien.tk:4999/chatHub").build();
 
 connection.start().then(function () {
 }).catch(function (err) {
@@ -113,17 +113,10 @@ connection.on("ReceiveMessage", function (jsonObject) {
     var index = 0;
 
     for (let [key, value] of Object.entries(encodedMsg)) {
-		var cel = row.insertCell(index);
-		if (key == "Submitted" && value == false) {
-			cel.innerHTML = '<img src="/Uploads/Images/times-circle-solid.svg" width="20" height="20" />';
-			index++;
-		} else if (key == "Approved" && value == "Not submitted" || key == "Approved" && value == "Not Submitted") {
-			cel.innerHTML = "";
-		}
-		else {
-			cel.innerHTML = value;
-			index++;
-		}
+        console.log(key, value);
+        var cel = row.insertCell(index);
+        cel.innerHTML = value;
+        index++;
     };
    
     document.getElementById("OverViewTable").deleteRow(-1);
