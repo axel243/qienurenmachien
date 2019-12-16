@@ -209,12 +209,20 @@ namespace QienUrenMachien.Controllers
             return View();
         }
 
-        public async Task<IActionResult> TimeSheetOverview()
+        public async Task<IActionResult> TimeSheetOverview(string maand, DateTime jaar)
         {
             //Hier wordt een overzicht van alle timesheets per maand gemaakt, door een view-model te gebruiken waarin de users worden opgedeeld in hun rollen.
             //In dit view-model zit ook een lijst met maanden die in de repository dynamisch wordt gemaakt op basis van de huidige maand. Hetzelfde geld voor jaren.
             //Verder worden de huidige maand en het huidige jaar automatisch geselecteerd wanneer je het overzicht opent.
-            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = DateTime.Now.ToString("MMMM"), theDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1) };
+            if(maand == null)
+            {
+                maand = DateTime.Now.ToString("MMMM");
+            }
+            if(jaar.Year < 2000)
+            {
+                jaar = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+            TimeSheetsViewModel model = new TimeSheetsViewModel { Month = maand, theDate = jaar };
             model.Employees = await repo.GetAllEmployeeTimeSheets(model);
             model.Trainees = await repo.GetAllTraineeTimeSheets(model);
             model.Months = repo.GetMonths();
@@ -223,7 +231,7 @@ namespace QienUrenMachien.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TimeSheetOverview(TimeSheetsViewModel model)
+        public async Task<IActionResult> TimeSheetOverview(TimeSheetsViewModel model, string maand, DateTime jaar)
         {
             //Deze functie wordt aangeroepen zodra de gebruiker een selectie maand in de dropdown van maanden of jaren.
             //Als het geselecteerde jaar nog steeds het huidige jaar is, worden de maanden dynamisch aangemaakt. Als het niet het huidige jaar is, kan de gebruiker in de maanden-dropdown alle maanden kiezen.
@@ -249,7 +257,8 @@ namespace QienUrenMachien.Controllers
                 model.Months.Add(new SelectListItem { Value = "January", Text = "Januari" });
             }
             model.Years = repo.GetYears();
-            return View(model);
+            return RedirectToAction("TimeSheetOverview", "Administration", new { maand = model.Month, jaar = model.theDate });
+            //return View(model);
         }
 
         public async Task<IActionResult> ShowUserTimeSheet(string Id, int SheetID)

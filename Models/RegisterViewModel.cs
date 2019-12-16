@@ -12,7 +12,7 @@ namespace QienUrenMachien.Models
     public class RegisterViewModel 
     {
        
-        [Required]
+        [Required (ErrorMessage = "Voer een email in.")]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -26,10 +26,10 @@ namespace QienUrenMachien.Models
             ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
+        [Required (ErrorMessage = "Voer een naam in.")]
         [StringLength(30)]
         public virtual string Firstname { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Voer een naam in.")]
         public virtual string Lastname { get; set; }
         [StringLength(40)]
         public virtual string Street { get; set; }
@@ -45,9 +45,8 @@ namespace QienUrenMachien.Models
         public virtual string BankNumber { get; set; }
         public virtual string NewProfile { get; set; }
         public virtual string Iban { get; set; }
-
         [Display(Name = "Actief vanaf")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date, ErrorMessage = "Onjuiste datum.")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ActiveFrom{ get; set; }
         public string Role { get; set; }

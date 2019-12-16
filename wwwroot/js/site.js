@@ -113,10 +113,17 @@ connection.on("ReceiveMessage", function (jsonObject) {
     var index = 0;
 
     for (let [key, value] of Object.entries(encodedMsg)) {
-        console.log(key, value);
-        var cel = row.insertCell(index);
-        cel.innerHTML = value;
-        index++;
+		var cel = row.insertCell(index);
+		if (key == "Submitted" && value == false) {
+			cel.innerHTML = '<img src="/Uploads/Images/times-circle-solid.svg" width="20" height="20" />';
+			index++;
+		} else if (key == "Approved" && value == "Not submitted" || key == "Approved" && value == "Not Submitted") {
+			cel.innerHTML = "";
+		}
+		else {
+			cel.innerHTML = value;
+			index++;
+		}
     };
    
     document.getElementById("OverViewTable").deleteRow(-1);
