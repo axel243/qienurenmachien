@@ -62,7 +62,7 @@ namespace QienUrenMachien.Mail
         public void OpenTimeSheetMail(string recipient, string username, string month, string url)
         {
             string subject = $"Timesheet Heropend";
-            string body = $"Beste {username},<br><br>Je timesheet voor {Convert(month)} is opnieuw geopend.<br>https://localhost:44398/Sheet/Overview/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+            string body = $"Beste {username},<br><br>Je timesheet voor {Convert(month)} is opnieuw geopend.<br>http://www.qienurenmachien.tk/Sheet/Overview/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
@@ -70,7 +70,7 @@ namespace QienUrenMachien.Mail
         public void AdminRejectedTimeSheet(string recipient, string url, string username, string adminname, string month)
         {
             string subject = $"Timesheet voor {username} is afgewezen";
-            string body = $"Beste {adminname},<br><br>De timesheet van {username} voor {Convert(month)} is afgewezen.<br>https://localhost:44398/Sheet/RejectedTimeSheet/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
+            string body = $"Beste {adminname},<br><br>De timesheet van {username} voor {Convert(month)} is afgewezen.<br>http://www.qienurenmachien.tk/Sheet/RejectedTimeSheet/{url}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
         }
@@ -92,7 +92,7 @@ namespace QienUrenMachien.Mail
         public void SendEditedProfileMail(string recipient, string adminName, string personFirstName, string personLastName, string userId)
         {
             string subject = $"Verzoek profielwijziging van {personFirstName[0]}. {personLastName}";
-            string link = "<a href=" + "https://localhost:44398/profile/confirmprofile/" + userId + ">hier</a>";
+            string link = "<a href=" + "http://www.qienurenmachien.tk/profile/confirmprofile/" + userId + ">hier</a>";
             string body = @$"Beste {adminName},<br><br> Het profiel van {personFirstName[0]}. {personLastName} is gewijzigd en is in afwachting van goedkeuring.<br> Dit profielverzoek kunt u bekijken door " + link + " te klikken.<br> Mocht dit problemen opleveren, dan kunt u deze zien in de admin dashboard onder het tab profielverzoeken. <br><br>Met vriendelijke groet,<br>QienUrenMachien";
 
             SendMail(recipient, subject, body);
@@ -119,7 +119,7 @@ namespace QienUrenMachien.Mail
 
         public void SendRegisterUserMail(string recipient, string password, string name)
         {
-            //string verificatielink = "https://localhost:44398/Mail/ConfirmationAccount";
+            //string verificatielink = "http://www.qienurenmachien.tk/Mail/ConfirmationAccount";
             string subject = $"Nieuw Account";
             string body = $"<p> Beste {name},<br><br>Er is voor u een nieuw account gemaakt op QienUrenMachien.<br/>U krijgt voor dit account een automatisch gegenereerd wachtwoord die u de eerste keer moet gebruiken om in te loggen. Daarna kunt u het wachtwoord veranderen in de instellingen van uw profiel.<br>Uw wachtwoord is: {password}<br><br>Met vriendelijke groet,<br>QienUrenMachien";
             SendMail(recipient, subject, body);
