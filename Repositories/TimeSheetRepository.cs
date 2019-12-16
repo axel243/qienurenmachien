@@ -36,8 +36,11 @@ namespace QienUrenMachien.Repositories
             return _timeSheet;
         }
 
-        public TimeSheet AddTimeSheet(string userId, string data)
+        public async Task<TimeSheet> AddTimeSheet(string userId, string data)
         {
+            ApplicationUser user = await userManager.FindByIdAsync(userId);
+            ApplicationUser werkgever = await userManager.FindByIdAsync(user.WerkgeverID);
+
             Console.WriteLine(userId);
             TimeSheet _timeSheet = new TimeSheet();
             _timeSheet.Id = userId;
@@ -47,7 +50,7 @@ namespace QienUrenMachien.Repositories
             _timeSheet.Sick = 0;
             _timeSheet.Training = 0;
             _timeSheet.Other = 0;
-            _timeSheet.Project = "Macaw";
+            _timeSheet.Project = werkgever.Lastname;
             _timeSheet.Submitted = false;
             _timeSheet.Approved = "Not submitted";
             _timeSheet.Data = data;
@@ -540,7 +543,7 @@ namespace QienUrenMachien.Repositories
                 }
                 data += "}";
 
-                TimeSheet entity2 = AddTimeSheet(id, data);
+                TimeSheet entity2 = await AddTimeSheet(id, data);
                 result = await context.TimeSheets.Where(c => c.Id == id).OrderByDescending(theDate => theDate).ToListAsync();
             }
 
