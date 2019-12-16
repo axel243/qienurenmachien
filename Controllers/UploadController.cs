@@ -54,17 +54,51 @@ namespace QienUrenMachien.Controllers
             //userid wordt mee gegeven uit de view usertimesheet
             //hiermee worden de bestanden van deze user opgehaald
             var files = fileRepo.GetSheetFilesBySheetId(sheetId);
-            return View(@"~/Views/Attachments/SheetFiles.cshtml", files);
+            if (files.Count > 0)
+            {
+                return View(@"~/Views/Attachments/SheetFiles.cshtml", files);
+            }
+            else
+            {
+                var file = new FileUploadModel
+                {
+                    SheetID = sheetId
+                };
+
+                var filez = new List<FileUploadModel>();
+                filez.Add(file);
+
+                return View(@"~/Views/Attachments/SheetFiles.cshtml", filez);
+            }
         }
         public IActionResult ViewUserOtherFiles()
         {
             //userid van ingelogde gebruiker wordt opgehaald
             var userid = userManager.GetUserId(HttpContext.User);
 
+
             //userid wordt gebruikt om de portfolio bestanden van deze user op te halen
             var files = fileRepo.GetOtherFilesByUserId(userid);
+            if (files.Count > 0)
+            {
+                return View(@"~/Views/Attachments/Files.cshtml", files);
+            }
+            else
+            {
+                var file = new FileUploadModel
+                {
+                    //FileId = 0,
+                    //Id = "",
+                    //SheetID = 0,
+                    //FilePath = ""
+                };
 
-            return View(@"~/Views/Attachments/Files.cshtml", files);
+                var filez = new List<FileUploadModel>();
+                filez.Add(file);
+
+                return View(@"~/Views/Attachments/Files.cshtml", filez);
+
+            }
         }
 
         [HttpPost]
