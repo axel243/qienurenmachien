@@ -3,14 +3,38 @@
 Systeem voor urendeclaratie en personeelsadministratie.
 
 
-## Rollen
+## Accounts en Rollen
 
 Het systeem kent de volgende vier rollen:
 
-- trainee 
-- werknemer
-- werkgever
-- admin
+### werknemer
+Gebruiker account, in staat timesheets te bekijken en in te dienen. Profiel te wijzigen en documenten te uploaden.
+
+### trainee
+Zelfde als een werknemer, enkel maar actief voor 1 jaar.
+
+### werkgever
+Iedere werknemer/trainee is gekoppeld aan een werkgever. De werkgever kan zelf niet inloggen, het account wordt gebruikt om gegevens over de werkgever te beheren. De admin beheert dit.
+
+### admin
+Admin kan als enige accounts aanmaken en heeft overzicht in alle gebruikers en timesheets.
+
+Voor een gebruikeraccount is gekozen voor het Idenity Model. Hieraan zijn de volgende properties toegevoegd.
+
+Firstname
+Lastname
+Street
+City
+Zipcode
+PhoneNumber
+Country
+ProfileImageUrl
+BankNumber
+NewProfile
+WerkgeverID
+ActiveFrom
+ActiveUntil
+  
 
 ## Controllers
 
@@ -40,11 +64,11 @@ Functionaliteit voor het uploaden van bestanden.
 ## Mailserver
 De mailserver bevat alle functies voor het versturen van emails.
 
-## Vertaling
+## Translation
 Alle data is het in engels opgeslagen in de database. Binnen deze classe zijn de vertaal functies.
 
 ## Hub
-SignalR wordt gebruikt voor real-time updates. Deze functionaliteit is in de Hub gebouwd.
+SignalR wordt gebruikt voor real-time updates van de grafieken en timesheets. Deze functionaliteit is in de Hub gebouwd.
 
 ## Ontwikkeld met
 
@@ -52,8 +76,6 @@ SignalR wordt gebruikt voor real-time updates. Deze functionaliteit is in de Hub
 - [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
 - [Chartsjs](https://www.chartjs.org/)
 - [FooTable](https://fooplugins.github.io/FooTable/) 
-
-
 
 ## Versiebeheer
 
